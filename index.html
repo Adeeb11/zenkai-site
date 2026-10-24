@@ -529,37 +529,66 @@ button{font-family:inherit}
 }
 
 /* ============================================================
-   MASCOT — "Zen", lives in the logo
+   MASCOT — "Zen", a little character that lives in the logo
    ============================================================ */
-#zkbot{position:fixed;left:0;top:0;z-index:48;width:76px;height:86px;pointer-events:none;opacity:0;will-change:transform}
+#zkbot{position:fixed;left:0;top:0;z-index:48;width:88px;height:120px;pointer-events:none;opacity:0;will-change:transform}
 #zkbot.ready{opacity:1}
-#zkbot .zkbot-inner{width:100%;height:100%}
-#zkbot.floaty .zkbot-inner{animation:zkFloat 4.5s ease-in-out infinite}
-@keyframes zkFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.zkbot-body{pointer-events:auto;cursor:pointer;width:100%;height:100%;display:block;border:none;background:none;padding:0;filter:drop-shadow(0 12px 18px rgba(8,26,16,.4))}
+.zkbot-stage{width:100%;height:100%}
+#zkbot.breathing .zkbot-stage{animation:zkBreathe 4.3s ease-in-out infinite}
+#zkbot.walking .zkbot-stage{animation:zkWalkB .44s ease-in-out infinite}
+@keyframes zkBreathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.012)}}
+@keyframes zkWalkB{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.zkbot-body{pointer-events:auto;cursor:pointer;width:100%;height:100%;display:block;border:none;background:none;padding:0;filter:drop-shadow(0 14px 16px rgba(8,26,16,.36))}
 .zkbot-body svg{width:100%;height:100%;overflow:visible;display:block}
-.zkbot-face{transition:transform .25s ease-out;transform-origin:60px 60px}
-.zkbot-eye{transition:transform .14s ease;transform-origin:center;transform-box:fill-box}
-.zkbot-pupil{transition:transform .16s ease-out}
-.zkbot-mouth{transition:d .2s ease}
-.zkbot-z{opacity:0;transition:opacity .3s;font:600 18px var(--font-display);fill:var(--lime)}
-#zkbot.blink .zkbot-eye{transform:scaleY(.12)}
-#zkbot.quiet .zkbot-eye{transform:scaleY(.14)}
-#zkbot.quiet .zkbot-z{opacity:.9;animation:zkZ 2.4s ease-in-out infinite}
-@keyframes zkZ{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:.9;transform:translateY(-4px)}}
-#zkbot.wave .zkbot-inner{animation:zkWave .7s ease}
-@keyframes zkWave{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}60%{transform:rotate(7deg)}}
-#zkbot.happy .zkbot-mouth{d:path("M48 72 Q60 84 72 72")}
-.zkbot-antenna-tip{transform-origin:60px 10px}
-#zkbot.floaty .zkbot-antenna-tip{animation:zkPulse 2.2s ease-in-out infinite}
+.zk-char{transform-box:fill-box;transform-origin:center bottom;transition:transform .34s cubic-bezier(.2,.8,.2,1)}
+.zk-arm,.zk-leg{transform-box:fill-box;transform-origin:top center;transition:transform .34s cubic-bezier(.2,.8,.2,1)}
+.zk-head{transform-box:fill-box;transform-origin:center bottom}
+.zk-eye{transform-box:fill-box;transform-origin:center;transition:transform .12s ease}
+.zk-brow{transform-box:fill-box;transform-origin:center;transition:transform .25s ease}
+.zk-mouth{transition:d .25s ease}
+.zk-antenna{transform-box:fill-box;transform-origin:center}
+.zk-z{opacity:0;transition:opacity .3s;font:600 16px var(--font-display);fill:var(--lime)}
+#zkbot.breathing .zk-antenna{animation:zkPulse 2.3s ease-in-out infinite}
 @keyframes zkPulse{0%,100%{opacity:.6}50%{opacity:1}}
+#zkbot.blink .zk-eye{transform:scaleY(.12)}
+@keyframes zkStep{0%,100%{transform:rotate(22deg)}50%{transform:rotate(-22deg)}}
+#zkbot.walking .zk-leg-l,#zkbot.walking .zk-arm-r{animation:zkStep .44s ease-in-out infinite}
+#zkbot.walking .zk-leg-r,#zkbot.walking .zk-arm-l{animation:zkStep .44s ease-in-out infinite;animation-delay:-.22s}
+@keyframes zkWaveArm{0%{transform:rotate(0)}18%{transform:rotate(-150deg)}42%{transform:rotate(-128deg)}66%{transform:rotate(-155deg)}100%{transform:rotate(-138deg)}}
+#zkbot.wave .zk-arm-r{animation:zkWaveArm 1s ease-in-out}
+#zkbot.greeting .zk-arm-r{transform:rotate(-138deg)}
+#zkbot.point-r .zk-arm-r{transform:rotate(-104deg)}
+#zkbot.point-l .zk-arm-l{transform:rotate(104deg)}
+#zkbot.happy .zk-mouth{d:path("M47 70 Q55 80 63 70")}
+#zkbot.happy .zk-brow-l{transform:translateY(-2px) rotate(-6deg)}
+#zkbot.happy .zk-brow-r{transform:translateY(-2px) rotate(6deg)}
+#zkbot.curious .zk-brow-l{transform:translateY(-2px) rotate(7deg)}
+#zkbot.curious .zk-brow-r{transform:translateY(-3px) rotate(-9deg)}
+#zkbot.ph-prep .zk-char{transform:translateY(7px) scaleY(.9)}
+#zkbot.ph-prep .zk-arm-l{transform:rotate(40deg)}
+#zkbot.ph-prep .zk-arm-r{transform:rotate(-40deg)}
+#zkbot.ph-prep .zk-leg-l{transform:rotate(10deg)}
+#zkbot.ph-prep .zk-leg-r{transform:rotate(-10deg)}
+#zkbot.ph-takeoff .zk-char{transform:translateY(-7px) scaleY(1.09)}
+#zkbot.ph-takeoff .zk-arm-l{transform:rotate(-36deg)}
+#zkbot.ph-takeoff .zk-arm-r{transform:rotate(36deg)}
+#zkbot.ph-air .zk-char{transform:rotate(-7deg)}
+#zkbot.ph-air .zk-leg-l,#zkbot.ph-air .zk-leg-r{transform:rotate(24deg)}
+#zkbot.ph-air .zk-arm-l{transform:rotate(-42deg)}
+#zkbot.ph-air .zk-arm-r{transform:rotate(42deg)}
+#zkbot.ph-land .zk-char{transform:translateY(6px) scaleY(.82) scaleX(1.1)}
+#zkbot.ph-land .zk-leg-l{transform:rotate(16deg)}
+#zkbot.ph-land .zk-leg-r{transform:rotate(-16deg)}
+#zkbot.quiet .zk-eye{transform:scaleY(.14)}
+#zkbot.quiet .zk-z{opacity:.9;animation:zkZ 2.4s ease-in-out infinite}
+@keyframes zkZ{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:.9;transform:translateY(-4px)}}
 
 #zkbubble{position:fixed;z-index:49;max-width:min(258px,74vw);background:var(--surface);color:var(--fg);border:1px solid var(--border);border-radius:16px;padding:.7rem 2rem .72rem .9rem;box-shadow:var(--shadow-lg);font-family:var(--font-body);font-size:.86rem;line-height:1.45;pointer-events:auto;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .22s ease,transform .22s cubic-bezier(.2,.8,.2,1);transform-origin:bottom right}
 #zkbubble.show{opacity:1;transform:none}
 #zkbubble .zkb-close{position:absolute;top:6px;right:7px;width:22px;height:22px;border:none;background:var(--surface-2);color:var(--fg-muted);border-radius:999px;cursor:pointer;font-size:14px;line-height:1;display:grid;place-items:center;transition:background .2s,color .2s}
 #zkbubble .zkb-close:hover{background:var(--green-soft);color:var(--forest)}
 #zkbubble b{font-family:var(--font-display);color:var(--green)}
-@media (prefers-reduced-motion:reduce){#zkbot .zkbot-inner,#zkbot.wave .zkbot-inner,#zkbot .zkbot-antenna-tip{animation:none!important}.zkbot-face,.zkbot-pupil,.zkbot-eye{transition:none!important}}
+@media (prefers-reduced-motion:reduce){#zkbot .zkbot-stage,#zkbot.wave .zk-arm-r,#zkbot.walking .zk-leg-l,#zkbot.walking .zk-leg-r,#zkbot.walking .zk-arm-l,#zkbot.walking .zk-arm-r,#zkbot .zk-antenna{animation:none!important}.zk-char,.zk-arm,.zk-leg,.zk-eye,.zk-brow{transition:none!important}}
 
 /* ============================================================
    RESPONSIVE
@@ -574,7 +603,7 @@ button{font-family:inherit}
   .ed-col.props{order:3}
 }
 @media (max-width:720px){
-  #zkbot{width:58px;height:66px}
+  #zkbot{width:66px;height:90px}
   #zkbubble{max-width:min(220px,82vw);font-size:.82rem}
   .feat-grid{grid-template-columns:1fr}
   .cards.c2,.cards.c3,.plans,.tmpl,.stats{grid-template-columns:1fr}
@@ -1470,21 +1499,29 @@ button{font-family:inherit}
 
 <!-- ===================== MASCOT: Zen ===================== -->
 <div id="zkbot" aria-hidden="true">
-  <div class="zkbot-inner">
+  <div class="zkbot-stage">
     <button class="zkbot-body" type="button" aria-label="Zen, the ZENKAI guide. Click to mute or wake.">
-      <svg viewBox="0 0 120 132" aria-hidden="true">
-        <line x1="60" y1="20" x2="60" y2="8" stroke="#1f6b45" stroke-width="2.5" stroke-linecap="round"/>
-        <circle class="zkbot-antenna-tip" cx="60" cy="7" r="5" fill="#B7F34A"/>
-        <rect x="16" y="20" width="88" height="82" rx="24" fill="#0f2117" stroke="#1f6b45" stroke-width="2.5"/>
-        <rect x="27" y="32" width="66" height="50" rx="17" fill="#07120b"/>
-        <g class="zkbot-face">
-          <g class="zkbot-eye"><ellipse cx="47" cy="57" rx="10" ry="11" fill="#0a1a11"/><circle class="zkbot-pupil" cx="47" cy="57" r="5.4" fill="#B7F34A"/></g>
-          <g class="zkbot-eye"><ellipse cx="73" cy="57" rx="10" ry="11" fill="#0a1a11"/><circle class="zkbot-pupil" cx="73" cy="57" r="5.4" fill="#B7F34A"/></g>
-          <path class="zkbot-mouth" d="M51 73 Q60 79 69 73" fill="none" stroke="#B7F34A" stroke-width="2.6" stroke-linecap="round"/>
+      <svg viewBox="0 0 110 150" aria-hidden="true">
+        <g class="zk-char">
+          <g class="zk-leg zk-leg-l"><rect x="44.5" y="116" width="9" height="22" rx="4.5" fill="#123024"/><ellipse cx="49" cy="140" rx="9" ry="5" fill="#0f2117"/><ellipse cx="49" cy="139" rx="4.5" ry="2" fill="#B7F34A" opacity=".45"/></g>
+          <g class="zk-leg zk-leg-r"><rect x="56.5" y="116" width="9" height="22" rx="4.5" fill="#123024"/><ellipse cx="61" cy="140" rx="9" ry="5" fill="#0f2117"/><ellipse cx="61" cy="139" rx="4.5" ry="2" fill="#B7F34A" opacity=".45"/></g>
+          <g class="zk-arm zk-arm-l"><rect x="27" y="90" width="8" height="24" rx="4" fill="#123024"/><circle cx="31" cy="116" r="5" fill="#0f2117"/><circle cx="31" cy="116" r="2.2" fill="#B7F34A" opacity=".45"/></g>
+          <g class="zk-arm zk-arm-r"><rect x="75" y="90" width="8" height="24" rx="4" fill="#123024"/><circle cx="79" cy="116" r="5" fill="#0f2117"/><circle cx="79" cy="116" r="2.2" fill="#B7F34A" opacity=".45"/></g>
+          <rect x="37" y="86" width="36" height="36" rx="14" fill="#0f2117" stroke="#1f6b45" stroke-width="2"/>
+          <circle cx="55" cy="103" r="4" fill="#B7F34A" opacity=".7"/>
+          <g class="zk-head">
+            <line x1="55" y1="34" x2="55" y2="24" stroke="#1f6b45" stroke-width="2.5" stroke-linecap="round"/>
+            <circle class="zk-antenna" cx="55" cy="22" r="4.5" fill="#B7F34A"/>
+            <rect x="31" y="34" width="48" height="50" rx="18" fill="#0f2117" stroke="#1f6b45" stroke-width="2.5"/>
+            <rect x="38" y="43" width="34" height="32" rx="12" fill="#07120b"/>
+            <rect class="zk-brow zk-brow-l" x="42" y="49" width="11" height="3" rx="1.5" fill="#B7F34A"/>
+            <rect class="zk-brow zk-brow-r" x="57" y="49" width="11" height="3" rx="1.5" fill="#B7F34A"/>
+            <g class="zk-eye"><ellipse cx="47" cy="59" rx="7.5" ry="8.5" fill="#0a1a11"/><circle class="zk-pupil" cx="47" cy="59" r="4.3" fill="#B7F34A"/></g>
+            <g class="zk-eye"><ellipse cx="63" cy="59" rx="7.5" ry="8.5" fill="#0a1a11"/><circle class="zk-pupil" cx="63" cy="59" r="4.3" fill="#B7F34A"/></g>
+            <path class="zk-mouth" d="M49 70 Q55 75 61 70" fill="none" stroke="#B7F34A" stroke-width="2.4" stroke-linecap="round"/>
+          </g>
+          <text class="zk-z" x="88" y="40" text-anchor="middle">z</text>
         </g>
-        <text class="zkbot-z" x="96" y="30" text-anchor="middle">z</text>
-        <rect x="36" y="100" width="16" height="9" rx="4.5" fill="#0f2117"/>
-        <rect x="68" y="100" width="16" height="9" rx="4.5" fill="#0f2117"/>
       </svg>
     </button>
   </div>
@@ -1892,99 +1929,179 @@ button{font-family:inherit}
   var mq=window.matchMedia?window.matchMedia.bind(window):null;
   var reduce=mq&&mq("(prefers-reduced-motion:reduce)").matches;
   var touch=mq&&mq("(hover:none) and (pointer:coarse)").matches;
-  var body=bot.querySelector(".zkbot-body"), face=bot.querySelector(".zkbot-face");
-  var pupils=bot.querySelectorAll(".zkbot-pupil");
+  var bodyBtn=bot.querySelector(".zkbot-body");
+  var headEl=bot.querySelector(".zk-head");
+  var pupils=bot.querySelectorAll(".zk-pupil");
   var txt=bubble.querySelector(".zkb-text"), closeBtn=bubble.querySelector(".zkb-close");
-  var W=76,Hh=86, quiet=false;
+  var W=88,Hh=120, quiet=false, state="intro", lookEl=null, approaching=false;
+  var cur={x:0,y:0}, lastX=window.innerWidth/2, lastY=window.innerHeight/2;
   try{quiet=localStorage.getItem("zk-bot-quiet")==="1";}catch(e){}
+  function clamp(v,a,b){return v<a?a:(v>b?b:v);}
   function rect(){return bot.getBoundingClientRect();}
-  function restXY(){W=bot.offsetWidth||76;Hh=bot.offsetHeight||86;return{x:window.innerWidth-W-22,y:window.innerHeight-Hh-22};}
-  function setPos(x,y){bot.style.transform="translate("+x+"px,"+y+"px)";}
+  function sizeNow(){W=bot.offsetWidth||88;Hh=bot.offsetHeight||120;}
+  function restXY(){sizeNow();return{x:window.innerWidth-W-20,y:window.innerHeight-Hh-14};}
+  function centerXY(){sizeNow();return{x:window.innerWidth/2-W/2,y:window.innerHeight/2-Hh/2};}
+  function setPos(x,y){cur.x=x;cur.y=y;bot.style.transform="translate("+x+"px,"+y+"px)";}
+  function wait(ms){return new Promise(function(r){setTimeout(r,ms);});}
+  function elCenter(el){var r=el.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2};}
 
-  /* cursor tracking */
-  var tgx=0,tgy=0,cxv=0,cyv=0,rafId=null,tracking=false;
-  function onMove(e){var r=rect(),bx=r.left+r.width/2,by=r.top+r.height/2;tgx=Math.max(-1,Math.min(1,(e.clientX-bx)/220));tgy=Math.max(-1,Math.min(1,(e.clientY-by)/220));}
-  function loop(){cxv+=(tgx-cxv)*0.12;cyv+=(tgy-cyv)*0.12;var p="translate("+(cxv*3).toFixed(2)+"px,"+(cyv*3).toFixed(2)+"px)";for(var i=0;i<pupils.length;i++)pupils[i].style.transform=p;if(face)face.style.transform="rotate("+(cxv*5).toFixed(2)+"deg) translate("+(cxv*2).toFixed(2)+"px,"+(cyv*1.5).toFixed(2)+"px)";rafId=requestAnimationFrame(loop);}
-  function startTrack(){if(tracking||reduce||touch)return;tracking=true;window.addEventListener("mousemove",onMove);loop();}
-  function stopTrack(){tracking=false;if(rafId)cancelAnimationFrame(rafId);window.removeEventListener("mousemove",onMove);for(var i=0;i<pupils.length;i++)pupils[i].style.transform="";if(face)face.style.transform="";}
+  /* ---- look / cursor loop (head tilt + pupils) ---- */
+  var cxv=0,cyv=0,rafId=null;
+  function onMove(e){lastX=e.clientX;lastY=e.clientY;}
+  function loop(){
+    rafId=requestAnimationFrame(loop);
+    if(reduce||quiet||touch)return;
+    if(state!=="idle"&&state!=="help")return;
+    var r=rect(),bx=r.left+r.width/2,by=r.top+r.height/2;
+    var src=lookEl?elCenter(lookEl):{x:lastX,y:lastY};
+    var tgx=clamp((src.x-bx)/240,-1,1), tgy=clamp((src.y-by)/240,-1,1);
+    cxv+=(tgx-cxv)*0.1; cyv+=(tgy-cyv)*0.1;
+    if(headEl)headEl.style.transform="rotate("+(cxv*6).toFixed(2)+"deg) translate("+(cxv*1.5).toFixed(2)+"px,"+(cyv).toFixed(2)+"px)";
+    for(var i=0;i<pupils.length;i++)pupils[i].style.transform="translate("+(cxv*2.6).toFixed(2)+"px,"+(cyv*2.6).toFixed(2)+"px)";
+  }
+  function neutralLook(){if(headEl)headEl.style.transform="";for(var i=0;i<pupils.length;i++)pupils[i].style.transform="";}
 
-  /* blink */
-  function scheduleBlink(){if(reduce)return;setTimeout(function(){if(!quiet){bot.classList.add("blink");setTimeout(function(){bot.classList.remove("blink");},160);}scheduleBlink();},2600+Math.random()*3600);}
+  /* ---- blink ---- */
+  function blinkOnce(){if(reduce||quiet)return;bot.classList.add("blink");setTimeout(function(){bot.classList.remove("blink");},150);}
+  function scheduleBlink(){if(reduce)return;setTimeout(function(){if(!quiet&&(state==="idle"||state==="help"))blinkOnce();scheduleBlink();},2600+Math.random()*3800);}
 
-  /* reactions */
-  function wave(){if(reduce||quiet)return;bot.classList.remove("wave");void bot.offsetWidth;bot.classList.add("wave");setTimeout(function(){bot.classList.remove("wave");},760);}
-  function happy(ms){bot.classList.add("happy");clearTimeout(bot._h);bot._h=setTimeout(function(){bot.classList.remove("happy");},ms||1100);}
+  /* ---- gestures ---- */
+  function happy(ms){bot.classList.add("happy");clearTimeout(bot._h);bot._h=setTimeout(function(){bot.classList.remove("happy");},ms||1200);}
+  function waveArm(){if(reduce||quiet)return;bot.classList.remove("wave");void bot.offsetWidth;bot.classList.add("wave");clearTimeout(bot._w);bot._w=setTimeout(function(){bot.classList.remove("wave");},1000);}
+  function greetGesture(){if(reduce)return;happy(1700);bot.classList.add("greeting");waveArm();clearTimeout(bot._g);bot._g=setTimeout(function(){bot.classList.remove("greeting");},1600);}
+  function clearPoint(){bot.classList.remove("point-l","point-r");}
+  function pointAt(el){clearPoint();if(reduce)return;var r=el.getBoundingClientRect(),b=rect();bot.classList.add((r.left+r.width/2)<(b.left+b.width/2)?"point-l":"point-r");}
 
-  /* bubble */
-  var hideT=null,curEl=null;
-  function placeBubble(){var r=rect();bubble.style.left="auto";bubble.style.top="auto";bubble.style.right=Math.max(12,(window.innerWidth-r.right))+"px";bubble.style.bottom=(window.innerHeight-r.top+12)+"px";}
-  function showBubble(html,sticky){clearTimeout(hideT);txt.innerHTML=html;bubble.hidden=false;placeBubble();requestAnimationFrame(function(){bubble.classList.add("show");});clearTimeout(bubble._auto);if(!sticky)bubble._auto=setTimeout(hideBubble,touch?4200:6000);}
-  function hideBubble(){bubble.classList.remove("show");clearTimeout(bubble._hd);bubble._hd=setTimeout(function(){bubble.hidden=true;},240);curEl=null;}
-
-  /* contextual help */
-  function helpText(el){return el.getAttribute("data-bot-help")||el.getAttribute("aria-label")||el.title||"";}
-  function onOver(e){if(quiet||!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(!el||el===curEl)return;var t=helpText(el);if(!t)return;curEl=el;clearTimeout(hideT);showBubble(t,true);if(el.hasAttribute("data-bot-react")){happy();wave();}}
-  function onOut(e){if(!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(!el||el!==curEl)return;if(e.relatedTarget&&el.contains(e.relatedTarget))return;clearTimeout(hideT);hideT=setTimeout(hideBubble,450);}
-
-  /* quiet / wake */
-  function setQuiet(q){quiet=q;try{localStorage.setItem("zk-bot-quiet",q?"1":"0");}catch(e){}bot.classList.toggle("quiet",q);if(q){stopTrack();hideBubble();bot.classList.remove("floaty");}else{bot.classList.add("floaty");startTrack();happy(900);wave();}}
-
-  body.addEventListener("click",function(){setQuiet(!quiet);});
-  bot.addEventListener("mouseenter",function(){if(!quiet)wave();});
-  closeBtn.addEventListener("click",function(e){e.stopPropagation();hideBubble();});
-
-  if(touch){
-    document.addEventListener("click",function(e){if(quiet||!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(el){var t=helpText(el);if(t){curEl=el;showBubble(t,false);if(el.hasAttribute("data-bot-react"))happy();}}});
-  }else{
-    document.addEventListener("mouseover",onOver);
-    document.addEventListener("mouseout",onOut);
-    document.addEventListener("focusin",function(e){if(quiet||!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(el){var t=helpText(el);if(t){curEl=el;showBubble(t,true);}}});
-    document.addEventListener("focusout",function(){clearTimeout(hideT);hideT=setTimeout(hideBubble,450);});
+  /* ---- walking ---- */
+  function walkTo(x,y){
+    return new Promise(function(res){
+      if(reduce){setPos(x,y);res();return;}
+      var dist=Math.hypot(x-cur.x,y-cur.y);
+      if(dist<6){setPos(x,y);res();return;}
+      var dur=clamp(dist/190*1000,520,2200);
+      neutralLook();
+      bot.classList.remove("breathing");bot.classList.add("walking");
+      bot.style.transition="transform "+dur+"ms linear";
+      requestAnimationFrame(function(){setPos(x,y);});
+      var done=function(){bot.style.transition="";bot.classList.remove("walking");res();};
+      var t=setTimeout(done,dur+160);
+      bot.addEventListener("transitionend",function h(ev){if(ev.target===bot&&ev.propertyName==="transform"){clearTimeout(t);bot.removeEventListener("transitionend",h);done();}},false);
+    });
   }
 
-  window.addEventListener("resize",function(){if(bot.classList.contains("ready")){var p=restXY();setPos(p.x,p.y);}if(!bubble.hidden)placeBubble();});
+  /* ---- speech bubble ---- */
+  var hideT=null,curEl=null,autoT=null;
+  function placeBubble(){var r=rect();var right=Math.max(12,window.innerWidth-r.right);bubble.style.right=right+"px";bubble.style.left="auto";
+    if(r.top<160){bubble.style.top=(r.bottom+10)+"px";bubble.style.bottom="auto";}
+    else{bubble.style.bottom=(window.innerHeight-r.top+10)+"px";bubble.style.top="auto";}}
+  function showBubble(html,sticky){clearTimeout(hideT);txt.innerHTML=html;bubble.hidden=false;placeBubble();requestAnimationFrame(function(){bubble.classList.add("show");});clearTimeout(autoT);if(!sticky)autoT=setTimeout(function(){hideBubble();},touch?4600:6500);}
+  function hideBubble(){bubble.classList.remove("show");clearTimeout(bubble._hd);bubble._hd=setTimeout(function(){bubble.hidden=true;},240);curEl=null;lookEl=null;clearPoint();}
+
+  /* ---- contextual help ---- */
+  function helpText(el){return el.getAttribute("data-bot-help")||el.getAttribute("aria-label")||el.title||"";}
+  function showHelp(el){var t=helpText(el);if(!t)return;curEl=el;lookEl=el;clearTimeout(hideT);var lng=el.getAttribute("data-bot-help-long");showBubble(lng?t+" "+lng:t,true);pointAt(el);if(el.hasAttribute("data-bot-react"))happy(900);if(el.hasAttribute("data-bot-approach")&&state==="help"&&!approaching)approach(el);}
+  function approach(el){approaching=true;state="walk";var r=el.getBoundingClientRect();sizeNow();
+    var tx=clamp(r.left+r.width/2-W/2,12,window.innerWidth-W-12), ty;
+    if(r.bottom+10<=window.innerHeight-Hh-12)ty=r.bottom+10; else ty=clamp(r.top-Hh-10,70,window.innerHeight-Hh-12);
+    walkTo(tx,ty).then(function(){approaching=false;if(curEl===el){state="help";placeBubble();pointAt(el);}else{backToRest();}});}
+  function onOver(e){if(quiet||(state!=="idle"&&state!=="help")||!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(!el||el===curEl)return;state="help";showHelp(el);}
+  function onOut(e){if(!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(!el||el!==curEl)return;if(e.relatedTarget&&el.contains(e.relatedTarget))return;clearTimeout(hideT);hideT=setTimeout(function(){hideBubble();backToRest();},500);}
+  function backToRest(){if(state==="idle"||approaching)return;var rest=restXY();state="walk";walkTo(rest.x,rest.y).then(function(){state="idle";bot.classList.add("breathing");});}
+
+  /* ---- clicks ---- */
+  function onClick(e){if(quiet||!e.target.closest)return;var el=e.target.closest("[data-bot-help],[data-bot-react]");if(!el)return;var cmsg=el.getAttribute("data-bot-click");if(el.hasAttribute("data-bot-react")||cmsg){happy(1100);waveArm();}if(cmsg){curEl=el;lookEl=el;showBubble(cmsg,false);}}
+
+  /* ---- quiet / wake ---- */
+  function setQuiet(q){quiet=q;try{localStorage.setItem("zk-bot-quiet",q?"1":"0");}catch(e){}bot.classList.toggle("quiet",q);if(q){hideBubble();bot.classList.remove("breathing","walking");neutralLook();}else{if(state==="intro")return;state="idle";bot.classList.add("breathing");happy(900);waveArm();}}
+
+  bodyBtn.addEventListener("click",function(){setQuiet(!quiet);});
+  bodyBtn.addEventListener("mouseenter",function(){if(!quiet&&state==="idle"){waveArm();happy(800);}});
+  closeBtn.addEventListener("click",function(e){e.stopPropagation();hideBubble();backToRest();});
+
+  if(!touch){
+    document.addEventListener("mousemove",onMove,{passive:true});
+    document.addEventListener("mouseover",onOver);
+    document.addEventListener("mouseout",onOut);
+    document.addEventListener("focusin",function(e){if(quiet||!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(el&&(state==="idle"||state==="help")){state="help";showHelp(el);}});
+    document.addEventListener("focusout",function(){clearTimeout(hideT);hideT=setTimeout(function(){hideBubble();backToRest();},500);});
+  }else{
+    document.addEventListener("click",function(e){if(quiet||!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(el){var t=helpText(el);if(t){curEl=el;lookEl=el;showBubble(t,false);pointAt(el);if(el.hasAttribute("data-bot-react"))happy(900);}}},true);
+  }
+  document.addEventListener("click",onClick);
+
+  /* ---- form outcome reactions (uses the page's real validation state) ---- */
+  function hookForm(id){var f=document.getElementById(id);if(!f)return;f.addEventListener("submit",function(){setTimeout(function(){if(quiet)return;var badField=f.querySelector(".field.invalid");var badMsg=f.querySelector(".field.invalid .err-msg");if(badField&&badMsg){lookEl=badField;showBubble("<b>Heads up —</b> "+badMsg.textContent,false);}else{happy(1400);waveArm();showBubble("<b>Nice!</b> That's all set.",false);}},70);});}
+  hookForm("contactForm");hookForm("authForm");
+
+  /* ---- route intros (safe, section-level) ---- */
+  var routeMsg={home:"Welcome to the home page.",about:"The story behind ZENKAI.",features:"Here's what you can build.",plans:"Compare the plans here.",contact:"Reach us from this page.",login:"Sign in or create an account.",dashboard:"Your account overview.",studio:"Build applications here.",editor:"Design your app screen here.",admin:"Platform management overview.",notifications:"Your recent updates."};
+  window.addEventListener("hashchange",function(){if(quiet||state==="intro")return;var h=(location.hash||"").replace("#","");if(routeMsg[h]){curEl=null;lookEl=null;showBubble(routeMsg[h],false);happy(700);}});
+
+  window.addEventListener("resize",function(){if(state==="idle"){var r=restXY();setPos(r.x,r.y);}if(!bubble.hidden)placeBubble();});
 
   function greet(){showBubble("<b>Hi, I'm Zen!</b> Point at a button or field and I'll explain it. Click me to mute.",false);}
 
-  function settle(){bot.classList.add("ready");bot.setAttribute("aria-hidden","false");if(quiet){bot.classList.add("quiet");}else{bot.classList.add("floaty");startTrack();scheduleBlink();setTimeout(greet,500);}}
-
-  function intro(){
-    var rest=restXY();
+  /* ---- entrance sequence ---- */
+  async function intro(){
+    sizeNow();
+    var rest=restXY(), center=centerXY();
     var emblem=document.querySelector("#publicNav .emblem")||document.querySelector(".emblem");
     var er=emblem?emblem.getBoundingClientRect():null;
-    if(reduce||quiet||!er||er.width<4){setPos(rest.x,rest.y);settle();return;}
-    var start={x:er.left+er.width/2-W/2,y:er.top+er.height/2-Hh/2}, peekY=start.y-14;
     bot.classList.add("ready");
+    if(reduce||quiet||!er||er.width<4){
+      setPos(rest.x,rest.y);state="idle";
+      if(quiet){bot.classList.add("quiet");}
+      else{bot.classList.add("breathing");scheduleBlink();setTimeout(greet,reduce?250:450);}
+      return;
+    }
+    var start={x:er.left+er.width/2-W/2, y:er.top+er.height/2-Hh/2};
+    setPos(start.x,start.y+22);bot.style.opacity="0";bot.classList.add("curious");
+    /* PEEK — slow rise from behind the logo */
     var peek=bot.animate([
-      {transform:"translate("+start.x+"px,"+(start.y+10)+"px) scale(.35)",opacity:0},
-      {transform:"translate("+start.x+"px,"+peekY+"px) scale(.72)",opacity:1}
-    ],{duration:520,easing:"cubic-bezier(.2,.8,.2,1)",fill:"forwards"});
-    peek.onfinish=function(){
-      var jump,sq;
-      function doJump(){
-        var midX=(start.x+rest.x)/2, topY=Math.min(peekY,rest.y)-90;
-        jump=bot.animate([
-          {transform:"translate("+start.x+"px,"+peekY+"px) scale(.72)"},
-          {transform:"translate("+midX+"px,"+topY+"px) scale(.96)",offset:.45},
-          {transform:"translate("+rest.x+"px,"+(rest.y-4)+"px) scale(1.05)",offset:.82},
-          {transform:"translate("+rest.x+"px,"+rest.y+"px) scale(1)"}
-        ],{duration:760,easing:"cubic-bezier(.3,.7,.3,1)",fill:"forwards"});
-        jump.onfinish=function(){
-          sq=bot.animate([
-            {transform:"translate("+rest.x+"px,"+rest.y+"px) scale(1,1)"},
-            {transform:"translate("+rest.x+"px,"+(rest.y+3)+"px) scale(1.12,.86)",offset:.3},
-            {transform:"translate("+rest.x+"px,"+rest.y+"px) scale(1,1)"}
-          ],{duration:360,easing:"ease-out",fill:"forwards"});
-          sq.onfinish=function(){try{peek.cancel();jump.cancel();sq.cancel();}catch(e){}setPos(rest.x,rest.y);settle();};
-        };
-      }
-      if(face){var look=face.animate([{transform:"rotate(0)"},{transform:"rotate(-8deg)"},{transform:"rotate(8deg)"},{transform:"rotate(0)"}],{duration:700,easing:"ease-in-out"});look.onfinish=doJump;}
-      else setTimeout(doJump,600);
-    };
+      {transform:"translate("+start.x+"px,"+(start.y+22)+"px) scale(.42)",opacity:0},
+      {transform:"translate("+start.x+"px,"+(start.y+4)+"px) scale(.6)",opacity:1,offset:.5},
+      {transform:"translate("+start.x+"px,"+(start.y-18)+"px) scale(.72)",opacity:1}
+    ],{duration:1500,easing:"cubic-bezier(.33,1,.68,1)",fill:"forwards"});
+    try{await peek.finished;}catch(e){}
+    /* CURIOUS look + blink */
+    blinkOnce();
+    if(headEl){try{await headEl.animate([{transform:"rotate(0)"},{transform:"rotate(-11deg)"},{transform:"rotate(11deg)"},{transform:"rotate(0)"}],{duration:850,easing:"ease-in-out"}).finished;}catch(e){}}
+    await wait(300);
+    bot.classList.remove("curious");
+    try{peek.cancel();}catch(e){}
+    setPos(start.x,start.y-18);bot.style.opacity="1";
+    /* JUMP — prep, takeoff, arc, land */
+    bot.classList.add("ph-prep");await wait(430);
+    bot.classList.remove("ph-prep");bot.classList.add("ph-takeoff");await wait(160);
+    bot.classList.remove("ph-takeoff");bot.classList.add("ph-air");
+    var apex=Math.min(start.y-18,center.y)-120;
+    var jump=bot.animate([
+      {transform:"translate("+start.x+"px,"+(start.y-18)+"px) scale(.9)"},
+      {transform:"translate("+((start.x+center.x)/2)+"px,"+apex+"px) scale(1.04)",offset:.5},
+      {transform:"translate("+center.x+"px,"+center.y+"px) scale(1)"}
+    ],{duration:1800,easing:"cubic-bezier(.4,0,.5,1)",fill:"forwards"});
+    try{await jump.finished;}catch(e){}
+    bot.classList.remove("ph-air");bot.classList.add("ph-land");
+    var land=bot.animate([
+      {transform:"translate("+center.x+"px,"+center.y+"px)"},
+      {transform:"translate("+center.x+"px,"+(center.y+7)+"px)",offset:.35},
+      {transform:"translate("+center.x+"px,"+center.y+"px)"}
+    ],{duration:560,easing:"cubic-bezier(.34,1.3,.5,1)",fill:"forwards"});
+    try{await land.finished;}catch(e){}
+    try{jump.cancel();land.cancel();}catch(e){}
+    bot.classList.remove("ph-land");setPos(center.x,center.y);
+    /* GREET */
+    state="greet";greetGesture();greet();
+    await wait(1500);hideBubble();
+    /* WALK to a resting spot */
+    state="walk";await walkTo(rest.x,rest.y);
+    /* IDLE */
+    setPos(rest.x,rest.y);state="idle";bot.classList.add("breathing");scheduleBlink();
   }
 
-  if(document.readyState==="complete")setTimeout(intro,800);
-  else window.addEventListener("load",function(){setTimeout(intro,800);});
+  if(!reduce&&!touch)rafId=requestAnimationFrame(loop);
+  if(document.readyState==="complete")setTimeout(intro,900);
+  else window.addEventListener("load",function(){setTimeout(intro,900);});
 })();
 </script>
 
