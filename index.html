@@ -1,0 +1,1992 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="ZENKAI — a low-code application platform to build, automate and grow. Design applications visually, connect data and automate workflows.">
+<meta name="theme-color" content="#0a0f0c">
+<meta property="og:title" content="ZENKAI — Build. Automate. Grow.">
+<meta property="og:description" content="A low-code application platform. Your ideas. Your applications. One platform.">
+<meta property="og:type" content="website">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%}
+img{max-width:100%}
+[hidden]{display:none!important}
+:root{color-scheme:light}
+</style>
+<title>ZENKAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* ============================================================
+   ZENKAI — Build · Automate · Grow
+   Layout: fixed brand nav -> routed full-bleed page sections
+           -> soft/white bands for marketing, app shells for product
+   ============================================================ */
+:root{
+  /* Brand (constant in both themes) */
+  --forest:#174D36;
+  --forest-deep:#0e2e20;
+  --lime:#B7F34A;
+  --lime-deep:#a4e233;
+  --lime-ink:#16351a;
+  --green:#1a8f54;          /* mid green for eyebrows / links */
+  --green-soft:#e6f4ea;     /* tinted green surface */
+
+  /* Light theme surfaces */
+  --bg:#ffffff;
+  --bg-soft:#f4f7f4;
+  --surface:#ffffff;
+  --surface-2:#f4f7f4;
+  --ink-card:#0f2219;       /* dark brand card bg */
+  --ink-card-2:#122a1f;
+  --fg:#141a17;
+  --fg-muted:#5a6b60;
+  --fg-faint:#8a988f;
+  --border:#e4ebe6;
+  --border-strong:#d4ded7;
+  --on-dark:#eef5ee;
+  --on-dark-muted:#a9c0b2;
+
+  /* Status */
+  --ok:#1f9d57;
+  --warn:#c9820f;
+  --warn-soft:#fff2d9;
+  --ok-soft:#e2f5ea;
+
+  /* Type */
+  --font-display:"Sora","Segoe UI",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",monospace;
+
+  /* Shape */
+  --r-sm:10px; --r:16px; --r-lg:22px; --r-xl:28px;
+  --shadow:0 1px 2px rgba(16,40,28,.04), 0 10px 30px -18px rgba(16,40,28,.25);
+  --shadow-lg:0 30px 60px -30px rgba(16,40,28,.35);
+  --maxw:1120px;
+  --backdrop:radial-gradient(1200px 780px at 74% -8%,#e9f5ec 0%,#f3f7f3 46%,#ffffff 100%);
+  --veil:rgba(243,247,243,.4);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a0f0c;
+    --bg-soft:#0e1511;
+    --surface:#121a15;
+    --surface-2:#0e1511;
+    --ink-card:#0f2016;
+    --ink-card-2:#143024;
+    --fg:#eaf2ec;
+    --fg-muted:#9fb3a7;
+    --fg-faint:#6f8278;
+    --border:#20302700;
+    --border:#22302a;
+    --border-strong:#2c3d34;
+    --green:#4bd089;
+    --green-soft:#12271c;
+    --ok-soft:#10271a;
+    --warn-soft:#2a2410;
+    --backdrop:radial-gradient(1200px 780px at 74% -8%,#0e2a1d 0%,#07120d 55%,#050806 100%);
+    --veil:rgba(6,11,8,.38);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a0f0c;
+  --bg-soft:#0e1511;
+  --surface:#121a15;
+  --surface-2:#0e1511;
+  --ink-card:#0f2016;
+  --ink-card-2:#143024;
+  --fg:#eaf2ec;
+  --fg-muted:#9fb3a7;
+  --fg-faint:#6f8278;
+  --border:#22302a;
+  --border-strong:#2c3d34;
+  --green:#4bd089;
+  --green-soft:#12271c;
+  --ok-soft:#10271a;
+  --warn-soft:#2a2410;
+  --backdrop:radial-gradient(1200px 780px at 74% -8%,#0e2a1d 0%,#07120d 55%,#050806 100%);
+  --veil:rgba(6,11,8,.38);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html,body{min-height:100%}
+html{background:var(--bg)}
+body{
+  font-family:var(--font-body);
+  background:transparent;
+  color:var(--fg);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+#siteGL{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:var(--backdrop)}
+#siteGL canvas{display:block;width:100%!important;height:100%!important}
+#siteGL::after{content:"";position:absolute;inset:0;background:var(--veil);pointer-events:none}
+/* top safe-area band behind sticky header */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+
+h1,h2,h3,h4{font-family:var(--font-display);line-height:1.12;text-wrap:balance;margin:0;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+button{font-family:inherit}
+:focus-visible{outline:2.5px solid var(--green);outline-offset:2px;border-radius:6px}
+
+/* ---------- shared bits ---------- */
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--green)}
+.muted{color:var(--fg-muted)}
+.center{text-align:center}
+
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-display);font-weight:600;font-size:.95rem;border-radius:999px;padding:.72rem 1.3rem;border:1.5px solid transparent;cursor:pointer;transition:transform .18s cubic-bezier(.2,.7,.2,1),box-shadow .2s,background .2s,color .2s,border-color .2s;white-space:nowrap}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn-lime{background:var(--lime);color:var(--lime-ink);box-shadow:0 10px 24px -14px rgba(120,190,20,.9)}
+.btn-lime:hover{background:var(--lime-deep);transform:translateY(-2px);box-shadow:0 16px 30px -14px rgba(120,190,20,.95)}
+.btn-forest{background:var(--forest);color:#fff}
+.btn-forest:hover{background:var(--forest-deep);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--border-strong)}
+.btn-ghost:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px)}
+.btn-dark{background:#0d1f16;color:var(--on-dark);border-color:#1c3a2a}
+.btn-dark:hover{background:#12291d;transform:translateY(-2px)}
+.btn-block{width:100%;justify-content:center}
+
+.chip{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--font-mono);font-size:.68rem;font-weight:600;letter-spacing:.04em;padding:.25rem .6rem;border-radius:999px;text-transform:uppercase}
+.chip-ok{background:var(--ok-soft);color:var(--ok)}
+.chip-warn{background:var(--warn-soft);color:var(--warn)}
+.chip-neutral{background:var(--surface-2);color:var(--fg-muted);border:1px solid var(--border)}
+
+/* ---------- reveal ---------- */
+[data-reveal]{transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal-hide{opacity:0;transform:translateY(22px)}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal-hide{opacity:1!important;transform:none!important}
+}
+
+/* ============================================================
+   PUBLIC NAV
+   ============================================================ */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;align-items:center;gap:1rem;height:66px}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:var(--font-display);font-weight:700;font-size:1.18rem;letter-spacing:-.02em;cursor:pointer}
+.brand .emblem{width:34px;height:34px;flex:none}
+.brand small{display:block;font-family:var(--font-mono);font-size:.6rem;font-weight:500;letter-spacing:.12em;color:var(--fg-muted);text-transform:uppercase;margin-top:-2px}
+.nav-links{display:flex;align-items:center;gap:.3rem;margin-left:auto}
+.nav-links a.navlink{padding:.5rem .8rem;border-radius:999px;font-size:.92rem;font-weight:500;color:var(--fg-muted);transition:color .2s,background .2s}
+.nav-links a.navlink:hover{color:var(--fg);background:var(--surface-2)}
+.nav-links a.navlink.active{color:var(--forest);background:var(--green-soft)}
+:root[data-theme="dark"] .nav-links a.navlink.active,
+.navlink.active{color:var(--green)}
+.nav-cta{display:flex;align-items:center;gap:.5rem;margin-left:.4rem}
+.theme-btn{width:38px;height:38px;border-radius:999px;border:1px solid var(--border-strong);background:var(--surface);color:var(--fg-muted);cursor:pointer;display:grid;place-items:center;transition:transform .2s,color .2s,border-color .2s}
+.theme-btn:hover{color:var(--green);border-color:var(--green);transform:rotate(-15deg)}
+.hamburger{display:none;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-strong);background:var(--surface);cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+.hamburger span{width:19px;height:2px;background:var(--fg);border-radius:2px;transition:transform .3s,opacity .2s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* mobile drawer */
+.drawer{position:fixed;inset:0;z-index:70;pointer-events:none}
+.drawer-scrim{position:absolute;inset:0;background:rgba(6,14,9,.5);opacity:0;transition:opacity .3s}
+.drawer-panel{position:absolute;top:0;right:0;height:100%;width:min(82vw,320px);background:var(--bg);border-left:1px solid var(--border);transform:translateX(100%);transition:transform .34s cubic-bezier(.2,.8,.2,1);padding:calc(1.2rem + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) 1.2rem 20px;display:flex;flex-direction:column;gap:.3rem}
+.drawer.open{pointer-events:auto}
+.drawer.open .drawer-scrim{opacity:1}
+.drawer.open .drawer-panel{transform:translateX(0)}
+.drawer-panel a{padding:.85rem .6rem;border-radius:12px;font-weight:500;font-size:1.02rem;color:var(--fg);transition:background .2s}
+.drawer-panel a:hover,.drawer-panel a.active{background:var(--green-soft);color:var(--forest)}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+
+/* ============================================================
+   PAGE ROUTER
+   ============================================================ */
+.page{display:none;animation:pageIn .5s cubic-bezier(.2,.7,.2,1)}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.band{padding-block:clamp(3rem,7vw,5.5rem)}
+.band-soft{background:var(--bg-soft)}
+.band-tight{padding-block:clamp(2rem,4vw,3rem)}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+.hero{padding-block:clamp(3rem,6vw,5rem) clamp(2.4rem,4vw,3.4rem);position:relative}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,color-mix(in srgb,var(--bg) 82%,transparent) 0%,color-mix(in srgb,var(--bg) 36%,transparent) 44%,transparent 72%)}
+.hero .wrap{position:relative;z-index:1}
+.hero .lede{color:var(--green)}
+.hero h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:800;margin:.9rem 0 .5rem}
+.hero .lede{font-size:clamp(1.15rem,2.4vw,1.5rem);font-family:var(--font-display);font-weight:600;color:var(--green);margin-bottom:.9rem}
+.hero p.sub{max-width:52ch;font-size:1.06rem;color:var(--fg-muted)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.6rem}
+
+.darkcard{background:linear-gradient(160deg,var(--ink-card),var(--ink-card-2));border-radius:var(--r-xl);color:var(--on-dark);padding:clamp(1.5rem,3vw,2.4rem);border:1px solid #1b3a29;position:relative;overflow:hidden}
+.darkcard::after{content:"";position:absolute;width:280px;height:280px;right:-80px;top:-120px;background:radial-gradient(circle,rgba(183,243,74,.16),transparent 70%);pointer-events:none}
+.darkcard::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(183,243,74,.12) 1px,transparent 1.5px);background-size:22px 22px;opacity:.55;pointer-events:none;-webkit-mask-image:radial-gradient(circle at 12% 100%,#000,transparent 58%);mask-image:radial-gradient(circle at 12% 100%,#000,transparent 58%)}
+.darkcard h2,.darkcard h3{color:#fff}
+.darkcard .d-muted{color:var(--on-dark-muted)}
+.darkcard-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.5rem}
+
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#1c3b2a;border:1px solid #1c3b2a;border-radius:var(--r-lg);overflow:hidden}
+.feat-cell{background:var(--ink-card);padding:1.35rem 1.4rem;transition:background .25s}
+.feat-cell:hover{background:#16311f}
+.feat-cell .ficon{width:34px;height:34px;color:var(--lime);margin-bottom:.7rem}
+.feat-cell h4{color:#fff;font-size:1.05rem;margin-bottom:.3rem}
+.feat-cell p{color:var(--on-dark-muted);font-size:.9rem}
+.note{font-size:.78rem;color:var(--on-dark-muted);opacity:.7;margin-top:1.1rem;font-style:italic}
+
+.limeband{background:var(--lime);color:var(--lime-ink)}
+.limeband .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 2rem;justify-content:space-between}
+.limeband h2{font-size:clamp(1.4rem,3vw,2rem);color:var(--lime-ink)}
+.limeband p{color:#274b1c;font-weight:500}
+.limeband a.lblink{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-display);font-weight:700;color:var(--lime-ink);font-size:1.05rem;transition:gap .2s}
+.limeband a.lblink:hover{gap:.9rem}
+
+/* ============================================================
+   SECTION HEADERS (marketing)
+   ============================================================ */
+.sec-head{max-width:62ch;margin-inline:auto;text-align:center;margin-bottom:2.4rem}
+.sec-head h2{font-size:clamp(1.8rem,4vw,2.7rem);font-weight:700;margin:.7rem 0 .6rem}
+.sec-head p{color:var(--fg-muted);font-size:1.08rem}
+/* frosted readability backing for text that sits over the animated backdrop */
+.sec-head,.section-lead,.plate{background:color-mix(in srgb,var(--bg) 55%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:var(--r-lg);padding:1.3rem 1.6rem}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .sec-head,.section-lead,.plate{background:color-mix(in srgb,var(--bg) 86%,transparent)}
+}
+
+/* cards grid (light) */
+.cards{display:grid;gap:1.1rem}
+.cards.c2{grid-template-columns:repeat(2,1fr)}
+.cards.c3{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,border-color .25s}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--border-strong)}
+.card .cicon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--green-soft);color:var(--forest);margin-bottom:1rem}
+:root[data-theme="dark"] .card .cicon{color:var(--green)}
+.card h3{font-size:1.18rem;margin-bottom:.4rem}
+.card h4{font-size:1.05rem;margin-bottom:.3rem}
+.card p{color:var(--fg-muted);font-size:.95rem}
+
+/* guides list */
+.guides{display:grid;gap:1.2rem;max-width:720px}
+.guide{display:flex;gap:1rem;align-items:flex-start}
+.guide .gi{width:34px;height:34px;flex:none;color:var(--green)}
+.guide h4{font-size:1.08rem;margin-bottom:.15rem}
+.guide p{color:var(--fg-muted);font-size:.95rem}
+
+/* ============================================================
+   FEATURES — workflow mini diagram
+   ============================================================ */
+.flow{margin-top:2.6rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:clamp(1.3rem,3vw,2rem)}
+.flow-head{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between;margin-bottom:1.4rem}
+.flow-stage{position:relative}
+.flow-nodes{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;position:relative;z-index:2}
+.node{background:var(--bg-soft);border:1.5px solid var(--border-strong);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s}
+.node.lit{border-color:var(--lime);box-shadow:0 0 0 4px rgba(183,243,74,.22);transform:translateY(-3px)}
+.node .nicon{width:30px;height:30px;margin:0 auto .5rem;color:var(--green)}
+.node b{font-family:var(--font-display);font-size:.98rem;display:block}
+.node span{font-size:.82rem;color:var(--fg-muted)}
+.flow-svg{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+.flow-path{fill:none;stroke:var(--green);stroke-width:2;stroke-dasharray:6 7;opacity:.5;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-26}}
+.flow-run{margin-top:1.3rem;display:flex;gap:.7rem;align-items:center;flex-wrap:wrap}
+
+/* ============================================================
+   PLANS
+   ============================================================ */
+.plans{display:grid;grid-template-columns:repeat(2,1fr);gap:1.3rem;max-width:860px;margin-inline:auto}
+.plan{border:1px solid var(--border);border-radius:var(--r-xl);padding:1.8rem;background:var(--surface);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+.plan:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.plan.pro{background:linear-gradient(165deg,var(--ink-card),var(--ink-card-2));color:var(--on-dark);border-color:#1c3b2a;position:relative}
+.plan .pname{font-family:var(--font-display);font-weight:700;font-size:1.25rem;margin-bottom:.2rem}
+.plan.pro .pname{color:#fff}
+.plan .price{font-family:var(--font-display);font-weight:800;font-size:2.6rem;letter-spacing:-.02em;margin:.2rem 0}
+.plan .price .cur{color:var(--green)}
+.plan.pro .price .cur{color:var(--lime)}
+.plan .pfor{color:var(--fg-muted);font-size:.92rem;margin-bottom:1.1rem}
+.plan.pro .pfor{color:var(--on-dark-muted)}
+.plan .divider{height:1px;background:var(--border);margin:.4rem 0 1rem}
+.plan.pro .divider{background:#234733}
+.plan ul{list-style:none;padding:0;margin:0 0 1.4rem;display:grid;gap:.7rem}
+.plan li{display:flex;gap:.6rem;align-items:flex-start;font-size:.95rem}
+.plan li svg{width:18px;height:18px;flex:none;color:var(--ok);margin-top:2px}
+.plan.pro li svg{color:var(--lime)}
+.plan .btn{margin-top:auto}
+.popular{position:absolute;top:0;left:0;right:0;background:var(--lime);color:var(--lime-ink);text-align:center;font-family:var(--font-mono);font-weight:600;font-size:.7rem;letter-spacing:.14em;padding:.35rem;border-radius:var(--r-xl) var(--r-xl) 0 0}
+.plan.pro{padding-top:2.6rem}
+.infocard{max-width:860px;margin:1.5rem auto 0;background:var(--green-soft);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.3rem 1.4rem;display:flex;gap:.9rem}
+.infocard svg{width:26px;height:26px;color:var(--forest);flex:none}
+:root[data-theme="dark"] .infocard svg{color:var(--green)}
+.infocard h4{font-size:1.02rem;margin-bottom:.25rem}
+.infocard p{color:var(--fg-muted);font-size:.92rem}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.form-wrap{max-width:720px;margin-inline:auto}
+.form-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:clamp(1.4rem,3vw,2rem);margin-top:1.3rem}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.4rem}
+.field .req{color:var(--green)}
+.input,.textarea,.select{width:100%;font-family:inherit;font-size:.98rem;color:var(--fg);background:var(--bg);border:1.5px solid var(--border-strong);border-radius:12px;padding:.8rem .9rem;transition:border-color .2s,box-shadow .2s}
+.input:focus,.textarea:focus,.select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 4px rgba(26,143,84,.14)}
+.textarea{min-height:130px;resize:vertical}
+.err-msg{color:#cc3b3b;font-size:.82rem;margin-top:.35rem;display:none}
+.field.invalid .input,.field.invalid .textarea,.field.invalid .select{border-color:#cc3b3b}
+.field.invalid .err-msg{display:block}
+.form-note{font-size:.82rem;color:var(--fg-muted);margin-top:.9rem;text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:transl(-50%,0) translateX(-50%);background:var(--forest);color:#fff;padding:.85rem 1.3rem;border-radius:999px;font-weight:600;font-size:.92rem;box-shadow:var(--shadow-lg);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;display:flex;gap:.5rem;align-items:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+
+/* ============================================================
+   LOGIN / REGISTER
+   ============================================================ */
+.auth{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:940px;margin-inline:auto;border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow)}
+.auth-side{background:linear-gradient(170deg,var(--ink-card),var(--ink-card-2));color:var(--on-dark);padding:clamp(1.6rem,3vw,2.6rem);display:flex;flex-direction:column;justify-content:center}
+.auth-side .big{width:40px;height:40px;color:var(--lime);margin-bottom:1rem}
+.auth-side h2{color:#fff;font-size:1.7rem;margin-bottom:.6rem}
+.auth-side p{color:var(--on-dark-muted);margin-bottom:1.4rem}
+.auth-side ul{list-style:none;padding:0;margin:0;display:grid;gap:.8rem}
+.auth-side li{display:flex;gap:.6rem;align-items:center;font-size:.95rem}
+.auth-side li svg{width:18px;height:18px;color:var(--lime);flex:none}
+.auth-main{background:var(--surface);padding:clamp(1.6rem,3vw,2.6rem)}
+.auth-main h2{font-size:1.55rem;margin-bottom:.3rem}
+.auth-main .ald{color:var(--fg-muted);margin-bottom:1.3rem;font-size:.95rem}
+.tabs{display:inline-flex;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:.25rem;margin-bottom:1.3rem}
+.tab{border:none;background:transparent;font-family:var(--font-display);font-weight:600;font-size:.92rem;color:var(--fg-muted);padding:.5rem 1.2rem;border-radius:999px;cursor:pointer;transition:background .25s,color .25s}
+.tab.active{background:var(--forest);color:#fff}
+.auth-note{font-size:.8rem;color:var(--fg-muted);margin-top:1rem;text-align:center}
+.terms{font-size:.82rem;color:var(--fg-muted);margin:.4rem 0 1rem}
+
+/* ============================================================
+   APP SHELL (product preview screens)
+   ============================================================ */
+.appbar{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:env(safe-area-inset-top,0px);z-index:40}
+.appbar-inner{display:flex;align-items:center;gap:.8rem;height:64px}
+.appbar .atitle{font-family:var(--font-display);font-weight:700;font-size:1.05rem;line-height:1.1}
+.appbar .atitle small{display:block;font-family:var(--font-mono);font-size:.62rem;font-weight:500;letter-spacing:.1em;color:var(--fg-muted);text-transform:uppercase}
+.appbar .aright{margin-left:auto;display:flex;align-items:center;gap:.4rem}
+.iconbtn{width:40px;height:40px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--fg-muted);cursor:pointer;display:grid;place-items:center;position:relative;transition:color .2s,border-color .2s,transform .2s}
+.iconbtn:hover{color:var(--green);border-color:var(--green);transform:translateY(-2px)}
+.iconbtn .dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:999px;background:var(--lime);border:2px solid var(--surface)}
+.app-exit{font-size:.82rem;color:var(--fg-muted);display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .7rem;border-radius:999px;transition:color .2s,background .2s}
+.app-exit:hover{color:var(--green);background:var(--surface-2)}
+
+.applayout{display:grid;grid-template-columns:76px 1fr;gap:0}
+.rail{border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1.2rem 0;position:sticky;top:calc(64px + env(safe-area-inset-top,0px));height:calc(100dvh - 64px)}
+.rail button{width:44px;height:44px;border-radius:13px;border:none;background:transparent;color:var(--fg-muted);cursor:pointer;display:grid;place-items:center;transition:background .2s,color .2s}
+.rail button:hover{background:var(--surface-2);color:var(--fg)}
+.rail button.on{background:var(--forest);color:#fff}
+.appmain{padding:clamp(1.3rem,3vw,2.2rem) max(20px,env(safe-area-inset-right,0px)) 3rem max(20px,env(safe-area-inset-left,0px));min-width:0}
+.appmain-wrap{max-width:1000px;margin-inline:auto}
+.app-h{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:.25rem}
+.app-sub{color:var(--fg-muted);margin-bottom:1.5rem}
+.app-head{display:inline-block;max-width:100%;margin-bottom:1.5rem;background:color-mix(in srgb,var(--bg) 55%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:var(--r-lg);padding:1rem 1.4rem}
+.app-head .app-h{margin-bottom:.25rem}
+.app-head .app-sub{margin-bottom:0}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .app-head{background:color-mix(in srgb,var(--bg) 86%,transparent)}
+}
+
+/* stat tiles */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.2rem}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;transition:transform .2s,box-shadow .2s}
+.stat:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.stat .slabel{display:flex;align-items:center;gap:.5rem;color:var(--fg-muted);font-size:.86rem;margin-bottom:.5rem}
+.stat .slabel svg{width:17px;height:17px;color:var(--green)}
+.stat .snum{font-family:var(--font-display);font-weight:700;font-size:1.9rem;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat .sfoot{color:var(--fg-faint);font-size:.8rem;margin-top:.1rem}
+
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;margin-bottom:1.2rem}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem}
+.panel-head h3{font-size:1.1rem}
+
+/* credit usage bar */
+.usage-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.6rem}
+.usage-top b{font-family:var(--font-display);font-size:1.05rem}
+.usage-top .rem{color:var(--green);font-weight:600;font-family:var(--font-mono);font-size:.9rem}
+.bar{height:12px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+.bar-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--forest),var(--green));transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.usage-foot{display:flex;justify-content:space-between;color:var(--fg-faint);font-size:.82rem;margin-top:.5rem;font-variant-numeric:tabular-nums}
+
+/* activity / list rows */
+.rows{display:grid;gap:.1rem}
+.row{display:flex;gap:.8rem;align-items:center;padding:.85rem .2rem;border-bottom:1px solid var(--border)}
+.row:last-child{border-bottom:none}
+.row .ri{width:34px;height:34px;border-radius:10px;background:var(--green-soft);color:var(--forest);display:grid;place-items:center;flex:none}
+:root[data-theme="dark"] .row .ri{color:var(--green)}
+.row .rt b{font-size:.96rem;display:block}
+.row .rt span{font-size:.82rem;color:var(--fg-muted)}
+.row .rchev{margin-left:auto;color:var(--fg-faint)}
+
+/* template grid (studio) */
+.tmpl{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.tmpl .tcard{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;background:var(--surface);transition:transform .2s,box-shadow .2s,border-color .2s}
+.tmpl .tcard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--green)}
+.tmpl .tthumb{height:84px;background:var(--surface-2);display:grid;place-items:center;color:var(--green);border-bottom:1px solid var(--border)}
+.tmpl .tthumb svg{width:30px;height:30px}
+.tmpl .tbody{padding:1rem}
+.tmpl .tbody b{font-family:var(--font-display);font-size:1rem;display:block;margin-bottom:.15rem}
+.tmpl .tbody span{font-size:.85rem;color:var(--fg-muted)}
+
+/* ============================================================
+   APPLICATION EDITOR
+   ============================================================ */
+.editor{display:grid;grid-template-columns:210px 1fr 230px;gap:1rem;align-items:start}
+.ed-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem}
+.ed-col h4{font-size:.95rem;margin-bottom:.9rem;color:var(--fg-muted);font-family:var(--font-mono);font-weight:600;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}
+.palette{display:grid;gap:.6rem}
+.pal-item{border:1.5px solid var(--border-strong);border-radius:12px;padding:.7rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;cursor:grab;background:var(--bg);transition:border-color .2s,background .2s,transform .15s;user-select:none}
+.pal-item:hover{border-color:var(--green);background:var(--green-soft)}
+.pal-item:active{cursor:grabbing;transform:scale(.97)}
+.pal-item svg{width:20px;height:20px;color:var(--green)}
+.pal-item span{font-size:.82rem;font-weight:500}
+.ed-canvas{min-height:380px}
+.ed-preview{background:var(--bg-soft);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;min-height:340px}
+.ed-preview .ov-title{font-family:var(--font-display);font-weight:700;margin-bottom:.8rem}
+.ov-stats{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem}
+.ov-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem}
+.ov-stat span{font-size:.78rem;color:var(--fg-muted);display:block}
+.ov-stat b{font-family:var(--font-display);font-size:1.4rem}
+.ov-list .ovrow{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.9rem}
+.dropzone{margin-top:1rem;border:2px dashed var(--border-strong);border-radius:12px;padding:1.3rem;text-align:center;color:var(--fg-muted);font-size:.9rem;transition:border-color .2s,background .2s,color .2s}
+.dropzone.over{border-color:var(--lime);background:var(--green-soft);color:var(--forest)}
+.dropzone .plus{font-size:1.4rem;display:block;margin-bottom:.2rem}
+.dropped{margin-top:.6rem;display:grid;gap:.5rem}
+.dchip{display:flex;align-items:center;gap:.5rem;background:var(--surface);border:1px solid var(--green);border-radius:10px;padding:.55rem .7rem;font-size:.88rem;animation:popIn .3s cubic-bezier(.2,.8,.2,1);cursor:pointer}
+.dchip svg{width:16px;height:16px;color:var(--green)}
+.dchip .rm{margin-left:auto;color:var(--fg-faint);cursor:pointer;border:none;background:none;font-size:1rem;line-height:1}
+@keyframes popIn{from{opacity:0;transform:translateY(-6px) scale(.96)}to{opacity:1;transform:none}}
+.prop-field{margin-bottom:.9rem}
+.prop-field label{font-size:.78rem;color:var(--fg-muted);display:block;margin-bottom:.3rem}
+.prop-field .input{padding:.5rem .6rem;font-size:.9rem}
+.swatch{display:inline-block;width:14px;height:14px;border-radius:4px;background:#0b7f4f;vertical-align:middle;margin-right:.4rem;border:1px solid var(--border)}
+.ed-footer{display:flex;justify-content:space-between;color:var(--fg-muted);font-size:.84rem;margin-top:1rem;flex-wrap:wrap;gap:.5rem}
+
+/* notifications list */
+.notis{display:grid;gap:.9rem;max-width:720px}
+.noti{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.2rem;display:flex;gap:.9rem;align-items:flex-start;position:relative;transition:transform .2s,box-shadow .2s,border-color .2s}
+.noti:hover{transform:translateX(4px);box-shadow:var(--shadow);border-color:var(--border-strong)}
+.noti .ni{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex:none;background:var(--green-soft);color:var(--forest)}
+:root[data-theme="dark"] .noti .ni{color:var(--green)}
+.noti.warn .ni{background:var(--warn-soft);color:var(--warn)}
+.noti .nbody b{font-family:var(--font-display);font-size:1rem}
+.noti .nbody p{color:var(--fg-muted);font-size:.92rem;margin:.15rem 0 .5rem}
+.noti .nmeta{display:flex;gap:.6rem;align-items:center;font-size:.78rem;color:var(--fg-faint)}
+.noti .unread{position:absolute;top:1.1rem;right:1.1rem;width:9px;height:9px;border-radius:999px;background:var(--green)}
+
+/* admin menu list */
+.adminmenu{display:grid;gap:0}
+.amrow{display:flex;gap:1rem;align-items:center;padding:1.1rem .3rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s,padding .2s}
+.amrow:hover{background:var(--surface-2);padding-left:.8rem}
+.amrow .ami{width:40px;height:40px;border-radius:12px;background:var(--green-soft);color:var(--forest);display:grid;place-items:center;flex:none}
+:root[data-theme="dark"] .amrow .ami{color:var(--green)}
+.amrow .amt b{display:block;font-family:var(--font-display);font-size:1.02rem}
+.amrow .amt span{color:var(--fg-muted);font-size:.86rem}
+.amrow .amchev{margin-left:auto;color:var(--fg-faint)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{background:#070d09;color:#cfe0d4;padding-block:clamp(2.2rem,4vw,3rem)}
+.footer .wrap{display:flex;flex-wrap:wrap;gap:1.5rem 3rem;justify-content:space-between;align-items:flex-start}
+.footer .fbrand{font-family:var(--font-display);font-weight:700;font-size:1.3rem;color:#fff;display:flex;align-items:center;gap:.55rem}
+.footer .ftag{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.14em;color:var(--lime);text-transform:uppercase;margin-top:.5rem}
+.footer .flinks{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem}
+.footer .flinks a{color:#9fb8a6;font-size:.92rem;transition:color .2s}
+.footer .flinks a:hover{color:var(--lime)}
+.footer .fcopy{width:100%;border-top:1px solid #16271c;padding-top:1.2rem;color:#7a9183;font-size:.82rem;display:flex;flex-wrap:wrap;gap:.5rem 1rem;justify-content:space-between}
+
+/* ============================================================
+   PERSONAL / FOUNDER / STORY / TEAM / TRUST
+   ============================================================ */
+.section-lead{max-width:62ch;margin-bottom:1.6rem}
+.section-lead .eyebrow{display:block;margin-bottom:.55rem}
+.section-lead h2{font-size:clamp(1.55rem,3.4vw,2.3rem);margin-bottom:.45rem}
+.section-lead p{color:var(--fg-muted);font-size:1.05rem}
+.founder{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:clamp(1.4rem,3vw,2.6rem);align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:clamp(1.3rem,3vw,2.2rem)}
+.photo-ph{aspect-ratio:4/5;max-width:100%;border-radius:var(--r-lg);border:2px dashed var(--border-strong);background:linear-gradient(160deg,var(--bg-soft),var(--green-soft));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;color:var(--fg-muted);padding:1.4rem}
+.photo-ph svg{width:46px;height:46px;color:var(--green)}
+.photo-ph span{font-size:.86rem;max-width:24ch;line-height:1.4}
+.ph-chip{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--font-mono);font-size:.64rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);background:var(--warn-soft);padding:.25rem .6rem;border-radius:999px}
+.ph-line{border:1.5px dashed var(--border-strong);border-radius:14px;padding:.95rem 1.1rem;color:var(--fg-muted);background:var(--bg-soft);font-size:.95rem;line-height:1.55}
+.fquote{border-left:3px solid var(--lime);padding:.3rem 0 .3rem 1.2rem;font-family:var(--font-display);font-size:1.15rem;font-weight:500;line-height:1.45;color:var(--fg)}
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.tmember{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem 1.3rem;text-align:center;transition:transform .25s,box-shadow .25s}
+.tmember:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.tavatar{width:74px;height:74px;border-radius:999px;margin:0 auto 1rem;border:2px dashed var(--border-strong);display:grid;place-items:center;color:var(--green);background:var(--bg-soft)}
+.tavatar svg{width:30px;height:30px}
+.tmember .tname{font-family:var(--font-display);font-weight:600;font-size:1.05rem;color:var(--fg)}
+.tmember .trole{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin:.2rem 0 .8rem}
+@media (max-width:720px){
+  .founder{grid-template-columns:1fr}
+  .team{grid-template-columns:1fr}
+  .photo-ph{max-width:260px;margin-inline:auto}
+}
+
+/* ============================================================
+   MASCOT — "Zen", lives in the logo
+   ============================================================ */
+#zkbot{position:fixed;left:0;top:0;z-index:48;width:76px;height:86px;pointer-events:none;opacity:0;will-change:transform}
+#zkbot.ready{opacity:1}
+#zkbot .zkbot-inner{width:100%;height:100%}
+#zkbot.floaty .zkbot-inner{animation:zkFloat 4.5s ease-in-out infinite}
+@keyframes zkFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.zkbot-body{pointer-events:auto;cursor:pointer;width:100%;height:100%;display:block;border:none;background:none;padding:0;filter:drop-shadow(0 12px 18px rgba(8,26,16,.4))}
+.zkbot-body svg{width:100%;height:100%;overflow:visible;display:block}
+.zkbot-face{transition:transform .25s ease-out;transform-origin:60px 60px}
+.zkbot-eye{transition:transform .14s ease;transform-origin:center;transform-box:fill-box}
+.zkbot-pupil{transition:transform .16s ease-out}
+.zkbot-mouth{transition:d .2s ease}
+.zkbot-z{opacity:0;transition:opacity .3s;font:600 18px var(--font-display);fill:var(--lime)}
+#zkbot.blink .zkbot-eye{transform:scaleY(.12)}
+#zkbot.quiet .zkbot-eye{transform:scaleY(.14)}
+#zkbot.quiet .zkbot-z{opacity:.9;animation:zkZ 2.4s ease-in-out infinite}
+@keyframes zkZ{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:.9;transform:translateY(-4px)}}
+#zkbot.wave .zkbot-inner{animation:zkWave .7s ease}
+@keyframes zkWave{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}60%{transform:rotate(7deg)}}
+#zkbot.happy .zkbot-mouth{d:path("M48 72 Q60 84 72 72")}
+.zkbot-antenna-tip{transform-origin:60px 10px}
+#zkbot.floaty .zkbot-antenna-tip{animation:zkPulse 2.2s ease-in-out infinite}
+@keyframes zkPulse{0%,100%{opacity:.6}50%{opacity:1}}
+
+#zkbubble{position:fixed;z-index:49;max-width:min(258px,74vw);background:var(--surface);color:var(--fg);border:1px solid var(--border);border-radius:16px;padding:.7rem 2rem .72rem .9rem;box-shadow:var(--shadow-lg);font-family:var(--font-body);font-size:.86rem;line-height:1.45;pointer-events:auto;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .22s ease,transform .22s cubic-bezier(.2,.8,.2,1);transform-origin:bottom right}
+#zkbubble.show{opacity:1;transform:none}
+#zkbubble .zkb-close{position:absolute;top:6px;right:7px;width:22px;height:22px;border:none;background:var(--surface-2);color:var(--fg-muted);border-radius:999px;cursor:pointer;font-size:14px;line-height:1;display:grid;place-items:center;transition:background .2s,color .2s}
+#zkbubble .zkb-close:hover{background:var(--green-soft);color:var(--forest)}
+#zkbubble b{font-family:var(--font-display);color:var(--green)}
+@media (prefers-reduced-motion:reduce){#zkbot .zkbot-inner,#zkbot.wave .zkbot-inner,#zkbot .zkbot-antenna-tip{animation:none!important}.zkbot-face,.zkbot-pupil,.zkbot-eye{transition:none!important}}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:880px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .nav-cta .btn{display:none}
+  .auth{grid-template-columns:1fr}
+  .auth-side{display:none}
+  .editor{grid-template-columns:1fr}
+  .ed-col.props{order:3}
+}
+@media (max-width:720px){
+  #zkbot{width:58px;height:66px}
+  #zkbubble{max-width:min(220px,82vw);font-size:.82rem}
+  .feat-grid{grid-template-columns:1fr}
+  .cards.c2,.cards.c3,.plans,.tmpl,.stats{grid-template-columns:1fr}
+  .flow-nodes{grid-template-columns:1fr}
+  .flow-svg{display:none}
+  .applayout{grid-template-columns:1fr}
+  .rail{display:none}
+}
+@media (min-width:721px) and (max-width:980px){
+  .cards.c3{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+
+<!-- site-wide animated 3D background -->
+<div id="siteGL" aria-hidden="true"></div>
+
+<!-- ===================== PUBLIC NAV ===================== -->
+<header class="nav" id="publicNav">
+  <div class="wrap nav-inner">
+    <div class="brand" data-go="home" role="button" tabindex="0" aria-label="ZENKAI home">
+      <span class="emblem" aria-hidden="true"></span>
+      <span>ZENKAI</span>
+    </div>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="navlink" data-go="home" data-bot-help="Back to the ZENKAI home page.">Home</a>
+      <a class="navlink" data-go="about" data-bot-help="Meet the people behind ZENKAI and why we built it.">About</a>
+      <a class="navlink" data-go="features" data-bot-help="See what you can build with ZENKAI.">Features</a>
+      <a class="navlink" data-go="plans" data-bot-help="Compare the Free and Pro plans.">Plans</a>
+      <a class="navlink" data-go="contact" data-bot-help="Send us a message — we'd love to hear from you.">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="theme-btn" id="themeToggle" aria-label="Switch theme" title="Switch theme" data-bot-help="Switch between light and dark mode."></button>
+      <a class="btn btn-forest" data-go="login" data-bot-help="Create an account or sign in to your dashboard." data-bot-react>Login</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- mobile drawer -->
+<div class="drawer" id="drawer">
+  <div class="drawer-scrim" data-close-drawer></div>
+  <div class="drawer-panel" role="dialog" aria-label="Menu">
+    <div class="drawer-head">
+      <div class="brand"><span class="emblem" aria-hidden="true"></span><span>ZENKAI</span></div>
+    </div>
+    <a data-go="home">Home</a>
+    <a data-go="about">About</a>
+    <a data-go="features">Features</a>
+    <a data-go="plans">Plans</a>
+    <a data-go="contact">Contact</a>
+    <a data-go="login">Login / Register</a>
+    <div style="height:1px;background:var(--border);margin:.6rem 0"></div>
+    <a data-go="dashboard">Customer Dashboard</a>
+    <a data-go="studio">ZENKAI Studio</a>
+    <a data-go="admin">Admin Dashboard</a>
+    <a data-go="notifications">Notifications</a>
+  </div>
+</div>
+
+<main id="app">
+
+<!-- ========================================================= HOME -->
+<section class="page" id="page-home">
+  <div class="band hero">
+    <div class="wrap">
+      <span class="eyebrow" data-reveal>Low-code application platform</span>
+      <h1 data-reveal>Build smarter.<br>Automate faster.</h1>
+      <p class="lede" data-reveal>Your ideas. Your applications. One platform.</p>
+      <p class="sub" data-reveal>Build business applications and automate workflows with visual development tools designed to simplify complex processes.</p>
+      <div class="hero-actions" data-reveal>
+        <a class="btn btn-lime" data-go="login" data-bot-help="Create your free ZENKAI account and open your dashboard." data-bot-react>Get Started <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" data-go="features" data-bot-help="Jump to the features overview.">Explore Features</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="band band-tight">
+    <div class="wrap">
+      <div class="darkcard" data-reveal>
+        <div class="darkcard-head">
+          <h2 style="font-size:clamp(1.4rem,3vw,2rem)">Build without the complexity.</h2>
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        </div>
+        <div class="feat-grid">
+          <div class="feat-cell">
+            <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <h4>Visual Development</h4>
+            <p>Design application interfaces visually.</p>
+          </div>
+          <div class="feat-cell">
+            <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 3 3v6.5"/></svg>
+            <h4>Smart Workflows</h4>
+            <p>Connect actions and automate tasks.</p>
+          </div>
+          <div class="feat-cell">
+            <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+            <h4>Data Connections</h4>
+            <p>Connect and manage application data.</p>
+          </div>
+          <div class="feat-cell">
+            <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+            <h4>Controlled Access</h4>
+            <p>Manage access with appropriate permissions.</p>
+          </div>
+        </div>
+        <p class="note">Illustrative feature cards, not a live application builder.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="band-tight" style="padding-bottom:clamp(3rem,6vw,5rem)">
+    <div class="wrap">
+      <div class="limeband" style="border-radius:var(--r-xl);padding:clamp(1.6rem,3vw,2.4rem)" data-reveal>
+        <div style="max-width:40ch">
+          <h2>Ready to turn ideas into applications?</h2>
+          <p style="margin-top:.4rem">Explore ZENKAI and find the right plan for your needs.</p>
+        </div>
+        <a class="lblink" data-go="plans">Get started with ZENKAI <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= ABOUT -->
+<section class="page" id="page-about">
+  <div class="band">
+    <div class="wrap" style="max-width:860px">
+      <div class="center sec-head" style="margin-bottom:2rem">
+        <span class="eyebrow" data-reveal>About ZENKAI</span>
+        <h2 style="font-size:clamp(1.9rem,4.5vw,3rem);margin:.7rem 0 .6rem" data-reveal>Turning ideas into applications.</h2>
+        <p class="muted" style="font-size:1.1rem;max-width:56ch;margin-inline:auto" data-reveal>We envision a world where building software is simpler, more accessible, and less time-consuming.</p>
+      </div>
+
+      <div class="darkcard" data-reveal>
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.7" style="margin-bottom:.8rem"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 4 10.5c-.7.6-1 1.2-1 2.5H9c0-1.3-.3-1.9-1-2.5A6 6 0 0 1 12 3z"/></svg>
+        <h3 style="font-size:1.4rem;margin-bottom:.5rem">Technology should empower ideas.</h3>
+        <p class="d-muted" style="max-width:60ch">ZENKAI is being designed to help people and businesses create applications through visual development tools, connected data and automated workflows.</p>
+      </div>
+
+      <!-- Founder -->
+      <div style="margin-top:2.8rem">
+        <div class="section-lead" data-reveal>
+          <span class="eyebrow">The people behind it</span>
+          <h2>Built by real people, for real ideas.</h2>
+          <p>ZENKAI started with a simple belief: building software should be within reach for the people who have the ideas, not only the people who write code.</p>
+        </div>
+        <div class="founder" data-reveal>
+          <div class="photo-ph" style="border-style:solid;border-color:var(--border);background:linear-gradient(160deg,var(--forest),var(--forest-deep))">
+            <div style="font-family:var(--font-display);font-weight:800;font-size:3.2rem;color:var(--lime);letter-spacing:.02em">AN</div>
+            <span style="color:var(--on-dark-muted)">Sample avatar &mdash; replace with the founder's photo.</span>
+          </div>
+          <div class="founder-body">
+            <span class="chip chip-neutral">Sample content</span>
+            <h3 style="font-size:1.55rem;margin:.7rem 0 .15rem">Arjun Nair</h3>
+            <p style="font-family:var(--font-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:1rem">Founder &amp; CEO</p>
+            <p class="muted" style="margin-bottom:1.1rem">Arjun has spent over a decade building business software and watching capable teams get stuck waiting on developers for small changes. He started ZENKAI to close that gap &mdash; giving the people closest to a problem the tools to build the solution themselves.</p>
+            <div class="fquote">&ldquo;I built ZENKAI for people with great ideas and no easy way to ship them. If that's you, I can't wait to see what you make.&rdquo;</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story -->
+      <div style="margin-top:2.8rem">
+        <div class="section-lead" data-reveal>
+          <span class="eyebrow">The story behind ZENKAI</span>
+          <h2>Why ZENKAI exists.</h2>
+          <p>Turning an idea into working software is still harder than it should be. ZENKAI is an attempt to change that.</p>
+        </div>
+        <div class="cards c2" style="margin-bottom:1.1rem">
+          <div class="card" data-reveal>
+            <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div>
+            <h4>The problem</h4>
+            <p>Building software usually means writing code, managing data, and wiring up workflows by hand &mdash; slow work that needs specialised skills.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5-5-2.7-5 2.7 1-5.5-4-3.9 5.5-.8z"/></svg></div>
+            <h4>What makes it different</h4>
+            <p>ZENKAI brings visual development, connected data, automated workflows and controlled access together in one platform, so you can build without the complexity.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+            <h4>The approach</h4>
+            <p>Design visually first, connect your data, automate the repetitive parts, and keep access controlled &mdash; all from one place.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21l6-6M9 15l-2.5-.5L7 12l3 1 4-4 1 3 3 .5"/><circle cx="16" cy="8" r="3"/></svg></div>
+            <h4>The long-term vision</h4>
+            <p>A world where building software is simpler, more accessible and less time-consuming &mdash; helping more people turn ideas into useful digital solutions.</p>
+          </div>
+        </div>
+        <div class="ph-line" style="border-style:solid;border-color:var(--border)" data-reveal><span class="chip chip-neutral">Sample content</span> &nbsp;ZENKAI began with a familiar frustration: teams that knew exactly what they needed, but had to wait weeks for a simple screen or report. We wanted to put that power back in their hands &mdash; so building an application feels less like coding and more like designing.</div>
+      </div>
+
+      <div class="section-lead" style="margin-top:2.8rem" data-reveal>
+        <span class="eyebrow">Mission, vision &amp; values</span>
+        <h2>What we stand for.</h2>
+      </div>
+
+      <div class="cards c2" style="margin-top:1.1rem">
+        <div class="card" data-reveal>
+          <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg></div>
+          <h3>Our Mission</h3>
+          <p>Make application development easier to approach and more efficient.</p>
+        </div>
+        <div class="card" data-reveal>
+          <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21l6-6M9 15l-2.5-.5L7 12l3 1 4-4 1 3 3 .5"/><circle cx="16" cy="8" r="3"/></svg></div>
+          <h3>Our Vision</h3>
+          <p>Help more people turn their ideas into useful digital solutions.</p>
+        </div>
+      </div>
+
+      <div class="plate" data-reveal style="margin-top:2.4rem">
+      <h3 style="font-size:1.3rem;margin:0 0 1.2rem">Our values</h3>
+      <div class="guides">
+        <div class="guide" data-reveal>
+          <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          <div><h4>Simplicity</h4><p>Make complex development tasks easier to understand and manage.</p></div>
+        </div>
+        <div class="guide" data-reveal>
+          <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          <div><h4>Security by design</h4><p>Build with access controls, protection and responsible data handling in mind.</p></div>
+        </div>
+        <div class="guide" data-reveal>
+          <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 3 3v6.5"/></svg>
+          <div><h4>Continuous improvement</h4><p>Create tools that can evolve alongside customer needs.</p></div>
+        </div>
+      </div>
+      </div>
+
+      <!-- Personal message -->
+      <div class="darkcard" style="margin-top:2.8rem" data-reveal>
+        <span class="eyebrow" style="color:var(--lime)">A note from the founder</span>
+        <div class="fquote" style="border-color:var(--lime);color:#fff;font-size:1.3rem;margin-top:1rem">&ldquo;Welcome to ZENKAI. Whether you're running a business, leading a team, or simply have an idea worth building, our goal is the same &mdash; make it possible for you to create the software you need, without the usual complexity. Thanks for stopping by.&rdquo;</div>
+        <p style="margin-top:1rem;font-family:var(--font-display);font-weight:600;color:#fff">&mdash; Arjun Nair, Founder</p>
+        <p style="margin-top:.6rem"><span class="chip chip-neutral">Sample content</span></p>
+      </div>
+
+      <!-- Team -->
+      <div style="margin-top:2.8rem">
+        <div class="section-lead" data-reveal>
+          <span class="eyebrow">Meet the team</span>
+          <h2>The people building ZENKAI.</h2>
+          <p>Sample team members are shown below. Share real names, roles, bios and photos and I'll swap them in &mdash; or tell me to remove this section.</p>
+        </div>
+        <div class="team" data-reveal>
+          <div class="tmember">
+            <div class="tavatar" style="border-style:solid;background:var(--forest);color:var(--lime);font-family:var(--font-display);font-weight:700;font-size:1.35rem">PS</div>
+            <div class="tname">Priya Sharma</div>
+            <div class="trole">Head of Product</div>
+            <div class="ph-line" style="border-style:solid;border-color:var(--border)">Shapes what ZENKAI builds and keeps it focused on real user needs.</div>
+          </div>
+          <div class="tmember">
+            <div class="tavatar" style="border-style:solid;background:var(--forest);color:var(--lime);font-family:var(--font-display);font-weight:700;font-size:1.35rem">DC</div>
+            <div class="tname">Daniel Costa</div>
+            <div class="trole">Lead Engineer</div>
+            <div class="ph-line" style="border-style:solid;border-color:var(--border)">Builds the platform's core and keeps it fast, stable and secure.</div>
+          </div>
+          <div class="tmember">
+            <div class="tavatar" style="border-style:solid;background:var(--forest);color:var(--lime);font-family:var(--font-display);font-weight:700;font-size:1.35rem">MI</div>
+            <div class="tname">Meera Iyer</div>
+            <div class="trole">Customer Success</div>
+            <div class="ph-line" style="border-style:solid;border-color:var(--border)">Helps customers get the most out of ZENKAI from day one.</div>
+          </div>
+        </div>
+        <p class="muted" style="font-size:.8rem;font-style:italic;text-align:center;margin-top:1rem">Sample team &mdash; names, roles and bios are placeholders, not real employees.</p>
+      </div>
+
+      <!-- Build trust -->
+      <div style="margin-top:2.8rem">
+        <div class="section-lead" data-reveal>
+          <span class="eyebrow">How we work</span>
+          <h2>Built to be trusted.</h2>
+        </div>
+        <div class="cards c3">
+          <div class="card" data-reveal>
+            <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+            <h4>Our approach</h4>
+            <p>We build visually first &mdash; design interfaces, connect data and automate tasks with less manual coding.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg></div>
+            <h4>Our commitment to users</h4>
+            <p>We aim to make development easier and more efficient, and to build tools that evolve alongside your needs.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <h4>Security &amp; reliability</h4>
+            <p>Security by design: access controls, protection and responsible data handling, with accounts and app access protected by permission controls.</p>
+          </div>
+        </div>
+        <div class="limeband" style="border-radius:var(--r-xl);padding:clamp(1.5rem,3vw,2.2rem);margin-top:1.3rem" data-reveal>
+          <div style="max-width:42ch">
+            <h2 style="font-size:clamp(1.3rem,2.6vw,1.8rem)">Want to connect?</h2>
+            <p style="margin-top:.4rem">Have a question or an idea you'd like to build? We'd love to hear from you.</p>
+          </div>
+          <a class="lblink" data-go="contact">Contact us <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="darkcard center" style="margin-top:2.8rem" data-reveal>
+        <h3 style="font-size:1.4rem;margin-bottom:.4rem">Have an idea to build?</h3>
+        <p class="d-muted" style="margin-bottom:1.4rem;max-width:52ch;margin-inline:auto">Discover how ZENKAI aims to make application development more approachable.</p>
+        <a class="btn btn-lime btn-block" data-go="features" style="max-width:420px;margin-inline:auto">Explore the Platform <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= FEATURES -->
+<section class="page" id="page-features">
+  <div class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow" data-reveal>The ZENKAI advantage</span>
+        <h2 data-reveal>Everything you need to build smarter.</h2>
+        <p data-reveal>Create applications, simplify workflows, and manage your digital solutions from one platform.</p>
+      </div>
+
+      <div class="cards c2">
+        <div class="card" data-reveal>
+          <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+          <h3>Low-Code Builder</h3>
+          <p>Build applications with visual tools and less manual coding.</p>
+        </div>
+        <div class="card" data-reveal>
+          <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 3 3v6.5"/></svg></div>
+          <h3>Workflow Automation</h3>
+          <p>Simplify repetitive tasks with configurable workflows.</p>
+        </div>
+        <div class="card" data-reveal>
+          <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-6M20 16v-2" stroke-linecap="round"/></svg></div>
+          <h3>Usage Insights</h3>
+          <p>Track application activity and usage from your dashboard.</p>
+        </div>
+        <div class="card" data-reveal>
+          <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>Security &amp; Access</h3>
+          <p>Keep accounts and application access protected with permission controls.</p>
+        </div>
+      </div>
+
+      <!-- interactive workflow mini-diagram -->
+      <div class="flow" data-reveal>
+        <div class="flow-head">
+          <div>
+            <span class="eyebrow">How automation flows</span>
+            <h3 style="font-size:1.25rem;margin-top:.3rem">Connect a trigger to actions, visually.</h3>
+          </div>
+          <span class="chip chip-neutral">Interactive preview</span>
+        </div>
+        <div class="flow-stage">
+          <svg class="flow-svg" id="flowSvg" preserveAspectRatio="none" aria-hidden="true">
+            <path class="flow-path" id="fp1" d="M0 0 L0 0"></path>
+            <path class="flow-path" id="fp2" d="M0 0 L0 0"></path>
+          </svg>
+          <div class="flow-nodes">
+            <div class="node" data-node="0">
+              <svg class="nicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>
+              <b>Trigger</b><span>New record added</span>
+            </div>
+            <div class="node" data-node="1">
+              <svg class="nicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>
+              <b>Action</b><span>Update &amp; assign</span>
+            </div>
+            <div class="node" data-node="2">
+              <svg class="nicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+              <b>Notify</b><span>Send an update</span>
+            </div>
+          </div>
+        </div>
+        <div class="flow-run">
+          <button class="btn btn-forest" id="flowRun" style="padding:.55rem 1.1rem;font-size:.9rem" data-bot-help="Press to watch a workflow move from trigger to action to notification." data-bot-react>Run workflow</button>
+          <span class="muted" id="flowStatus" style="font-size:.9rem">Press run to watch the automation move through each step.</span>
+        </div>
+      </div>
+
+      <div class="darkcard center" style="margin-top:2.4rem" data-reveal>
+        <h3 style="font-size:1.5rem;margin-bottom:.4rem">Your ideas. Your applications. One platform.</h3>
+        <p class="d-muted" style="margin-bottom:1.3rem;max-width:56ch;margin-inline:auto">Explore the tools and plans designed to support your application-building journey.</p>
+        <a class="btn btn-lime" data-go="plans">Explore Plans <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= PLANS -->
+<section class="page" id="page-plans">
+  <div class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow" data-reveal>Simple &amp; flexible pricing</span>
+        <h2 data-reveal>Choose a plan that grows with you.</h2>
+        <p data-reveal>Start small, build your applications, and upgrade when you need more.</p>
+      </div>
+
+      <div class="plans">
+        <div class="plan" data-reveal>
+          <div class="pname">Free</div>
+          <div class="price"><span class="cur">₹</span>0</div>
+          <div class="pfor">For exploring ZENKAI.</div>
+          <div class="divider"></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Limited usage credits</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Basic platform access</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Personal dashboard</li>
+          </ul>
+          <a class="btn btn-ghost btn-block" data-go="login" data-bot-help="Start building on the Free plan — no cost to explore.">Get Started</a>
+        </div>
+        <div class="plan pro" data-reveal>
+          <div class="popular">Popular</div>
+          <div class="pname">Pro</div>
+          <div class="price"><span class="cur">₹</span>—</div>
+          <div class="pfor">For regular builders.</div>
+          <div class="divider"></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Higher usage-credit allowance</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>More application capacity</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Expanded platform features</li>
+          </ul>
+          <a class="btn btn-lime btn-block" data-go="login" data-bot-help="Go Pro for a higher credit allowance and more app capacity." data-bot-react>Choose Pro</a>
+        </div>
+      </div>
+
+      <div class="infocard" data-reveal>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+        <div>
+          <h4>How usage credits work</h4>
+          <p>Each plan includes a defined usage allowance. Your dashboard shows credits used and remaining. Login credentials are separate from usage credits.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= CONTACT -->
+<section class="page" id="page-contact">
+  <div class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow" data-reveal>We're here to help</span>
+        <h2 data-reveal>Let's talk about your ideas.</h2>
+        <p data-reveal>Have a question about ZENKAI? Send us a message and our team can get back to you.</p>
+      </div>
+
+      <div class="form-wrap">
+        <div class="cards c2">
+          <div class="card" data-reveal>
+            <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+            <h4>General Enquiries</h4>
+            <p>Questions about ZENKAI and its features.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="cicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4L3 21l1.1-3.8A8.4 8.4 0 1 1 21 11.5z"/></svg></div>
+            <h4>Customer Support</h4>
+            <p>Help with accounts, subscriptions, and access.</p>
+          </div>
+        </div>
+
+        <form class="form-card" id="contactForm" novalidate data-reveal>
+          <h3 style="font-size:1.2rem;margin-bottom:.3rem">Send us a message</h3>
+          <p class="muted" style="font-size:.88rem;margin-bottom:1.3rem">All fields marked with <span class="req">*</span> are required.</p>
+          <div class="field" id="f-name">
+            <label for="ct-name">Name <span class="req">*</span></label>
+            <input class="input" id="ct-name" type="text" placeholder="Enter your name" autocomplete="name" data-bot-help="Type your full name so we know who's writing.">
+            <div class="err-msg">Please enter your name.</div>
+          </div>
+          <div class="field" id="f-email">
+            <label for="ct-email">Email address <span class="req">*</span></label>
+            <input class="input" id="ct-email" type="email" placeholder="you@example.com" autocomplete="email" data-bot-help="Enter an email address so we can reply to you.">
+            <div class="err-msg">Please enter a valid email address.</div>
+          </div>
+          <div class="field" id="f-topic">
+            <label for="ct-topic">What can we help you with? <span class="req">*</span></label>
+            <select class="select" id="ct-topic" data-bot-help="Pick the topic that best matches your question.">
+              <option value="General enquiry">General enquiry</option>
+              <option value="Customer support">Customer support</option>
+              <option value="Subscription &amp; billing">Subscription &amp; billing</option>
+              <option value="Partnership">Partnership</option>
+            </select>
+          </div>
+          <div class="field" id="f-msg">
+            <label for="ct-msg">Message <span class="req">*</span></label>
+            <textarea class="textarea" id="ct-msg" placeholder="Tell us how we can help…" data-bot-help="Describe your question or idea in a few sentences."></textarea>
+            <div class="err-msg">Please enter a message.</div>
+          </div>
+          <button class="btn btn-dark btn-block" type="submit" data-bot-help="Checks your details and prepares the message (preview only for now).">Prepare Message
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+          <p class="form-note">Design preview only: this form is not connected to a live support system yet.</p>
+        </form>
+
+        <div class="darkcard" style="margin-top:1.2rem" data-reveal>
+          <h3 style="font-size:1.2rem;margin-bottom:.4rem">Stay connected</h3>
+          <p class="d-muted">Add your official business email and social media links here when they are ready.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= LOGIN / REGISTER -->
+<section class="page" id="page-login">
+  <div class="band">
+    <div class="wrap">
+      <div class="auth" data-reveal>
+        <div class="auth-side">
+          <svg class="big" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+          <h2>Turn ideas into applications.</h2>
+          <p>Your journey to smarter application development starts here.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>One customer dashboard</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>Track your usage credits</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>Access ZENKAI Studio securely</li>
+          </ul>
+        </div>
+        <div class="auth-main">
+          <h2 id="authTitle">Create account</h2>
+          <p class="ald" id="authLead">Get started with ZENKAI.</p>
+          <div class="tabs" role="tablist">
+            <button class="tab active" id="tabRegister" role="tab" aria-selected="true">Register</button>
+            <button class="tab" id="tabLogin" role="tab" aria-selected="false">Login</button>
+          </div>
+          <form id="authForm" novalidate>
+            <div class="field" id="a-name">
+              <label for="au-name">Full name</label>
+              <input class="input" id="au-name" type="text" placeholder="Your name" autocomplete="name">
+              <div class="err-msg">Please enter your name.</div>
+            </div>
+            <div class="field" id="a-email">
+              <label for="au-email">Email address</label>
+              <input class="input" id="au-email" type="email" placeholder="you@example.com" autocomplete="email">
+              <div class="err-msg">Please enter a valid email address.</div>
+            </div>
+            <div class="field" id="a-pass">
+              <label for="au-pass">Password</label>
+              <input class="input" id="au-pass" type="password" placeholder="Enter password" autocomplete="off">
+              <div class="err-msg">Please enter a password.</div>
+            </div>
+            <p class="terms" id="authTerms">By registering, you agree to the Terms of Service and Privacy Policy.</p>
+            <button class="btn btn-dark btn-block" type="submit" id="authSubmit">Create Account
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </form>
+          <p class="auth-note">Preview only — authentication is not connected. Do not enter a real password here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= CUSTOMER DASHBOARD -->
+<section class="page" id="page-dashboard">
+  <div class="appbar">
+    <div class="wrap appbar-inner">
+      <div class="brand" data-go="home" role="button" tabindex="0" style="font-size:1.05rem"><span class="emblem" aria-hidden="true"></span><span>ZENKAI</span></div>
+      <div class="aright">
+        <button class="iconbtn" data-go="notifications" aria-label="Notifications"><span class="dot"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+        <button class="iconbtn" data-go="admin" aria-label="Account"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="applayout">
+    <aside class="rail" aria-label="Workspace">
+      <button class="on" title="Dashboard" data-go="dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+      <button title="Profile" data-go="login"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
+      <button title="Applications" data-go="studio"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg></button>
+      <button title="Activity" data-go="notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button>
+      <button title="Settings" data-go="admin"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 0 0-1.7-1l-.3-2.6h-4l-.3 2.6a7 7 0 0 0-1.7 1l-2.3-1-2 3.4L4 11a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 1.7 1l.3 2.6h4l.3-2.6a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.5a7 7 0 0 0 .1-1z"/></svg></button>
+    </aside>
+    <div class="appmain">
+      <div class="appmain-wrap">
+        <div class="app-head" data-reveal>
+          <h1 class="app-h">Dashboard</h1>
+          <p class="app-sub">Welcome back! Here's your account overview.</p>
+        </div>
+
+        <div class="darkcard" style="display:flex;flex-wrap:wrap;align-items:center;gap:1rem;justify-content:space-between" data-reveal>
+          <div style="display:flex;gap:.9rem;align-items:center">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <div><b style="color:#fff;font-family:var(--font-display)">Ready to build?</b><br><span class="d-muted" style="font-size:.9rem">Continue to your separate app-building workspace.</span></div>
+          </div>
+          <a class="btn btn-lime" data-go="studio" style="flex:none" data-bot-help="Open the app-building workspace where you create applications." data-bot-react>⬈ Open ZENKAI Studio</a>
+        </div>
+
+        <div class="stats" style="margin-top:1.2rem">
+          <div class="stat" data-reveal>
+            <div class="slabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="5"/><path d="M14 11a5 5 0 1 1-3 9"/></svg>Credits remaining</div>
+            <div class="snum" data-count="750">0</div>
+            <div class="sfoot">of 1,000 credits</div>
+          </div>
+          <div class="stat" data-reveal>
+            <div class="slabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg>Applications</div>
+            <div class="snum" data-count="3">0</div>
+            <div class="sfoot">Created by you</div>
+          </div>
+          <div class="stat" data-reveal>
+            <div class="slabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>Current plan</div>
+            <div class="snum" style="font-size:1.5rem">Pro</div>
+            <div class="sfoot">Example plan</div>
+          </div>
+          <div class="stat" data-reveal>
+            <div class="slabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 15l5-4 4 3 5-5 4 3"/></svg>Published apps</div>
+            <div class="snum" data-count="2">0</div>
+            <div class="sfoot">Example count</div>
+          </div>
+        </div>
+
+        <div class="panel" data-reveal>
+          <div class="usage-top"><b>Credit usage</b><span class="rem">75% remaining</span></div>
+          <div class="bar"><div class="bar-fill" data-fill="75"></div></div>
+          <div class="usage-foot"><span>250 used</span><span>1,000 total</span></div>
+        </div>
+
+        <div class="panel" data-reveal>
+          <div class="panel-head"><h3>Recent activity</h3></div>
+          <div class="rows">
+            <div class="row">
+              <div class="ri"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div>
+              <div class="rt"><b>Application published</b><span>Example activity record</span></div>
+            </div>
+            <div class="row">
+              <div class="ri"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="8" cy="8" r="5"/><path d="M14 11a5 5 0 1 1-3 9"/></svg></div>
+              <div class="rt"><b>Usage credits updated</b><span>Example activity record</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= ZENKAI STUDIO -->
+<section class="page" id="page-studio">
+  <div class="appbar">
+    <div class="wrap appbar-inner">
+      <div class="brand" data-go="dashboard" role="button" tabindex="0"><span class="emblem" aria-hidden="true"></span><span class="atitle">ZENKAI Studio<small>Application Builder</small></span></div>
+      <div class="aright">
+        <button class="iconbtn" data-go="notifications" aria-label="Notifications"><span class="dot"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+        <button class="iconbtn" data-go="dashboard" aria-label="Account"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="applayout">
+    <aside class="rail" aria-label="Studio">
+      <button class="on" title="Home" data-go="studio"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></button>
+      <button title="Applications" data-go="editor"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></button>
+      <button title="Templates" data-go="editor"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+      <button title="Data" data-go="editor"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/></svg></button>
+      <button title="Settings" data-go="admin"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 0 0-1.7-1l-.3-2.6h-4l-.3 2.6a7 7 0 0 0-1.7 1l-2.3-1-2 3.4L4 11a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 1.7 1l.3 2.6h4l.3-2.6a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.5a7 7 0 0 0 .1-1z"/></svg></button>
+    </aside>
+    <div class="appmain">
+      <div class="appmain-wrap">
+        <div class="app-head" data-reveal>
+          <h1 class="app-h">Build something great.</h1>
+          <p class="app-sub">Start a new application or continue working on an existing project.</p>
+        </div>
+
+        <div class="darkcard" data-reveal>
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" style="margin-bottom:.7rem"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 8v8M8 12h8"/></svg>
+          <h3 style="font-size:1.3rem;margin-bottom:.3rem">Create a new application</h3>
+          <p class="d-muted" style="margin-bottom:1.3rem">Start with a blank project or choose a ready-made template.</p>
+          <a class="btn btn-lime btn-block" data-go="editor" data-bot-help="Start a new application from a blank project or a template." data-bot-react>+ Create Application</a>
+        </div>
+
+        <h3 style="font-size:1.1rem;margin:1.8rem 0 1rem" data-reveal>Start with a template</h3>
+        <div class="tmpl">
+          <div class="tcard" data-go="editor" data-reveal>
+            <div class="tthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+            <div class="tbody"><b>Admin Dashboard</b><span>Manage data and reports.</span></div>
+          </div>
+          <div class="tcard" data-go="editor" data-reveal>
+            <div class="tthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div>
+            <div class="tbody"><b>Task Manager</b><span>Organize tasks and teams.</span></div>
+          </div>
+          <div class="tcard" data-go="editor" data-reveal>
+            <div class="tthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M15 20c0-2 1.5-3.5 4-3.5"/></svg></div>
+            <div class="tbody"><b>Customer Portal</b><span>Organize customer information.</span></div>
+          </div>
+          <div class="tcard" data-go="editor" data-reveal>
+            <div class="tthumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+            <div class="tbody"><b>Form Builder</b><span>Collect and manage information.</span></div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:1.6rem" data-reveal>
+          <div class="panel-head"><h3>Recent applications</h3><a class="muted" data-go="editor" style="font-size:.88rem;cursor:pointer;color:var(--green)">View all →</a></div>
+          <div class="rows">
+            <div class="row" data-go="editor" style="cursor:pointer">
+              <div class="ri"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg></div>
+              <div class="rt"><b>Inventory Manager</b><span>Your project</span></div>
+              <span class="chip chip-neutral" style="margin-left:auto">Draft</span>
+            </div>
+            <div class="row" data-go="editor" style="cursor:pointer">
+              <div class="ri"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-6" stroke-linecap="round"/></svg></div>
+              <div class="rt"><b>Sales Dashboard</b><span>Your project</span></div>
+              <span class="chip chip-ok" style="margin-left:auto">Published</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= APPLICATION EDITOR -->
+<section class="page" id="page-editor">
+  <div class="appbar">
+    <div class="wrap appbar-inner">
+      <div class="brand" data-go="studio" role="button" tabindex="0"><span class="emblem" aria-hidden="true"></span><span class="atitle">ZENKAI Studio<small>Inventory Manager / Editor</small></span></div>
+      <div class="aright">
+        <span class="chip chip-ok" id="edSaved">Saved</span>
+        <button class="iconbtn" aria-label="Preview" title="Preview"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        <button class="btn btn-forest" id="edPublish" style="padding:.55rem 1.1rem;font-size:.9rem" data-bot-help="Publish your application so it goes live.">Publish</button>
+      </div>
+    </div>
+  </div>
+  <div class="appmain">
+    <div class="appmain-wrap" style="max-width:1060px">
+      <div class="editor">
+        <div class="ed-col" data-reveal>
+          <h4>Components</h4>
+          <div class="palette" id="palette" data-bot-help="Drag any of these components onto the canvas to build your screen.">
+            <div class="pal-item" draggable="true" data-comp="Text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 6V4h16v2M12 6v14M9 20h6"/></svg><span>Text</span></div>
+            <div class="pal-item" draggable="true" data-comp="Button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="8" rx="4"/></svg><span>Button</span></div>
+            <div class="pal-item" draggable="true" data-comp="Input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="8" rx="2"/><path d="M7 12h2"/></svg><span>Input</span></div>
+            <div class="pal-item" draggable="true" data-comp="Table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16M15 4v16"/></svg><span>Table</span></div>
+            <div class="pal-item" draggable="true" data-comp="Chart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-6" stroke-linecap="round"/></svg><span>Chart</span></div>
+            <div class="pal-item" draggable="true" data-comp="Image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M3 16l5-4 4 3 5-5 4 3"/></svg><span>Image</span></div>
+          </div>
+        </div>
+
+        <div class="ed-col ed-canvas" data-reveal>
+          <h4>App Preview</h4>
+          <div class="ed-preview">
+            <div class="ov-title">Inventory Overview</div>
+            <div class="ov-stats">
+              <div class="ov-stat"><span>Products</span><b>128</b></div>
+              <div class="ov-stat"><span>Low Stock</span><b>08</b></div>
+            </div>
+            <div class="ov-title" style="font-size:1rem">Recent Products</div>
+            <div class="ov-list">
+              <div class="ovrow"><span>Product A</span><span class="chip chip-ok">In stock</span></div>
+              <div class="ovrow"><span>Product B</span><span class="chip chip-warn">Low stock</span></div>
+            </div>
+            <div class="dropzone" id="dropzone" data-bot-help="Drop a component here — or tap one — to add it to your app." data-bot-react>
+              <span class="plus">+</span>Drop components here
+            </div>
+            <div class="dropped" id="dropped"></div>
+          </div>
+        </div>
+
+        <div class="ed-col props" data-reveal>
+          <h4>Properties</h4>
+          <p class="muted" style="font-size:.84rem;margin-bottom:1rem" id="propHint">Selected component</p>
+          <div id="propPanel">
+            <div class="prop-field">
+              <label>Component name</label>
+              <input class="input" id="propName" value="Heading">
+            </div>
+            <div class="prop-field">
+              <label>Font size</label>
+              <input class="input" id="propSize" value="24 px">
+            </div>
+            <div class="prop-field">
+              <label>Text color</label>
+              <input class="input" id="propColor" value="#0B7F4F">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ed-footer">
+        <span>⬡ Example usage: <b id="edCredits">12</b> credits</span>
+        <span id="edStatus">Changes saved</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= ADMIN DASHBOARD -->
+<section class="page" id="page-admin">
+  <div class="appbar">
+    <div class="wrap appbar-inner">
+      <div class="brand" data-go="home" role="button" tabindex="0"><span class="emblem" aria-hidden="true"></span><span class="atitle">ZENKAI Admin<small>Platform Management</small></span></div>
+      <div class="aright">
+        <button class="iconbtn" data-go="notifications" aria-label="Notifications"><span class="dot"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+        <button class="iconbtn" data-go="dashboard" aria-label="Account"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="appmain">
+    <div class="appmain-wrap">
+      <div class="app-head" data-reveal>
+        <h1 class="app-h">Platform Overview</h1>
+        <p class="app-sub">Monitor your platform from one place.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat" data-reveal><div class="slabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M15 20c0-2 1.5-3.5 4-3.5"/></svg>Total Customers</div><div class="snum" data-count="248">0</div><div class="sfoot">Sample data</div></div>
+        <div class="stat" data-reveal><div class="slabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg>Applications</div><div class="snum" data-count="516">0</div><div class="sfoot">Sample data</div></div>
+        <div class="stat" data-reveal><div class="slabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>Active Subscriptions</div><div class="snum" data-count="126">0</div><div class="sfoot">Sample data</div></div>
+        <div class="stat" data-reveal><div class="slabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 3 3v6.5"/></svg>Workflows Run</div><div class="snum" data-count="8420">0</div><div class="sfoot">Sample data</div></div>
+      </div>
+
+      <h3 style="font-size:1.1rem;margin:1.8rem 0 .6rem" data-reveal>Admin Menu</h3>
+      <div class="panel" style="padding-block:.3rem" data-reveal>
+        <div class="adminmenu">
+          <div class="amrow"><div class="ami"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M15 20c0-2 1.5-3.5 4-3.5"/></svg></div><div class="amt"><b>Customers</b><span>View accounts and manage access</span></div><span class="amchev">›</span></div>
+          <div class="amrow"><div class="ami"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></div><div class="amt"><b>Plans &amp; Billing</b><span>Manage plans, limits, and payments</span></div><span class="amchev">›</span></div>
+          <div class="amrow"><div class="ami"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="8" r="5"/><path d="M14 11a5 5 0 1 1-3 9"/></svg></div><div class="amt"><b>Credits &amp; Usage</b><span>Review balances and usage records</span></div><span class="amchev">›</span></div>
+          <div class="amrow"><div class="ami"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg></div><div class="amt"><b>Applications</b><span>Review published apps and status</span></div><span class="amchev">›</span></div>
+          <div class="amrow"><div class="ami"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div><div class="amt"><b>Audit Logs</b><span>Review important administrative actions</span></div><span class="amchev">›</span></div>
+          <div class="amrow"><div class="ami"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 0 0-1.7-1l-.3-2.6h-4l-.3 2.6a7 7 0 0 0-1.7 1l-2.3-1-2 3.4L4 11a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 1.7 1l.3 2.6h4l.3-2.6a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.5a7 7 0 0 0 .1-1z"/></svg></div><div class="amt"><b>Platform Settings</b><span>Configure platform-wide settings</span></div><span class="amchev">›</span></div>
+        </div>
+      </div>
+      <p class="muted" style="font-size:.8rem;font-style:italic;text-align:center">Illustrative dashboard — figures and controls are not connected to a live platform.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================= NOTIFICATIONS -->
+<section class="page" id="page-notifications">
+  <div class="appbar">
+    <div class="wrap appbar-inner">
+      <div class="brand" data-go="dashboard" role="button" tabindex="0"><span class="emblem" aria-hidden="true"></span><span class="atitle">ZENKAI<small>Notifications Center</small></span></div>
+      <div class="aright">
+        <button class="iconbtn" data-go="admin" aria-label="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 0 0-1.7-1l-.3-2.6h-4l-.3 2.6a7 7 0 0 0-1.7 1l-2.3-1-2 3.4L4 11a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 1.7 1l.3 2.6h4l.3-2.6a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.5a7 7 0 0 0 .1-1z"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="appmain">
+    <div class="appmain-wrap" style="max-width:760px">
+      <div class="app-head" data-reveal>
+        <h1 class="app-h">Notifications</h1>
+        <p class="app-sub">Stay updated on everything important.</p>
+        <p class="muted" style="margin:.4rem 0 0;max-width:62ch">This system automatically sends customers important updates about their accounts, subscriptions, credits, and applications.</p>
+      </div>
+
+      <div class="notis">
+        <div class="noti" data-reveal>
+          <span class="unread"></span>
+          <div class="ni"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div>
+          <div class="nbody"><b>Verify your email address</b><p>Confirm your email to secure your account.</p><div class="nmeta"><span>Just now</span><span class="chip chip-neutral">Account</span></div></div>
+        </div>
+        <div class="noti warn" data-reveal>
+          <span class="unread"></span>
+          <div class="ni"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="5"/><path d="M14 11a5 5 0 1 1-3 9"/></svg></div>
+          <div class="nbody"><b>Credits running low</b><p>You have 100 credits remaining in your plan.</p><div class="nmeta"><span>2 hours ago</span><span class="chip chip-warn">Usage</span></div></div>
+        </div>
+        <div class="noti" data-reveal>
+          <span class="unread"></span>
+          <div class="ni"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div>
+          <div class="nbody"><b>Application published</b><p>Your Inventory Manager is now live.</p><div class="nmeta"><span>Yesterday</span><span class="chip chip-neutral">Application</span></div></div>
+        </div>
+        <div class="noti" data-reveal>
+          <span class="unread"></span>
+          <div class="ni"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div>
+          <div class="nbody"><b>Subscription renewed</b><p>Your subscription renewal was successful.</p><div class="nmeta"><span>2 days ago</span><span class="chip chip-neutral">Billing</span></div></div>
+        </div>
+      </div>
+      <p class="muted" style="font-size:.8rem;font-style:italic;text-align:center;margin-top:1.4rem">Sample notifications only. These are not live account events.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer" id="publicFooter">
+  <div class="wrap">
+    <div>
+      <div class="fbrand"><span class="emblem" aria-hidden="true" style="width:30px;height:30px"></span>ZENKAI</div>
+      <div class="ftag">Build · Automate · Grow</div>
+    </div>
+    <div class="flinks">
+      <a data-go="about">About Us</a>
+      <a data-go="features">Features</a>
+      <a data-go="plans">Pricing</a>
+      <a data-go="contact">Contact</a>
+      <a data-go="login">Login</a>
+      <a data-go="admin">Admin</a>
+    </div>
+    <div class="fcopy">
+      <span>© <span id="yr"></span> ZENKAI. All rights reserved.</span>
+      <span>Design preview — figures and flows are illustrative.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- ===================== MASCOT: Zen ===================== -->
+<div id="zkbot" aria-hidden="true">
+  <div class="zkbot-inner">
+    <button class="zkbot-body" type="button" aria-label="Zen, the ZENKAI guide. Click to mute or wake.">
+      <svg viewBox="0 0 120 132" aria-hidden="true">
+        <line x1="60" y1="20" x2="60" y2="8" stroke="#1f6b45" stroke-width="2.5" stroke-linecap="round"/>
+        <circle class="zkbot-antenna-tip" cx="60" cy="7" r="5" fill="#B7F34A"/>
+        <rect x="16" y="20" width="88" height="82" rx="24" fill="#0f2117" stroke="#1f6b45" stroke-width="2.5"/>
+        <rect x="27" y="32" width="66" height="50" rx="17" fill="#07120b"/>
+        <g class="zkbot-face">
+          <g class="zkbot-eye"><ellipse cx="47" cy="57" rx="10" ry="11" fill="#0a1a11"/><circle class="zkbot-pupil" cx="47" cy="57" r="5.4" fill="#B7F34A"/></g>
+          <g class="zkbot-eye"><ellipse cx="73" cy="57" rx="10" ry="11" fill="#0a1a11"/><circle class="zkbot-pupil" cx="73" cy="57" r="5.4" fill="#B7F34A"/></g>
+          <path class="zkbot-mouth" d="M51 73 Q60 79 69 73" fill="none" stroke="#B7F34A" stroke-width="2.6" stroke-linecap="round"/>
+        </g>
+        <text class="zkbot-z" x="96" y="30" text-anchor="middle">z</text>
+        <rect x="36" y="100" width="16" height="9" rx="4.5" fill="#0f2117"/>
+        <rect x="68" y="100" width="16" height="9" rx="4.5" fill="#0f2117"/>
+      </svg>
+    </button>
+  </div>
+</div>
+<div id="zkbubble" role="status" aria-live="polite" hidden>
+  <span class="zkb-text"></span>
+  <button class="zkb-close" type="button" aria-label="Dismiss">&times;</button>
+</div>
+
+<!-- SVG emblem template -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="zkRing" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#B7F34A"/><stop offset="1" stop-color="#2fae6a"/>
+  </linearGradient>
+</defs></svg>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r125/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  /* ---------- emblem injection ---------- */
+  var emblemSVG =
+    '<svg viewBox="0 0 40 40" width="100%" height="100%" aria-hidden="true">'+
+    '<rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="#0f2117" stroke="#1f6b45" stroke-width="1.5"/>'+
+    '<circle cx="20" cy="20" r="12" fill="none" stroke="url(#zkRing)" stroke-width="2.4"/>'+
+    '<path d="M14 14 H26 L14 26 H26" fill="none" stroke="#B7F34A" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>'+
+    '</svg>';
+  Array.prototype.forEach.call(document.querySelectorAll(".emblem"),function(e){e.innerHTML=emblemSVG;});
+
+  /* ---------- year ---------- */
+  var yr=document.getElementById("yr"); if(yr) yr.textContent=new Date().getFullYear();
+
+  /* ---------- theme ---------- */
+  var root=document.documentElement, tBtn=document.getElementById("themeToggle");
+  var sun='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19" stroke-linecap="round"/></svg>';
+  var moon='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M21 12.8A8 8 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8z"/></svg>';
+  function sysDark(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches;}
+  function curDark(){var t=root.getAttribute("data-theme");return t?t==="dark":sysDark();}
+  function renderIcon(){if(tBtn)tBtn.innerHTML=curDark()?sun:moon;}
+  var stored;try{stored=localStorage.getItem("zk-theme");}catch(e){}
+  if(stored==="dark"||stored==="light")root.setAttribute("data-theme",stored);
+  renderIcon();
+  if(tBtn)tBtn.addEventListener("click",function(){
+    var next=curDark()?"light":"dark";
+    root.setAttribute("data-theme",next);
+    try{localStorage.setItem("zk-theme",next);}catch(e){}
+    renderIcon();
+    buildSiteGL();
+  });
+
+  /* ---------- routing ---------- */
+  var pages=["home","about","features","plans","contact","login","dashboard","studio","editor","admin","notifications"];
+  var appPages={dashboard:1,studio:1,editor:1,admin:1,notifications:1};
+  var activeRoute="home";
+  var nav=document.getElementById("publicNav"), footer=document.getElementById("publicFooter");
+  var revealObserver=null;
+
+  function setChrome(route){
+    var isApp=!!appPages[route];
+    nav.hidden=isApp; footer.hidden=isApp;
+    // active nav link
+    Array.prototype.forEach.call(document.querySelectorAll(".navlink,.drawer-panel a"),function(a){
+      a.classList.toggle("active",a.getAttribute("data-go")===route);
+    });
+  }
+
+  function revealIn(page){
+    // set up scroll reveal within the active page; hero/above-fold stays visible
+    var items=page.querySelectorAll("[data-reveal]");
+    if(reduce){return;}
+    var vh=window.innerHeight;
+    items.forEach(function(el){
+      var r=el.getBoundingClientRect();
+      if(r.top>vh*0.86){el.classList.add("reveal-hide");}
+    });
+    if(revealObserver)revealObserver.disconnect();
+    revealObserver=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){en.target.classList.remove("reveal-hide");revealObserver.unobserve(en.target);}
+      });
+    },{threshold:0.12});
+    items.forEach(function(el){if(el.classList.contains("reveal-hide"))revealObserver.observe(el);});
+  }
+
+  function go(route,noScroll){
+    if(pages.indexOf(route)<0)route="home";
+    document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
+    var page=document.getElementById("page-"+route);
+    if(!page){page=document.getElementById("page-home");route="home";}
+    page.classList.add("active");
+    activeRoute=route;
+    setChrome(route);
+    try{if(location.hash.slice(1)!==route)history.replaceState(null,"",location.pathname+location.search+"#"+route);}catch(e){}
+    if(!noScroll)window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+    revealIn(page);
+    runPageHooks(route);
+    setGLMotion(!appPages[route]);
+    closeDrawer();
+  }
+
+  // delegated navigation
+  document.addEventListener("click",function(e){
+    var t=e.target.closest("[data-go]");
+    if(t){e.preventDefault();go(t.getAttribute("data-go"));}
+  });
+  document.addEventListener("keydown",function(e){
+    if((e.key==="Enter"||e.key===" ")&&e.target.hasAttribute&&e.target.hasAttribute("data-go")&&e.target.getAttribute("role")==="button"){
+      e.preventDefault();go(e.target.getAttribute("data-go"));
+    }
+  });
+
+  /* ---------- mobile drawer ---------- */
+  var drawer=document.getElementById("drawer"), burger=document.getElementById("hamburger");
+  function openDrawer(){drawer.classList.add("open");burger.classList.add("open");burger.setAttribute("aria-expanded","true");}
+  function closeDrawer(){drawer.classList.remove("open");burger.classList.remove("open");burger.setAttribute("aria-expanded","false");}
+  if(burger)burger.addEventListener("click",function(){drawer.classList.contains("open")?closeDrawer():openDrawer();});
+  document.querySelectorAll("[data-close-drawer]").forEach(function(x){x.addEventListener("click",closeDrawer);});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")closeDrawer();});
+
+  /* ---------- counters & bars (per page) ---------- */
+  var countedPages={};
+  function animateCount(el){
+    var target=parseFloat(el.getAttribute("data-count"))||0;
+    if(reduce){el.textContent=target.toLocaleString();return;}
+    var start=performance.now(),dur=1100;
+    function step(now){
+      var p=Math.min(1,(now-start)/dur);
+      var e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(target*e).toLocaleString();
+      if(p<1)requestAnimationFrame(step);else el.textContent=target.toLocaleString();
+    }
+    requestAnimationFrame(step);
+  }
+  function runPageHooks(route){
+    var page=document.getElementById("page-"+route);
+    if(!page)return;
+    // counters
+    page.querySelectorAll("[data-count]").forEach(function(el){
+      if(el.getAttribute("data-done"))return;
+      el.setAttribute("data-done","1");
+      setTimeout(function(){animateCount(el);},reduce?0:220);
+    });
+    // progress bars
+    page.querySelectorAll("[data-fill]").forEach(function(b){
+      var v=b.getAttribute("data-fill");
+      setTimeout(function(){b.style.width=v+"%";},reduce?0:350);
+    });
+    if(route==="features")setTimeout(layoutFlow,60);
+  }
+
+  /* ---------- Site-wide 3D background (three.js), theme-aware ---------- */
+  var siteGL=null;
+  function teardownSiteGL(){
+    if(!siteGL)return;
+    siteGL.alive=false;
+    if(siteGL.raf)cancelAnimationFrame(siteGL.raf);
+    try{if(siteGL.renderer)siteGL.renderer.dispose();}catch(e){}
+    if(siteGL.domEl&&siteGL.domEl.parentNode)siteGL.domEl.parentNode.removeChild(siteGL.domEl);
+    siteGL=null;
+  }
+  function buildSiteGL(){
+    var container=document.getElementById("siteGL");
+    if(!container||typeof THREE==="undefined")return;
+    teardownSiteGL();
+    var dark=curDark();
+    var W=window.innerWidth,H=window.innerHeight;
+    var scene=new THREE.Scene();
+    var camera=new THREE.PerspectiveCamera(60,W/H,0.1,1000);camera.position.set(0,0,45);
+    var renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+    renderer.setSize(W,H);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    container.appendChild(renderer.domElement);
+    var state={alive:true,raf:null,renderer:renderer,domEl:renderer.domElement,camera:camera,mouseX:0,mouseY:0,targetX:0,targetY:0,motion:true,running:false};
+    siteGL=state;
+
+    scene.add(new THREE.AmbientLight(0xffffff,0.7));
+    var dirLight=new THREE.DirectionalLight(0x4ade80,1.2);dirLight.position.set(20,30,20);scene.add(dirLight);
+    var pointLight=new THREE.PointLight(0x22c55e,2,80);pointLight.position.set(0,5,20);scene.add(pointLight);
+
+    // theme palette — bright additive on dark, deeper green on light
+    var stops=dark?['rgba(52,211,153,1)','rgba(16,185,129,0.85)','rgba(5,150,105,0.22)','rgba(0,0,0,0)']
+                  :['rgba(21,120,70,0.9)','rgba(23,128,79,0.55)','rgba(16,90,55,0.14)','rgba(0,0,0,0)'];
+    var pBlend=dark?THREE.AdditiveBlending:THREE.NormalBlending;
+    var pOpacity=dark?0.58:0.42;
+    var nodeColors=dark?[0x22c55e,0x10b981,0x4ade80,0x6ee7b7]:[0x0f7a46,0x157f4f,0x12623b,0x1f8d57];
+    var wireOpacity=dark?0.36:0.42;
+    var innerColor=dark?0x064e3b:0x9bdcb6, innerOpacity=dark?0.2:0.1;
+    var lineColor=dark?0x10b981:0x157f4f, lineOpacity=dark?0.16:0.13;
+
+    // Wave particle grid
+    var gridCols=55,gridRows=35,particleCount=gridCols*gridRows;
+    var positions=new Float32Array(particleCount*3),originalY=new Float32Array(particleCount);
+    var idx=0,spacingX=1.8,spacingZ=1.6,offsetX=((gridCols-1)*spacingX)/2,offsetZ=((gridRows-1)*spacingZ)/2;
+    for(var i=0;i<gridCols;i++)for(var j=0;j<gridRows;j++){positions[idx*3]=i*spacingX-offsetX;positions[idx*3+1]=-12;positions[idx*3+2]=j*spacingZ-offsetZ;originalY[idx]=-12;idx++;}
+    var particleGeo=new THREE.BufferGeometry();particleGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+    var pCanvas=document.createElement('canvas');pCanvas.width=32;pCanvas.height=32;var pCtx=pCanvas.getContext('2d');
+    var grad=pCtx.createRadialGradient(16,16,0,16,16,16);
+    grad.addColorStop(0,stops[0]);grad.addColorStop(0.3,stops[1]);grad.addColorStop(0.8,stops[2]);grad.addColorStop(1,stops[3]);
+    pCtx.fillStyle=grad;pCtx.fillRect(0,0,32,32);
+    var particleMat=new THREE.PointsMaterial({size:1.1,map:new THREE.CanvasTexture(pCanvas),transparent:true,opacity:pOpacity,blending:pBlend,depthWrite:false});
+    scene.add(new THREE.Points(particleGeo,particleMat));
+
+    // Floating polyhedra nodes
+    var nodes=[];
+    var nodeGeos=[new THREE.IcosahedronGeometry(2.2,0),new THREE.OctahedronGeometry(2.0,0),new THREE.BoxGeometry(2.4,2.4,2.4),new THREE.TetrahedronGeometry(2.2,0)];
+    for(var k=0;k<12;k++){
+      var geo=nodeGeos[k%nodeGeos.length];
+      var wireMat=new THREE.MeshPhongMaterial({color:nodeColors[k%nodeColors.length],wireframe:true,transparent:true,opacity:wireOpacity});
+      var innerMat=new THREE.MeshPhongMaterial({color:innerColor,transparent:true,opacity:innerOpacity,shininess:90});
+      var mesh=new THREE.Mesh(geo,wireMat);var innerMesh=new THREE.Mesh(geo,innerMat);innerMesh.scale.set(0.85,0.85,0.85);mesh.add(innerMesh);
+      var angle=(k/12)*Math.PI*2,radius=22+Math.random()*12;
+      mesh.position.x=Math.cos(angle)*radius;mesh.position.y=(Math.random()-0.3)*22;mesh.position.z=(Math.random()-0.5)*25-5;
+      mesh.userData={rotSpeedX:0.005+Math.random()*0.01,rotSpeedY:0.008+Math.random()*0.01,initY:mesh.position.y,phase:Math.random()*Math.PI*2};
+      scene.add(mesh);nodes.push(mesh);
+    }
+
+    // Connecting lines
+    var lineGeo=new THREE.BufferGeometry();
+    lineGeo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(nodes.length*nodes.length*6),3));
+    scene.add(new THREE.LineSegments(lineGeo,new THREE.LineBasicMaterial({color:lineColor,transparent:true,opacity:lineOpacity})));
+
+    var clock=new THREE.Clock();
+    function frame(){
+      if(!state.alive)return;
+      state.running=true;
+      var t=clock.getElapsedTime();
+      state.targetX+=(state.mouseX-state.targetX)*0.04;state.targetY+=(state.mouseY-state.targetY)*0.04;
+      camera.position.x=state.targetX*3.5;camera.position.y=state.targetY*2.4;camera.lookAt(0,0,0);
+      var posArr=particleGeo.attributes.position.array,pIdx=0;
+      for(var i=0;i<gridCols;i++)for(var j=0;j<gridRows;j++){var u=i*0.18+t*0.68,v=j*0.18+t*0.46;posArr[pIdx*3+1]=originalY[pIdx]+Math.sin(u)*Math.cos(v)*2.6+Math.sin(u*0.5+v*0.5)*1.4;pIdx++;}
+      particleGeo.attributes.position.needsUpdate=true;
+      nodes.forEach(function(nd){nd.rotation.x+=nd.userData.rotSpeedX*0.5;nd.rotation.y+=nd.userData.rotSpeedY*0.5;nd.position.y=nd.userData.initY+Math.sin(t*0.68+nd.userData.phase)*1.5;});
+      var li=0,pl=lineGeo.attributes.position.array;
+      for(var a=0;a<nodes.length;a++)for(var b=a+1;b<nodes.length;b++){if(nodes[a].position.distanceTo(nodes[b].position)<18){pl[li++]=nodes[a].position.x;pl[li++]=nodes[a].position.y;pl[li++]=nodes[a].position.z;pl[li++]=nodes[b].position.x;pl[li++]=nodes[b].position.y;pl[li++]=nodes[b].position.z;}}
+      lineGeo.setDrawRange(0,li/3);lineGeo.attributes.position.needsUpdate=true;
+      renderer.render(scene,camera);
+      if(!reduce&&state.motion){state.raf=requestAnimationFrame(frame);}else{state.running=false;}
+    }
+    state.tick=frame;
+    state.motion=!appPages[activeRoute]; // animate on marketing pages, freeze on app pages
+    frame(); // always draws one frame; keeps animating only where motion is on
+  }
+  function setGLMotion(on){
+    if(!siteGL)return;
+    siteGL.motion=!!on;
+    if(on&&!reduce&&!siteGL.running){siteGL.running=true;siteGL.raf=requestAnimationFrame(siteGL.tick);}
+  }
+  window.addEventListener("resize",function(){if(siteGL&&siteGL.camera&&siteGL.renderer){var w=window.innerWidth,h=window.innerHeight;siteGL.camera.aspect=w/h;siteGL.camera.updateProjectionMatrix();siteGL.renderer.setSize(w,h);}});
+  window.addEventListener("mousemove",function(e){if(siteGL){siteGL.mouseX=(e.clientX/window.innerWidth-0.5)*2;siteGL.mouseY=-(e.clientY/window.innerHeight-0.5)*2;}});
+
+  /* ---------- Features: workflow diagram ---------- */
+  function layoutFlow(){
+    var stage=document.querySelector(".flow-stage"); if(!stage)return;
+    var nodes=stage.querySelectorAll(".node");
+    var svg=document.getElementById("flowSvg");
+    if(nodes.length<3||!svg)return;
+    var sb=stage.getBoundingClientRect();
+    svg.setAttribute("viewBox","0 0 "+sb.width+" "+sb.height);
+    function cx(n){var r=n.getBoundingClientRect();return{x:r.left-sb.left+r.width/2,y:r.top-sb.top+r.height/2,w:r.width};}
+    var a=cx(nodes[0]),b=cx(nodes[1]),c=cx(nodes[2]);
+    var p1=document.getElementById("fp1"),p2=document.getElementById("fp2");
+    p1.setAttribute("d","M"+(a.x+a.w/2-6)+" "+a.y+" L"+(b.x-b.w/2+6)+" "+b.y);
+    p2.setAttribute("d","M"+(b.x+b.w/2-6)+" "+b.y+" L"+(c.x-c.w/2+6)+" "+c.y);
+  }
+  window.addEventListener("resize",function(){if(document.getElementById("page-features").classList.contains("active"))layoutFlow();});
+
+  var flowRun=document.getElementById("flowRun");
+  if(flowRun){
+    flowRun.addEventListener("click",function(){
+      var nodes=document.querySelectorAll(".node");
+      var status=document.getElementById("flowStatus");
+      var labels=["Trigger fired — a new record was added.","Action ran — the record was updated and assigned.","Notification sent — the update went out."];
+      nodes.forEach(function(n){n.classList.remove("lit");});
+      flowRun.disabled=true;
+      var i=0;
+      (function tick(){
+        if(i>0)nodes[i-1].classList.remove("lit");
+        if(i<nodes.length){nodes[i].classList.add("lit");status.textContent=labels[i];i++;setTimeout(tick,reduce?300:850);}
+        else{setTimeout(function(){nodes.forEach(function(n){n.classList.remove("lit");});status.textContent="Workflow complete. Press run to replay.";flowRun.disabled=false;},900);}
+      })();
+    });
+  }
+
+  /* ---------- Contact form validation ---------- */
+  var toast=document.getElementById("toast");
+  function showToast(msg){
+    toast.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>'+msg;
+    toast.classList.add("show");
+    clearTimeout(toast._t);toast._t=setTimeout(function(){toast.classList.remove("show");},3200);
+  }
+  function emailOK(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+  var cForm=document.getElementById("contactForm");
+  if(cForm){
+    cForm.addEventListener("submit",function(e){
+      e.preventDefault();
+      var ok=true;
+      function check(id,cond){var f=document.getElementById(id);f.classList.toggle("invalid",!cond);if(!cond)ok=false;}
+      check("f-name",document.getElementById("ct-name").value.trim().length>0);
+      check("f-email",emailOK(document.getElementById("ct-email").value.trim()));
+      check("f-msg",document.getElementById("ct-msg").value.trim().length>0);
+      if(ok){showToast("Message prepared");cForm.reset();}
+    });
+    cForm.querySelectorAll(".input,.textarea").forEach(function(el){
+      el.addEventListener("input",function(){el.closest(".field").classList.remove("invalid");});
+    });
+  }
+
+  /* ---------- Login/Register tabs ---------- */
+  var tabR=document.getElementById("tabRegister"),tabL=document.getElementById("tabLogin");
+  var aName=document.getElementById("a-name"),aTitle=document.getElementById("authTitle"),aLead=document.getElementById("authLead"),
+      aTerms=document.getElementById("authTerms"),aSubmit=document.getElementById("authSubmit");
+  function setAuthMode(mode){
+    var reg=mode==="register";
+    tabR.classList.toggle("active",reg);tabL.classList.toggle("active",!reg);
+    tabR.setAttribute("aria-selected",reg);tabL.setAttribute("aria-selected",!reg);
+    aName.hidden=!reg;
+    aTitle.textContent=reg?"Create account":"Welcome back";
+    aLead.textContent=reg?"Get started with ZENKAI.":"Sign in to your ZENKAI account.";
+    aTerms.hidden=!reg;
+    aSubmit.childNodes[0].nodeValue=reg?"Create Account ":"Sign In ";
+  }
+  if(tabR){tabR.addEventListener("click",function(){setAuthMode("register");});tabL.addEventListener("click",function(){setAuthMode("login");});}
+  var aForm=document.getElementById("authForm");
+  if(aForm){
+    aForm.addEventListener("submit",function(e){
+      e.preventDefault();
+      var ok=true;
+      function check(id,cond){var f=document.getElementById(id);if(f.hidden){return;}f.classList.toggle("invalid",!cond);if(!cond)ok=false;}
+      check("a-name",document.getElementById("au-name").value.trim().length>0);
+      check("a-email",emailOK(document.getElementById("au-email").value.trim()));
+      check("a-pass",document.getElementById("au-pass").value.length>0);
+      if(ok){showToast("Welcome to ZENKAI");setTimeout(function(){go("dashboard");},700);}
+    });
+    aForm.querySelectorAll(".input").forEach(function(el){el.addEventListener("input",function(){el.closest(".field").classList.remove("invalid");});});
+  }
+
+  /* ---------- Application Editor: drag & drop ---------- */
+  var dz=document.getElementById("dropzone"),dropped=document.getElementById("dropped");
+  var compIcons={
+    Text:'<path d="M4 6h16M12 6v14M9 20h6"/>',
+    Button:'<rect x="3" y="8" width="18" height="8" rx="4"/>',
+    Input:'<rect x="3" y="8" width="18" height="8" rx="2"/><path d="M7 12h2"/>',
+    Table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/>',
+    Chart:'<path d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-6"/>',
+    Image:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M3 16l5-4 4 3 5-5 4 3"/>'
+  };
+  var credits=12;
+  function addComp(name){
+    if(!dropped)return;
+    var el=document.createElement("div");
+    el.className="dchip";
+    el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">'+(compIcons[name]||"")+'</svg><span>'+name+' component</span><button class="rm" aria-label="Remove">×</button>';
+    el.addEventListener("click",function(ev){
+      if(ev.target.classList.contains("rm")){el.remove();updateEd(-2);return;}
+      selectComp(name);
+    });
+    dropped.appendChild(el);
+    updateEd(2);
+    selectComp(name);
+  }
+  function updateEd(delta){
+    credits=Math.max(0,credits+delta);
+    var c=document.getElementById("edCredits");if(c)c.textContent=credits;
+    var st=document.getElementById("edStatus"),sv=document.getElementById("edSaved");
+    if(st){st.textContent="Saving…";if(sv){sv.textContent="Editing";sv.className="chip chip-warn";}
+      clearTimeout(window._edT);window._edT=setTimeout(function(){st.textContent="Changes saved";if(sv){sv.textContent="Saved";sv.className="chip chip-ok";}},900);}
+  }
+  function selectComp(name){
+    var h=document.getElementById("propHint"),n=document.getElementById("propName");
+    if(h)h.textContent="Selected: "+name;
+    if(n)n.value=name;
+  }
+  if(dz){
+    ["dragenter","dragover"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.add("over");});});
+    ["dragleave","drop"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.remove("over");});});
+    dz.addEventListener("drop",function(e){var name=e.dataTransfer.getData("text/plain");if(name)addComp(name);});
+    dz.addEventListener("click",function(){addComp("Text");});
+  }
+  document.querySelectorAll(".pal-item").forEach(function(it){
+    it.addEventListener("dragstart",function(e){e.dataTransfer.setData("text/plain",it.getAttribute("data-comp"));e.dataTransfer.effectAllowed="copy";});
+    it.addEventListener("click",function(){addComp(it.getAttribute("data-comp"));}); // tap support on mobile
+  });
+  var edPublish=document.getElementById("edPublish");
+  if(edPublish)edPublish.addEventListener("click",function(){showToast("Application published");});
+
+  /* ---------- boot ---------- */
+  var start=(location.hash||"").replace("#","");
+  if(pages.indexOf(start)<0)start="home";
+  go(start,true);
+  buildSiteGL();
+  window.addEventListener("hashchange",function(){
+    var h=(location.hash||"").replace("#","");
+    if(pages.indexOf(h)>=0 && !document.getElementById("page-"+h).classList.contains("active"))go(h,true);
+  });
+})();
+</script>
+
+<script>
+/* ===== Zen — the ZENKAI mascot ===== */
+(function(){
+  "use strict";
+  var bot=document.getElementById("zkbot"), bubble=document.getElementById("zkbubble");
+  if(!bot||!bubble)return;
+  var mq=window.matchMedia?window.matchMedia.bind(window):null;
+  var reduce=mq&&mq("(prefers-reduced-motion:reduce)").matches;
+  var touch=mq&&mq("(hover:none) and (pointer:coarse)").matches;
+  var body=bot.querySelector(".zkbot-body"), face=bot.querySelector(".zkbot-face");
+  var pupils=bot.querySelectorAll(".zkbot-pupil");
+  var txt=bubble.querySelector(".zkb-text"), closeBtn=bubble.querySelector(".zkb-close");
+  var W=76,Hh=86, quiet=false;
+  try{quiet=localStorage.getItem("zk-bot-quiet")==="1";}catch(e){}
+  function rect(){return bot.getBoundingClientRect();}
+  function restXY(){W=bot.offsetWidth||76;Hh=bot.offsetHeight||86;return{x:window.innerWidth-W-22,y:window.innerHeight-Hh-22};}
+  function setPos(x,y){bot.style.transform="translate("+x+"px,"+y+"px)";}
+
+  /* cursor tracking */
+  var tgx=0,tgy=0,cxv=0,cyv=0,rafId=null,tracking=false;
+  function onMove(e){var r=rect(),bx=r.left+r.width/2,by=r.top+r.height/2;tgx=Math.max(-1,Math.min(1,(e.clientX-bx)/220));tgy=Math.max(-1,Math.min(1,(e.clientY-by)/220));}
+  function loop(){cxv+=(tgx-cxv)*0.12;cyv+=(tgy-cyv)*0.12;var p="translate("+(cxv*3).toFixed(2)+"px,"+(cyv*3).toFixed(2)+"px)";for(var i=0;i<pupils.length;i++)pupils[i].style.transform=p;if(face)face.style.transform="rotate("+(cxv*5).toFixed(2)+"deg) translate("+(cxv*2).toFixed(2)+"px,"+(cyv*1.5).toFixed(2)+"px)";rafId=requestAnimationFrame(loop);}
+  function startTrack(){if(tracking||reduce||touch)return;tracking=true;window.addEventListener("mousemove",onMove);loop();}
+  function stopTrack(){tracking=false;if(rafId)cancelAnimationFrame(rafId);window.removeEventListener("mousemove",onMove);for(var i=0;i<pupils.length;i++)pupils[i].style.transform="";if(face)face.style.transform="";}
+
+  /* blink */
+  function scheduleBlink(){if(reduce)return;setTimeout(function(){if(!quiet){bot.classList.add("blink");setTimeout(function(){bot.classList.remove("blink");},160);}scheduleBlink();},2600+Math.random()*3600);}
+
+  /* reactions */
+  function wave(){if(reduce||quiet)return;bot.classList.remove("wave");void bot.offsetWidth;bot.classList.add("wave");setTimeout(function(){bot.classList.remove("wave");},760);}
+  function happy(ms){bot.classList.add("happy");clearTimeout(bot._h);bot._h=setTimeout(function(){bot.classList.remove("happy");},ms||1100);}
+
+  /* bubble */
+  var hideT=null,curEl=null;
+  function placeBubble(){var r=rect();bubble.style.left="auto";bubble.style.top="auto";bubble.style.right=Math.max(12,(window.innerWidth-r.right))+"px";bubble.style.bottom=(window.innerHeight-r.top+12)+"px";}
+  function showBubble(html,sticky){clearTimeout(hideT);txt.innerHTML=html;bubble.hidden=false;placeBubble();requestAnimationFrame(function(){bubble.classList.add("show");});clearTimeout(bubble._auto);if(!sticky)bubble._auto=setTimeout(hideBubble,touch?4200:6000);}
+  function hideBubble(){bubble.classList.remove("show");clearTimeout(bubble._hd);bubble._hd=setTimeout(function(){bubble.hidden=true;},240);curEl=null;}
+
+  /* contextual help */
+  function helpText(el){return el.getAttribute("data-bot-help")||el.getAttribute("aria-label")||el.title||"";}
+  function onOver(e){if(quiet||!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(!el||el===curEl)return;var t=helpText(el);if(!t)return;curEl=el;clearTimeout(hideT);showBubble(t,true);if(el.hasAttribute("data-bot-react")){happy();wave();}}
+  function onOut(e){if(!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(!el||el!==curEl)return;if(e.relatedTarget&&el.contains(e.relatedTarget))return;clearTimeout(hideT);hideT=setTimeout(hideBubble,450);}
+
+  /* quiet / wake */
+  function setQuiet(q){quiet=q;try{localStorage.setItem("zk-bot-quiet",q?"1":"0");}catch(e){}bot.classList.toggle("quiet",q);if(q){stopTrack();hideBubble();bot.classList.remove("floaty");}else{bot.classList.add("floaty");startTrack();happy(900);wave();}}
+
+  body.addEventListener("click",function(){setQuiet(!quiet);});
+  bot.addEventListener("mouseenter",function(){if(!quiet)wave();});
+  closeBtn.addEventListener("click",function(e){e.stopPropagation();hideBubble();});
+
+  if(touch){
+    document.addEventListener("click",function(e){if(quiet||!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(el){var t=helpText(el);if(t){curEl=el;showBubble(t,false);if(el.hasAttribute("data-bot-react"))happy();}}});
+  }else{
+    document.addEventListener("mouseover",onOver);
+    document.addEventListener("mouseout",onOut);
+    document.addEventListener("focusin",function(e){if(quiet||!e.target.closest)return;var el=e.target.closest("[data-bot-help]");if(el){var t=helpText(el);if(t){curEl=el;showBubble(t,true);}}});
+    document.addEventListener("focusout",function(){clearTimeout(hideT);hideT=setTimeout(hideBubble,450);});
+  }
+
+  window.addEventListener("resize",function(){if(bot.classList.contains("ready")){var p=restXY();setPos(p.x,p.y);}if(!bubble.hidden)placeBubble();});
+
+  function greet(){showBubble("<b>Hi, I'm Zen!</b> Point at a button or field and I'll explain it. Click me to mute.",false);}
+
+  function settle(){bot.classList.add("ready");bot.setAttribute("aria-hidden","false");if(quiet){bot.classList.add("quiet");}else{bot.classList.add("floaty");startTrack();scheduleBlink();setTimeout(greet,500);}}
+
+  function intro(){
+    var rest=restXY();
+    var emblem=document.querySelector("#publicNav .emblem")||document.querySelector(".emblem");
+    var er=emblem?emblem.getBoundingClientRect():null;
+    if(reduce||quiet||!er||er.width<4){setPos(rest.x,rest.y);settle();return;}
+    var start={x:er.left+er.width/2-W/2,y:er.top+er.height/2-Hh/2}, peekY=start.y-14;
+    bot.classList.add("ready");
+    var peek=bot.animate([
+      {transform:"translate("+start.x+"px,"+(start.y+10)+"px) scale(.35)",opacity:0},
+      {transform:"translate("+start.x+"px,"+peekY+"px) scale(.72)",opacity:1}
+    ],{duration:520,easing:"cubic-bezier(.2,.8,.2,1)",fill:"forwards"});
+    peek.onfinish=function(){
+      var jump,sq;
+      function doJump(){
+        var midX=(start.x+rest.x)/2, topY=Math.min(peekY,rest.y)-90;
+        jump=bot.animate([
+          {transform:"translate("+start.x+"px,"+peekY+"px) scale(.72)"},
+          {transform:"translate("+midX+"px,"+topY+"px) scale(.96)",offset:.45},
+          {transform:"translate("+rest.x+"px,"+(rest.y-4)+"px) scale(1.05)",offset:.82},
+          {transform:"translate("+rest.x+"px,"+rest.y+"px) scale(1)"}
+        ],{duration:760,easing:"cubic-bezier(.3,.7,.3,1)",fill:"forwards"});
+        jump.onfinish=function(){
+          sq=bot.animate([
+            {transform:"translate("+rest.x+"px,"+rest.y+"px) scale(1,1)"},
+            {transform:"translate("+rest.x+"px,"+(rest.y+3)+"px) scale(1.12,.86)",offset:.3},
+            {transform:"translate("+rest.x+"px,"+rest.y+"px) scale(1,1)"}
+          ],{duration:360,easing:"ease-out",fill:"forwards"});
+          sq.onfinish=function(){try{peek.cancel();jump.cancel();sq.cancel();}catch(e){}setPos(rest.x,rest.y);settle();};
+        };
+      }
+      if(face){var look=face.animate([{transform:"rotate(0)"},{transform:"rotate(-8deg)"},{transform:"rotate(8deg)"},{transform:"rotate(0)"}],{duration:700,easing:"ease-in-out"});look.onfinish=doJump;}
+      else setTimeout(doJump,600);
+    };
+  }
+
+  if(document.readyState==="complete")setTimeout(intro,800);
+  else window.addEventListener("load",function(){setTimeout(intro,800);});
+})();
+</script>
+
+</body>
+</html>
