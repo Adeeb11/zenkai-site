@@ -560,6 +560,11 @@ button{font-family:inherit}
 .zk-svg .zk-led{animation:zkLed 1.1s steps(2) infinite}
 @keyframes zkLed{50%{opacity:.25}}
 @media (prefers-reduced-motion:reduce){.zk-svg .zk-code-scroll,.zk-svg .zk-bulb-glow,.zk-svg .zk-led{animation:none}.zk-svg .zk-eye{transition:none}}
+.zk-svg .zk-jet{display:none}
+.zk-svg.jets .zk-jet{display:inline;animation:zkJet .1s steps(2) infinite}
+@keyframes zkJet{50%{opacity:.5}}
+.zk-svg.charging .zk-bulb-glow{animation-duration:.5s}
+.zk-svg.charging .zk-bulb{fill:#E8FF9A}
 /* ============================================================
    MASCOT — "Zen", ZENKAI's resident engineer (lives behind the page)
    ============================================================ */
@@ -587,6 +592,16 @@ button{font-family:inherit}
 #zen-dock{position:fixed;right:14px;bottom:14px;z-index:54;display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .8rem .45rem .55rem;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--fg);font:600 .78rem/1 var(--font-body);box-shadow:var(--shadow-lg);cursor:pointer}
 #zen-dock i{width:9px;height:9px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime)}
 @media (prefers-reduced-motion:reduce){#zen-ring{transition:none}#zen-bubble{transition:none}}
+#zen-think{position:fixed;left:0;top:0;z-index:56;min-width:24px;height:24px;padding:0 7px;border-radius:999px;display:grid;place-items:center;background:var(--lime);color:var(--lime-ink);font:700 13px/1 var(--font-display);box-shadow:0 6px 16px -6px rgba(5,8,6,.5);pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.3);transition:opacity .18s ease,transform .3s cubic-bezier(.3,1.7,.5,1)}
+#zen-think.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.zen-shine{position:fixed;z-index:53;pointer-events:none;overflow:hidden;animation:zenGlow 1.6s ease forwards}
+.zen-shine::before{content:"";position:absolute;top:-30%;bottom:-30%;left:-60%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),rgba(183,243,74,.35),transparent);transform:skewX(-18deg);animation:zenSweep 1.15s .12s cubic-bezier(.4,0,.2,1) forwards}
+.zen-shine.soft::before{background:linear-gradient(100deg,transparent,rgba(183,243,74,.28),transparent)}
+.zen-shine.power{animation-name:zenPower}
+@keyframes zenSweep{to{left:135%}}
+@keyframes zenGlow{0%{box-shadow:0 0 0 0 rgba(183,243,74,0)}25%{box-shadow:0 0 0 2px rgba(183,243,74,.85),0 0 30px rgba(183,243,74,.45)}100%{box-shadow:0 0 0 2px rgba(183,243,74,0),0 0 0 rgba(183,243,74,0)}}
+@keyframes zenPower{0%,100%{box-shadow:0 0 0 0 rgba(183,243,74,0)}15%,45%{box-shadow:0 0 0 2px rgba(183,243,74,.95),0 0 36px rgba(183,243,74,.55)}30%{box-shadow:0 0 0 1px rgba(183,243,74,.3)}}
+@media (prefers-reduced-motion:reduce){.zen-shine{display:none}#zen-think{transition:none}}
 
 /* ============================================================
    RESPONSIVE
@@ -1498,6 +1513,7 @@ button{font-family:inherit}
   <div id="zen"><div class="zen-art"></div><button type="button" class="zen-hit" aria-label="Zen, the ZENKAI guide — open menu"></button></div>
 </div>
 <div id="zen-ring" hidden></div>
+<div id="zen-think" aria-hidden="true"></div>
 <div id="zen-bubble" role="status" aria-live="polite" hidden>
   <span class="zen-btitle"></span><p class="zen-btext"></p><div class="zen-bact" hidden></div>
   <button type="button" class="zen-bclose" aria-label="Close">×</button>
@@ -1980,6 +1996,7 @@ button{font-family:inherit}
       '<g class="zk-shin-l"><rect x="-5.6" y="-2" width="11.2" height="18" rx="5.6" fill="url(#zkLimbG)" stroke="#8FA196" stroke-opacity=".5" stroke-width=".9"/></g>'+
       '<circle class="zk-knee-l" r="4.6" fill="url(#zkJointG)"/>'+
       '<g class="zk-boot-l">'+
+        '<g class="zk-jet"><path d="M-7 11 Q0 34 7 11 Z" fill="#B7F34A" opacity=".85"/><path d="M-3.5 11 Q0 23 3.5 11 Z" fill="#FFFFFF" opacity=".9"/></g>'+
         '<path d="M-11.5 8 Q-11.5 -3.5 0 -4 Q11.5 -3.5 11.5 8 Q11.5 12.8 0 12.8 Q-11.5 12.8 -11.5 8 Z" fill="url(#zkGreenG)"/>'+
         '<path d="M-10.6 9.4 Q0 14 10.6 9.4" fill="none" stroke="#D9E6DC" stroke-width="1.6" stroke-linecap="round"/>'+
         '<ellipse cx="-3.5" cy="0" rx="4.2" ry="2" fill="#FFFFFF" fill-opacity=".22"/>'+
@@ -1990,6 +2007,7 @@ button{font-family:inherit}
       '<g class="zk-shin-r"><rect x="-5.6" y="-2" width="11.2" height="18" rx="5.6" fill="url(#zkLimbG)" stroke="#8FA196" stroke-opacity=".5" stroke-width=".9"/></g>'+
       '<circle class="zk-knee-r" r="4.6" fill="url(#zkJointG)"/>'+
       '<g class="zk-boot-r">'+
+        '<g class="zk-jet"><path d="M-7 11 Q0 34 7 11 Z" fill="#B7F34A" opacity=".85"/><path d="M-3.5 11 Q0 23 3.5 11 Z" fill="#FFFFFF" opacity=".9"/></g>'+
         '<path d="M-11.5 8 Q-11.5 -3.5 0 -4 Q11.5 -3.5 11.5 8 Q11.5 12.8 0 12.8 Q-11.5 12.8 -11.5 8 Z" fill="url(#zkGreenG)"/>'+
         '<path d="M-10.6 9.4 Q0 14 10.6 9.4" fill="none" stroke="#D9E6DC" stroke-width="1.6" stroke-linecap="round"/>'+
         '<ellipse cx="3.5" cy="0" rx="4.2" ry="2" fill="#FFFFFF" fill-opacity=".22"/>'+
@@ -2281,6 +2299,7 @@ button{font-family:inherit}
     peekL:{lean:-38,headTilt:-14,eyeX:-4,uaL:84,faL:52,haL:30,uaR:-16,faR:10,thL:7,thR:2},
     repair:{uaR:-82,faR:-8,holoX:178,holoY:113,holoS:.85,holoO:1,headTilt:7,eyeX:4,sparksX:166,sparksY:112},
     diag:{holoX:-8,holoY:98,holoO:1,uaL:96,faL:-8,haL:-10,headTilt:-8,eyeX:-4,uaR:-152,faR:-16,haR:-30},
+    hangp:{rot:180,thL:7,shL:-12,thR:-7,shR:12,uaL:166,faL:-12,uaR:-166,faR:12,eyeY:1},
     duck:{hipDrop:16,thL:40,ftL:.8,shL:-36,fsL:.8,thR:-40,ftR:.8,shR:36,fsR:.8,uaL:40,faL:-30,uaR:-40,faR:30}
   };
   function P_(name,extra){return pose(merge(PO[name]||{},extra||{}));}
@@ -2315,7 +2334,7 @@ button{font-family:inherit}
       .then(function(){if(my===token){state="idle";prio=0;onIdle();}});
     return true;
   }
-  function onIdle(){breathing=true;sleeping=false;svg.classList.remove("ex-sleep");autoAt=clock+(touch?rand(18000,28000):rand(8000,14000));}
+  function onIdle(){breathing=true;sleeping=false;svg.classList.remove("ex-sleep");autoAt=clock+rand(400,2200);}
 
   /* ---------- face ---------- */
   var EXPR=["ex-happy","ex-focus","ex-think","ex-worry","ex-wow","ex-sleep","ex-wink"];
@@ -2328,7 +2347,7 @@ button{font-family:inherit}
     if(blocked(x,y))return {x:x,y:VH+118*K,tucked:true};
     return {x:x,y:y,tucked:false};}
   function hiddenY(){return VH+192*K;}
-  function isZen(el){return el&&(layer.contains(el)||bubble.contains(el)||el===ring||dock.contains(el));}
+  function isZen(el){return el&&(layer.contains(el)||bubble.contains(el)||el===ring||dock.contains(el)||(el.classList&&(el.classList.contains("zen-shine")||el.id==="zen-think")));}
   function topAt(x,y){
     if(!document.elementsFromPoint)return null;
     var l=document.elementsFromPoint(clamp(x,1,VW-1),clamp(y,1,VH-1));
@@ -2341,7 +2360,7 @@ button{font-family:inherit}
       if(r.right>x-60*u&&r.bottom>y-190*u)return true;}
     return false;}
   function worldFeet(){if(anchor){var r=anchor.getBoundingClientRect();return {x:r.left+W.x,y:r.top+W.y,s:W.s};}return W;}
-  function headWorld(){var f=worldFeet(),u=K*f.s;return {x:f.x,y:f.y-138*u};}
+  function headWorld(){var f=worldFeet(),u=K*f.s,a=(F.rot||0)*Math.PI/180;return {x:f.x+138*u*Math.sin(a),y:f.y-138*u*Math.cos(a)};}
   function visible(el){if(!el||!el.getBoundingClientRect)return false;var r=el.getBoundingClientRect();
     if(r.width<2||r.height<2)return false;var cs=getComputedStyle(el);return cs.visibility!=="hidden"&&cs.display!=="none";}
 
@@ -2359,7 +2378,8 @@ button{font-family:inherit}
   function render(){
     var f=worldFeet(),s=f.s;
     bot.style.transform="translate3d("+(f.x-120*K*s).toFixed(2)+"px,"+(f.y-194*K*s).toFixed(2)+"px,0) scale("+s.toFixed(4)+")";
-    rig.apply(F);renderClip();
+    rig.apply(F);if(Math.abs(F.rot)>25||loc.kind==="hang"||loc.kind==="behind"||loc.kind==="air")rig.el.shadow.setAttribute("opacity","0");
+    renderClip();placeThink();
     if(bubbleOn)placeBubble();
     if(tourOn&&tourSteps[tourIdx])placeRing(tourSteps[tourIdx]);
   }
@@ -2397,8 +2417,12 @@ button{font-family:inherit}
       if(blinkUntil&&c>blinkUntil){svg.classList.remove("blink");blinkUntil=0;}
     }
     /* autonomous scheduler */
-    if(state==="idle"&&!reduce&&!bubbleOn&&clock>autoAt&&now()-lastAct>4000)pickScene();
-    if(state==="idle"&&!sleeping&&!reduce&&now()-lastAct>70000&&!bubbleOn)run("auto",1,scSleep);
+    mind.energy=Math.max(0,mind.energy-dt*(walking?.0004:(state==="auto"?.00016:.00005)));
+    if(state==="idle")mind.boredom=Math.min(3,mind.boredom+dt*.00008);
+    if(anchor&&!airborne){var ar=anchor.getBoundingClientRect();
+      if(ar.width<2||ar.height<2)offstage();
+      else{var wf=worldFeet(),cy=wf.y+(upright()?-92:92)*K;if(cy<-70*K||cy>VH+70*K)offstage();}}
+    if(state==="idle"&&!reduce&&!bubbleOn&&!tourOn&&clock>autoAt&&now()-lastAct>IDLE_MS)decide();
     render();
     if(!reduce||tweens.length||bubbleOn||tourOn||occ)kick();
   }
@@ -2406,7 +2430,7 @@ button{font-family:inherit}
   /* ---------- motion helpers ---------- */
   async function walkTo(x,y,speed){
     var dx=x-W.x,dy=(y==null?W.y:y)-W.y,d=Math.hypot(dx,dy);if(d<3)return;
-    var my=token;walking=dx<0?-1:1;breathing=false;
+    var my=token;walking=(dx<0?-1:1)*(upright()?1:-1);breathing=false;
     var dur=clamp(d/(speed||105)*1000,420,3200);
     try{await moveTo(x,y==null?W.y:y,null,dur,"lin");}finally{if(my===token)walking=0;}
   }
@@ -2427,18 +2451,6 @@ button{font-family:inherit}
     if(useLeft)return P_("stand",{uaL:clamp(a,25,172),faL:-4,haL:-6,eyeX:-2});
     return P_("stand",{uaR:clamp(a,-172,-25),faR:4,haR:6,eyeX:2});
   }
-  async function ensureHome(fast){
-    var h=homeSpot();
-    if(anchor){await poseTo(P_("stand"),fast?200:320);anchor=null;occ=null;layer.classList.remove("occluded");W={x:h.x,y:hiddenY(),s:1};}
-    if(occ&&!anchor){occ=null;layer.classList.remove("occluded");}
-    if(W.s!==1&&W.y<VH)W.s=1;
-    if(W.y>VH+2||h.tucked){
-      if(Math.abs(W.x-h.x)>4&&W.y>VH+150*K)W.x=h.x;
-      if(Math.abs(W.x-h.x)>4){await moveTo(W.x,hiddenY(),1,fast?220:380,"inq");W.x=h.x;}
-      breathing=false;await Promise.all([moveTo(h.x,h.y,1,fast?320:620,"out"),poseTo(P_("stand"),fast?320:600)]);
-    }else if(Math.hypot(W.x-h.x,W.y-h.y)>4){await walkTo(h.x,h.y,fast?220:105);}
-  }
-
   /* ---------- speech bubble ---------- */
   function say(o){
     clearTimeout(bubbleTimer);
@@ -2487,7 +2499,8 @@ button{font-family:inherit}
   async function entrance(){
     measure();
     var em=findEmblem();
-    if(!em){W={x:homeSpot().x,y:hiddenY(),s:1};P=P_("stand");layer.hidden=false;await ensureHome();greet();return;}
+    if(!em){W={x:homeSpot().x,y:hiddenY(),s:1};loc={kind:"off",el:null};P=P_("stand");layer.hidden=false;await ensureHome();greet();return;}
+    loc={kind:"air",el:null};
     var r=em.getBoundingClientRect(),s0=clamp((r.height*1.7)/(186*K),.3,.8),u=K*s0,peekY=r.top+r.height*.5+116*u;
     var rad=r.width*.275;
     occ=function(){var q=em.getBoundingClientRect();return {l:q.left,t:q.top,r:q.right,b:VH+400,rad:q.width*.275,flat:true};};
@@ -2552,115 +2565,330 @@ button{font-family:inherit}
     /* 8 · walk to the resting spot in the bottom-right corner */
     mark("8 · walk");
     var h=homeSpot();
-    if(h.tucked){await walkTo(h.x,VH-8,240);await ensureHome();}else await walkTo(h.x,h.y,240);
+    await walkTo(h.x,VH-8,240);loc={kind:"floor",el:null};if(h.tucked)await ensureHome();
   }
 
-  /* ---------- autonomous scenes ---------- */
-  async function scCoding(){
-    await ensureHome();face("");await poseTo(P_("crouch"),260);
-    holo("code");await poseTo(P_("sit"),700,"io");
-    face("focus");typing=true;await wait(rand(4200,6400));typing=false;
-    await poseTo(P_("sit",{eyeY:-2,headY:0,headTilt:-6}),400);svg.classList.add("blink");await wait(130);svg.classList.remove("blink");
-    await poseTo(P_("sit",{eyeX:-3}),400);typing=true;await wait(rand(1800,2600));typing=false;
-    holo("code");svg.classList.add("holo-ok");face("happy");await wait(1100);
-    holo("");face("");await poseTo(P_("sit",{laptopO:0,holoO:0}),420);await poseTo(P_("crouch"),360);await stand(380);
+  /* ================= THE BRAIN — places, travel, needs, choices ================= */
+  /* Zen keeps a small inner state (energy, boredom, short memory of what it did and where it went),
+     scans the real page for surfaces it can use, scores every possible activity against that state,
+     adds a little noise, and picks one. Nothing runs in a fixed order. */
+  var loc={kind:"floor",el:null};              /* floor | top | sit | hang | behind | air | off */
+  var mind={energy:rand(55,85),boredom:0,memory:[],seen:[]};
+  var airborne=false, pendingCalm=false, IDLE_MS=touch?4500:3200;
+  var thinkEl=document.getElementById("zen-think");
+  var SURF=".card,.darkcard,.founder,.tmember,.plan,.infocard,.stat,.panel,.ov-stat,.noti,.tcard,.limeband,.plate,.sec-head,.section-lead,[data-bot-occluder]";
+  function think(g,ms){if(!thinkEl||reduce)return;thinkEl.textContent=g;thinkEl.classList.remove("show");void thinkEl.offsetWidth;
+    thinkEl.classList.add("show");clearTimeout(thinkEl._t);thinkEl._t=setTimeout(function(){thinkEl.classList.remove("show");},ms||1500);}
+  function placeThink(){if(!thinkEl||!thinkEl.classList.contains("show"))return;var h=headWorld(),f=worldFeet(),u=K*f.s,up=Math.abs(F.rot)<90;
+    thinkEl.style.left=Math.round(h.x+(up?26:-26)*u)+"px";thinkEl.style.top=Math.round(h.y+(up?-62:72)*u)+"px";}
+  function pickW(list){if(!list.length)return null;var f=worldFeet(),best=null,bs=-1;
+    list.forEach(function(c){var r=c.el.getBoundingClientRect(),d=Math.hypot(r.left+r.width/2-f.x,r.top-f.y);
+      var s=Math.random()*(1/(1+d/700))*(mind.seen.indexOf(c.el)>=0?.25:1)*(c.el===loc.el?.5:1);if(s>bs){bs=s;best=c;}});return best;}
+  function penalty(n){var i=mind.memory.indexOf(n);return i<0?0:[.7,.45,.25,.1][i];}
+  function isOpaque(el){var cs=getComputedStyle(el);if(cs.backgroundImage&&cs.backgroundImage!=="none")return true;
+    var m=/rgba?\(([^)]+)\)/.exec(cs.backgroundColor);if(!m)return false;var p=m[1].split(",");return p.length<4||parseFloat(p[3])>.8;}
+  function navEl(){var c=document.querySelectorAll(".nav,.appbar,header");for(var i=0;i<c.length;i++){var r=c[i].getBoundingClientRect();
+      if(r.top<=4&&r.bottom>30&&r.height<140&&r.width>VW*.6&&visible(c[i]))return c[i];}return null;}
+  function navBottom(){var n=navEl();return n?n.getBoundingClientRect().bottom:0;}
+  function scan(){
+    var out={top:[],hang:[],behind:[],flip:[],nav:navEl()},nb=navBottom(),u=K,list=document.querySelectorAll(SURF);
+    for(var i=0;i<list.length;i++){var el=list[i];
+      if(isZen(el)||!visible(el))continue;
+      if(el.closest("form")||el.querySelector("form,input,textarea,select"))continue;
+      var r=el.getBoundingClientRect();
+      if(r.width<120*u||r.height<50*u||r.left<-4||r.right>VW+4||r.bottom<nb+12||r.top>VH-24)continue;
+      var op=isOpaque(el),canTop=r.top-188*u>nb+4&&r.top<VH-40;
+      if(canTop)out.top.push({el:el});
+      if(op&&r.bottom>nb+16&&r.bottom+196*u<VH-6)out.hang.push({el:el});
+      if(op&&canTop&&r.height>=205*u&&r.top+205*u<VH-10)out.behind.push({el:el});
+      if(op&&canTop&&r.height>=196*u&&r.bottom+44*u<VH-6)out.flip.push({el:el});
+    }
+    return out;
   }
-  async function scDiagnose(){
-    await ensureHome();holo("diag");face("think");
-    await poseTo(P_("diag",{holoO:0}),300);await poseTo(P_("diag"),500);
-    for(var i=0;i<3;i++){await poseTo(P_("diag",{headTilt:-12,eyeY:1}),520);await poseTo(P_("diag",{headTilt:-4,eyeY:-2}),520);}
-    svg.classList.add("holo-ok");face("happy");await poseTo(P_("diag",{uaR:-120,faR:-60,haR:0}),300);await wait(900);
-    await poseTo(P_("stand",{holoO:0}),420);holo("");face("");
+
+  /* ---------- places ---------- */
+  function plFloor(x){return {kind:"floor",el:null,rot:0,x:clamp(x,46*K,VW-46*K),world:function(){return {x:this.x,y:VH-8};}};}
+  function plTop(el,fx,sit){return {kind:sit?"sit":"top",el:el,rot:0,fx:fx,world:function(){var r=el.getBoundingClientRect();return {x:r.left+r.width*fx,y:r.top+(sit?19*K:1)};}};}
+  function plHang(el,fx,hook){return {kind:"hang",el:el,rot:180,fx:fx,hook:!!hook,world:function(){var r=el.getBoundingClientRect();return {x:r.left+r.width*fx,y:r.bottom-(hook?11*K:1)};}};}
+  function detach(){if(anchor){var f=worldFeet();anchor=null;W={x:f.x,y:f.y,s:f.s};}}
+  function attachTo(el){var r=el.getBoundingClientRect(),f=worldFeet();anchor=el;W={x:f.x-r.left,y:f.y-r.top,s:f.s};}
+  function setOcc(el){if(!el){occ=null;layer.classList.remove("occluded");return;}
+    var rad=parseFloat(getComputedStyle(el).borderTopLeftRadius)||0;
+    occ=function(){var q=el.getBoundingClientRect();return {l:q.left,t:q.top,r:q.right,b:q.bottom,rad:rad};};layer.classList.add("occluded");}
+  function upright(){return Math.abs(((P.rot%360)+540)%360-180)<90;}
+  function hangRest(extra){return P_("hangp",merge({rot:P.rot<0?-180:180},extra||{}));}
+
+  /* ---------- getting from A to B ---------- */
+  async function leave(target){
+    if(loc.kind==="off"){                                   /* rise from below the bottom edge near the target */
+      var tx=target?clamp(target.world().x,46*K,VW-46*K):homeSpot().x;
+      anchor=null;setOcc(null);P=P_("stand");W={x:tx,y:hiddenY(),s:1};
+      await Promise.all([moveTo(tx,VH-8,1,620,"out"),poseTo(P_("stand"),600)]);loc={kind:"floor",el:null};return;}
+    if(loc.kind==="behind"){                                /* climb back out over the top edge */
+      var r=loc.el.getBoundingClientRect();
+      if(!upright()){await dropOut();return;}
+      await poseTo(P_("reach",{uaL:160,uaR:-160,lean:0}),260);
+      await Promise.all([moveTo(W.x,1,1,520,"out"),poseTo(P_("stand"),520)]);setOcc(null);loc={kind:"top",el:loc.el};return;}
+    if(loc.kind==="sit"){holo("");typing=false;await poseTo(P_("crouch",{laptopO:0,holoO:0}),320);
+      await Promise.all([moveTo(W.x,1,1,260,"out"),stand(300)]);loc={kind:"top",el:loc.el};return;}
   }
-  async function scRepair(){
-    await ensureHome();var hx=W.x;
-    await walkTo(W.x-clamp(110*K/.6,70,120));
-    holo("plate");tool(true);face("focus");
-    await poseTo(P_("repair",{holoO:0}),280);await poseTo(P_("repair"),420);
-    for(var i=0;i<5;i++){await poseTo(P_("repair",{faR:-20,haR:14,sparksO:1}),130);await poseTo(P_("repair",{faR:2,haR:-6,sparksO:.2}),160);}
-    await poseTo(P_("repair",{sparksO:0,headTilt:2,eyeX:2}),300);svg.classList.add("holo-ok");face("happy");await wait(900);
-    await poseTo(P_("stand",{holoO:0}),380);tool(false);holo("");face("");
-    await walkTo(hx);
+  async function dropOut(){       /* let go from an upside-down spot and fall, flipping, to the floor */
+    detach();setOcc(null);var f=worldFeet();
+    await jumpTo({x:clamp(f.x+rand(-60,60),46*K,VW-46*K),y:VH-8},0,true);loc={kind:"floor",el:null};
   }
-  async function scExplore(){
-    await ensureHome();var hx=W.x;
-    await walkTo(W.x-rand(120,220)*K/.6);
-    face("wow");await poseTo(P_("stand",{eyeY:-4,headTilt:-8,headY:-1}),420);await wait(700);
-    face("think");await poseTo(P_("think"),520);await wait(900);
-    face("");await stand(320);await walkTo(hx);
+  async function jumpTo(to,rotT,fromHang){
+    var f={x:W.x,y:W.y},dx=to.x-f.x,dist=Math.hypot(dx,to.y-f.y),dir=dx>=0?1:-1;
+    var H=fromHang?Math.max(16,dist*.08):40+Math.max(0,f.y-to.y)*.8+dist*.12;
+    var T=clamp(520+dist*.72,620,1450)*(fromHang?.85:1);
+    var r0=P.rot,r1;
+    if(rotT===180)r1=dir>0?180:-180;
+    else r1=Math.abs(r0)>90?(r0>0?360:-360):0;
+    if(!fromHang&&Math.abs(r0)<90){face(Math.random()<.5?"focus":"");await poseTo(P_("coil",{lean:dir*5,eyeX:dir*4}),210,"out");}
+    loc={kind:"air",el:null};airborne=true;svg.classList.add("jets");mind.energy-=1.2;breathing=false;
+    var fl=moveTo(to.x,to.y,1,T,"lin",H);
+    if(Math.random()<.35)face("happy");
+    await poseTo(P_("takeoff",{rot:lerp(r0,r1,.15)}),T*.18,"out");
+    await poseTo(P_("tuck",{rot:lerp(r0,r1,.62)}),T*.42,"io");
+    await poseTo(rotT===180?P_("hangp",{rot:r1}):P_("reach",{rot:r1}),T*.4,"io");
+    await fl;svg.classList.remove("jets");airborne=false;
+    if(Math.abs(r1)===360)P.rot=0;
+    if(rotT===180){await poseTo(P_("hangp",{rot:r1,hipDrop:-5}),140,"out");await poseTo(P_("hangp",{rot:r1}),260,"io");}
+    else{face("");await poseTo(P_("crouch"),130,"out");await poseTo(P_("stand",{bob:-4,sy:1.03}),200,"out");await stand(240);}
+    breathing=true;
+    if(pendingCalm){pendingCalm=false;throw CANCEL;}
   }
-  async function scStretch(){
-    await ensureHome();
-    await poseTo(P_("stretch"),700,"io");face("wow");
-    await wait(900);face("");await poseTo(P_("stand",{lean:-6,uaL:30}),500);await poseTo(P_("stand",{lean:6,uaR:-30}),600);await stand(500);
+  async function walkOn(xWorld,speed){                        /* walk along the current surface (anchored or floor) */
+    var f=worldFeet(),r=anchor?anchor.getBoundingClientRect():null;
+    var tx=r?clamp(xWorld-r.left,22*K,r.width-22*K):clamp(xWorld,46*K,VW-46*K);
+    await walkTo(tx,W.y,speed||(70+mind.energy*.55));
   }
-  async function scBottomPeek(){
-    await ensureHome();var hx=W.x;
-    face("wink");await poseTo(P_("duck"),260,"out");face("");
+  async function travel(pl){
+    await leave(pl);
+    var to=pl.world();
+    var sameSurf=(loc.kind==="top"&&(pl.kind==="top"||pl.kind==="sit")&&loc.el===pl.el)||(loc.kind==="floor"&&pl.kind==="floor");
+    if(sameSurf&&!(pl.kind==="floor"&&Math.abs(to.x-W.x)>VW*.55&&Math.random()<.5)){
+      await walkOn(to.x);
+      if(pl.kind==="sit"){await poseTo(P_("crouch"),260);await Promise.all([moveTo(W.x,19*K,1,300,"io"),poseTo(P_("sit",{laptopO:0,holoO:0}),340)]);}
+    }else if(loc.kind==="hang"&&pl.kind==="hang"&&loc.el===pl.el){
+      await walkOn(to.x,60);
+    }else{
+      if(loc.kind==="hang"){detach();setOcc(null);await jumpTo(to,pl.rot,true);}
+      else{detach();setOcc(null);
+        if(pl.kind==="sit"){var tt=plTop(pl.el,pl.fx).world();await jumpTo(tt,0);attachTo(pl.el);loc={kind:"top",el:pl.el};
+          await poseTo(P_("crouch"),260);await Promise.all([moveTo(W.x,19*K,1,300,"io"),poseTo(P_("sit",{laptopO:0,holoO:0}),340)]);}
+        else await jumpTo(to,pl.rot);}
+    }
+    if(pl.el){attachTo(pl.el);if(pl.kind==="hang"&&pl.hook)setOcc(pl.el);}
+    loc={kind:pl.kind,el:pl.el};
+  }
+  async function goFloor(x){if(loc.kind==="floor"&&x==null)return;await travel(plFloor(x==null?worldFeet().x:x));}
+  async function uprightNear(){
+    if(loc.kind==="floor"||loc.kind==="top"){if(!upright()||Math.abs(P.rot)>1)await stand(220);return;}
+    if(loc.kind==="sit"){await leave(null);return;}
+    if(loc.kind==="behind"){await leave(null);return;}
+    if(loc.kind==="hang"){await dropOut();return;}
+    await goFloor();
+  }
+  async function ensureHome(){var h=homeSpot();if(loc.kind!=="floor"||Math.abs(W.x-h.x)>4||W.y>VH)await travel(plFloor(h.x));
+    if(h.tucked){await Promise.all([moveTo(h.x,h.y,1,420,"io"),poseTo(P_("duck"),300)]);await stand(300);}}
+
+  /* ---------- little behaviours that make it feel alive ---------- */
+  function shine(el,kind){if(!el||reduce)return;var r=el.getBoundingClientRect(),d=document.createElement("div");
+    d.className="zen-shine"+(kind?" "+kind:"");d.setAttribute("aria-hidden","true");
+    d.style.cssText="left:"+r.left+"px;top:"+r.top+"px;width:"+r.width+"px;height:"+r.height+"px;border-radius:"+getComputedStyle(el).borderTopLeftRadius;
+    document.body.appendChild(d);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d);},1700);}
+  async function blinkTwice(){svg.classList.add("blink");await wait(110);svg.classList.remove("blink");await wait(120);svg.classList.add("blink");await wait(110);svg.classList.remove("blink");}
+  async function glance(){var c=scan(),all=c.top.concat(c.hang);var g=all.length?all[Math.floor(Math.random()*all.length)].el:null;
+    lookEl=g;await wait(rand(500,1100));lookEl=null;}
+  async function hesitate(arg){lookEl=arg&&arg.el?arg.el:null;think(Math.random()<.5?"…":"?",1200);await wait(rand(650,1300));lookEl=null;}
+  async function tapWork(n,el,sparkAt){
+    for(var i=0;i<n;i++){
+      await poseTo(P_("crouch",merge({uaR:-58,faR:-48,haR:12,eyeY:4,headTilt:6,sparksO:1},sparkAt)),110);
+      await poseTo(P_("crouch",merge({uaR:-72,faR:-20,haR:-6,eyeY:4,headTilt:4,sparksO:.15},sparkAt)),150);
+      if(Math.random()<.2){await poseTo(P_("crouch",{eyeY:-1,headTilt:-6,eyeX:rand(-4,4)}),260);await wait(rand(200,500));}
+    }
+  }
+
+  /* ---------- activities (each has a beginning, middle and end) ---------- */
+  async function acMaintain(c){var el=c.el;
+    await travel(plTop(el,rand(.2,.8)));
+    face("focus");lookEl=null;await poseTo(P_("stand",{eyeY:4,headTilt:rand(-8,8)}),300);think("…",1000);await wait(rand(300,700));
+    tool(true);await poseTo(P_("crouch",{eyeY:4}),320);
+    await tapWork(Math.round(rand(4,8)),el,{sparksX:104,sparksY:190});
+    tool(false);shine(el);face("happy");think("✓",1300);
+    await poseTo(P_("stand",{uaR:-150,faR:-30,haR:6}),280,"out");await wait(450);await stand(300);face("");mind.boredom=0;
+  }
+  async function acInspect(c){var el=c.el,r=el.getBoundingClientRect();
+    await travel(plTop(el,rand(.15,.4)));
+    face("think");think("?",1300);await poseTo(P_("stand",{eyeY:4,headTilt:-10,lean:3}),400);await wait(rand(500,900));
+    await walkOn(r.left+r.width*rand(.6,.85),70);
+    holo("diag");await poseTo(P_("diag",{holoX:150,holoY:96,uaL:20,faL:-10}),420);
+    for(var i=0;i<2;i++){await poseTo(P_("diag",{holoX:150,holoY:96,uaL:20,faL:-10,headTilt:12,eyeY:2}),420);await poseTo(P_("diag",{holoX:150,holoY:96,uaL:20,faL:-10,headTilt:4,eyeX:4}),420);}
+    svg.classList.add("holo-ok");face("happy");shine(el,"soft");think("!",1100);await wait(800);
+    holo("");face("");await stand(380);
+  }
+  async function acSitCode(c){var el=c.el;
+    await travel(plTop(el,rand(.2,.8),true));
+    holo("code");await poseTo(P_("sit"),520);face("focus");typing=true;await wait(rand(3500,6500));typing=false;
+    if(Math.random()<.5){face("think");think("?",1100);await poseTo(P_("sit",{headTilt:-9,eyeY:-3}),400);await wait(800);face("focus");typing=true;await wait(rand(1500,2600));typing=false;}
+    svg.classList.add("holo-ok");face("happy");think("♪",1200);await wait(900);holo("");face("");
+    await poseTo(P_("sit",{laptopO:0,holoO:0}),380);
+    if(Math.random()<.4){await wait(rand(600,1400));await glance();}           /* sometimes just sits a moment */
+    await leave(null);
+  }
+  async function slipBehind(el,fx){
+    await travel(plTop(el,fx));
+    var r=el.getBoundingClientRect();
+    face("wink");think(Math.random()<.5?"…":"♪",900);await poseTo(P_("duck"),240,"out");face("");
+    setOcc(el);loc={kind:"behind",el:el};
+    await Promise.all([moveTo(W.x,Math.min(r.height-8,200*K),1,620,"inq"),poseTo(P_("stand"),600)]);
+  }
+  async function acWire(c){var el=c.el,side=Math.random()<.5?"L":"R";
+    await slipBehind(el,side==="L"?.14:.86);
+    var r=el.getBoundingClientRect(),inset=40*K;
+    await walkTo(side==="L"?inset:r.width-inset,W.y,90);
+    var pk=side==="L"?P_("peekL"):pose(mirror(P_("peekL")));
+    tool(true);await poseTo(pk,700,"io");lookEl=null;
+    face("focus");var sx=side==="L"?14:146;
+    for(var i=0;i<Math.round(rand(4,7));i++){await poseTo(merge(pk,{sparksO:1,sparksX:sx,sparksY:118,headTilt:pk.headTilt*1.2}),120);await poseTo(merge(pk,{sparksO:.2,sparksX:sx,sparksY:118}),170);}
+    tool(false);shine(el,"power");face("happy");think("⚡",1300);await wait(700);
+    await poseTo(P_("stand"),480,"io");face("");
+    await wait(rand(300,900));
+    if(Math.random()<.5){await leave(null);}else{await dropOutBelow(el);}
+  }
+  async function dropOutBelow(el){            /* slide down behind the card and drop out of its bottom edge */
+    var r=el.getBoundingClientRect();
+    await moveTo(W.x,r.height+186*K+4,1,700,"inq");            /* now fully below the card, falling */
+    setOcc(null);detach();loc={kind:"air",el:null};
+    var f=worldFeet();if(f.y-186*K>VH-4){W.y=hiddenY();loc={kind:"off",el:null};return;}
+    await jumpTo({x:f.x,y:VH-8},0,true);loc={kind:"floor",el:null};
+  }
+  async function acHideFlip(c){var el=c.el;
+    await slipBehind(el,rand(.25,.75));
+    var r=el.getBoundingClientRect();
+    P=hangRest();W.y=W.y-186*K;                                 /* flips about its middle while fully hidden */
+    var peekY=r.height-122*K;
+    await moveTo(W.x,peekY,1,900,"io");
+    face("happy");think("♪",1000);
+    await poseTo(hangRest({eyeX:-4,headTilt:-8}),400);await poseTo(hangRest({eyeX:4,headTilt:8}),520);
+    await blinkTwice();
+    if(Math.random()<.5){await poseTo(hangRest({uaR:-110,faR:-30}),260);for(var i=0;i<2;i++){await poseTo(hangRest({uaR:-110,faR:-60}),170);await poseTo(hangRest({uaR:-110,faR:-30}),170);}}
+    await wait(rand(400,1200));face("wow");
+    await moveTo(W.x,r.height+6,1,380,"inq");                    /* lets go */
+    setOcc(null);await dropOut();
+  }
+  async function acHang(c){var el=c.el,hook=Math.random()<.5;
+    await travel(plHang(el,rand(.2,.8),hook));
+    face("happy");if(Math.random()<.5)think("♪",1200);
+    var t=rand(2400,5200),t0=clock;
+    while(clock-t0<t){
+      var k=Math.random();
+      if(k<.3&&!hook){var r=el.getBoundingClientRect();await walkOn(r.left+r.width*rand(.15,.85),55);}      /* magnetic boots: walk the underside */
+      else if(k<.55){await poseTo(hangRest({uaL:110,faL:-30}),240);await poseTo(hangRest({uaL:110,faL:-60}),180);await poseTo(hangRest(),260);}
+      else if(k<.75){await glance();}
+      else{await poseTo(hangRest({headTilt:rand(-12,12),eyeX:rand(-4,4)}),500);await wait(rand(300,900));}
+    }
+    face("");
+  }
+  async function acCharge(nav){
+    await travel(plHang(nav,rand(.12,.88),true));
+    svg.classList.add("charging");think("⚡",5200);face("sleep");
+    var need=100-mind.energy,t=clamp(need*80,2200,6500),t0=clock,e0=mind.energy;
+    while(clock-t0<t){await wait(250);mind.energy=e0+need*Math.min(1,(clock-t0)/t);}
+    svg.classList.remove("charging");face("happy");think("!",1000);mind.energy=100;await wait(600);face("");
+    await dropOut();
+  }
+  async function acWander(){
+    var f=worldFeet();
+    if(loc.kind!=="floor"&&loc.kind!=="top"){await goFloor();f=worldFeet();}
+    var r=loc.kind==="top"?loc.el.getBoundingClientRect():null;
+    var lo=r?r.left+22*K:46*K,hi=r?r.right-22*K:VW-46*K;
+    var tx=lerp(lo,hi,Math.random());if(Math.abs(tx-f.x)<60)tx=f.x<(lo+hi)/2?hi-rand(0,40):lo+rand(0,40);
+    if(Math.random()<.3){                                        /* changes its mind halfway */
+      await walkOn(lerp(f.x,tx,rand(.35,.6)));think("…",900);await poseTo(P_("stand",{eyeX:-3,headTilt:-6}),300);await wait(rand(400,800));
+      if(Math.random()<.5)tx=f.x;
+    }
+    await walkOn(tx);
+    var k=Math.random();
+    if(k<.35){await glance();}
+    else if(k<.6){face("wow");think("!",900);await poseTo(P_("stand",{eyeY:-4,headTilt:-8}),360);await wait(600);face("");}
+    else if(k<.8&&r){await poseTo(P_("peekL",{lean:-18,eyeY:5,headTilt:-6,uaL:30,faL:0}),420);await wait(700);}   /* looks over the edge */
+    else{await poseTo(P_("think"),460);await wait(700);}
+    await stand(320);
+    if(r&&Math.random()<.45)await goFloor(clamp(tx+rand(-140,140),46*K,VW-46*K));                                    /* hops down */
+  }
+  async function acPeekFloor(){
+    await goFloor();var hx=W.x;
+    face("wink");await poseTo(P_("duck"),240,"out");face("");
     await Promise.all([moveTo(W.x,hiddenY(),1,420,"inq"),poseTo(P_("duck"),420)]);
-    await wait(rand(700,1300));
-    var tries=0,x;do{x=rand(VW*.12,VW*.88);tries++;}while(tries<8&&blocked(x,VH-8));
+    loc={kind:"off",el:null};await wait(rand(700,1500));
+    var tries=0,x;do{x=rand(VW*.08,VW*.92);tries++;}while(tries<8&&blocked(x,VH-8));
     W.x=x;P=P_("stand");
-    await moveTo(x,VH+118*K,1,700,"out");                 /* only head and eyes above the edge */
-    await lookAround();svg.classList.add("blink");await wait(140);svg.classList.remove("blink");
-    await moveTo(x,hiddenY(),1,380,"inq");
-    await wait(500);W.x=hx;
-    var h=homeSpot();face("happy");
-    await Promise.all([moveTo(h.x,h.y,1,600,"out"),poseTo(P_("stand"),600)]);await hop(10);face("");
+    await moveTo(x,VH+118*K,1,700,"out");await lookAround();await blinkTwice();
+    if(Math.random()<.5){face("happy");await Promise.all([moveTo(x,VH-8,1,500,"out"),poseTo(P_("stand"),500)]);loc={kind:"floor",el:null};await hop(12);face("");}
+    else{await moveTo(x,hiddenY(),1,380,"inq");loc={kind:"off",el:null};}
   }
-  function cardCandidate(){
-    var list=document.querySelectorAll("[data-bot-occluder],.card,.founder,.tmember,.form-card,.plan,.infocard,.stat,.panel");var best=[];
-    for(var i=0;i<list.length;i++){var el=list[i];if(!visible(el))continue;var r=el.getBoundingClientRect();
-      if(r.top<80||r.bottom>VH-30||r.width<180||r.height<130||r.left<0||r.right>VW)continue;
-      if(el.contains(document.activeElement))continue;
-      var bg=getComputedStyle(el).backgroundColor;if(/rgba\(.*,\s*0\)$/.test(bg)||bg==="transparent")continue;
-      [["L",r.left],["R",r.right]].forEach(function(s){var dir=s[0]==="L"?-1:1,gx=s[1]+dir*26,gy=r.bottom-60*K;
-        var t=topAt(gx,gy);if(!t||el.contains(t))return;if(t.closest&&t.closest(INTERACTIVE+",.card,.plate,p,h1,h2,h3,li,img"))return;
-        best.push({el:el,side:s[0]});});}
-    return best.length?best[Math.floor(Math.random()*best.length)]:null;
+  async function acCurious(){
+    if(!ptr)return acWander();var c=scan(),best=null;
+    c.top.forEach(function(t){var r=t.el.getBoundingClientRect();if(ptr.x>r.left&&ptr.x<r.right&&ptr.y<r.top+40&&ptr.y>r.top-260)best=t;});
+    if(best){var r=best.el.getBoundingClientRect();await travel(plTop(best.el,clamp((ptr.x-r.left)/r.width+rand(-.15,.15),.1,.9)));}
+    else await travel(plFloor(ptr.x+rand(-80,80)));
+    face("wow");think("?",1300);lookEl=null;await wait(900);
+    if(Math.random()<.6){await wave(2);}face("");await stand(300);
   }
-  async function scCardPeek(){
-    var c=cardCandidate();if(!c)return scBottomPeek();
-    await ensureHome();var hx=W.x;
-    face("wink");await poseTo(P_("duck"),260,"out");face("");
-    await Promise.all([moveTo(W.x,hiddenY(),1,420,"inq"),poseTo(P_("duck"),420)]);
-    await wait(rand(600,1000));
-    /* travel "behind the website": now anchored inside the card, fully occluded by it */
-    var el=c.el,r=el.getBoundingClientRect(),inset=44*K,rad=parseFloat(getComputedStyle(el).borderTopLeftRadius)||14;
-    anchor=el;W={x:c.side==="L"?inset:r.width-inset,y:r.height-34*K,s:1};
-    occ=function(){var q=el.getBoundingClientRect();return {l:q.left,t:q.top,r:q.right,b:q.bottom,rad:rad};};layer.classList.add("occluded");
-    P=P_("stand");
-    var peek=c.side==="L"?P_("peekL"):pose(mirror(P_("peekL")));
-    await poseTo(merge(peek,{uaL:c.side==="L"?20:peek.uaL,uaR:c.side==="R"?-20:peek.uaR,faL:0,faR:0}),1100,"io");
-    await poseTo(peek,380,"out");
-    await poseTo(merge(peek,{eyeX:peek.eyeX*1.6,eyeY:2}),400);await wait(500);
-    svg.classList.add("blink");await wait(130);svg.classList.remove("blink");
-    face("happy");await wait(700);face("");
-    await poseTo(P_("stand"),520,"io");                 /* duck back behind the card */
-    await wait(500);
-    anchor=null;occ=null;layer.classList.remove("occluded");W={x:hx,y:hiddenY(),s:1};
-    var h=homeSpot();await Promise.all([moveTo(h.x,h.y,1,620,"out"),poseTo(P_("stand"),600)]);
+  async function acStretch(){
+    await uprightNear();
+    await poseTo(P_("stretch"),700,"io");face("wow");await wait(800);face("");
+    await poseTo(P_("stand",{lean:-6,uaL:30}),480);await poseTo(P_("stand",{lean:6,uaR:-30}),560);await stand(420);
   }
-  async function scGreeter(){
-    await ensureHome();if(!ptr)return scStretch();await wave(2);face("");await stand(300);
+  async function acNap(){
+    if(loc.kind!=="top"&&loc.kind!=="floor")await goFloor();
+    if(loc.kind==="top"){await poseTo(P_("crouch"),260);await Promise.all([moveTo(W.x,19*K,1,300,"io"),poseTo(P_("sit",{laptopO:0,holoO:0,uaL:20,faL:-20,uaR:-20,faR:20}),900)]);loc={kind:"sit",el:loc.el};}
+    else await poseTo(P_("sit",{laptopO:0,holoO:0,uaL:20,faL:-20,uaR:-20,faR:20}),900);
+    face("sleep");sleeping=true;breathing=true;await wait(1e9);
   }
-  async function scSleep(){
-    await ensureHome();await poseTo(P_("sit",{laptopO:0,holoO:0,uaL:20,faL:-20,uaR:-20,faR:20}),900);
-    face("sleep");sleeping=true;breathing=true;
-    await wait(1e9);
+  var ACT={maintain:acMaintain,inspect:acInspect,sitcode:acSitCode,wire:acWire,hideflip:acHideFlip,hang:acHang,charge:acCharge,
+           wander:acWander,peek:acPeekFloor,curious:acCurious,stretch:acStretch,nap:acNap};
+
+  function decide(force){
+    var C=scan(),acts=[],e=mind.energy,idleFor=now()-lastAct;
+    function add(n,u,arg){if(u<=0)return;acts.push({n:n,s:u*(1-penalty(n))+Math.random()*.9,arg:arg});}
+    if(C.nav)add("charge",e<20?5:(e<45?1.3:(e<70?.3:0)),C.nav);
+    add("maintain",1.1+mind.boredom*.4,pickW(C.top));
+    add("inspect",.8,pickW(C.top));
+    add("sitcode",.65,pickW(C.top));
+    add("wire",.95,pickW(C.behind));
+    add("hideflip",.8,pickW(C.flip));
+    add("hang",.9,pickW(C.hang));
+    if(C.nav)add("hang",.55,{el:C.nav});
+    add("wander",.75);
+    add("peek",.45);
+    if(ptr&&!touch&&now()-lastPtrT<90000)add("curious",.55);
+    add("stretch",.3);
+    if(idleFor>150000||e<8)add("nap",e<8&&!C.nav?4:.7);
+    acts=acts.filter(function(a){return ["maintain","inspect","sitcode","wire","hideflip","hang"].indexOf(a.n)<0||a.arg;});
+    if(force)acts=acts.filter(function(a){return a.n===force;});
+    if(!acts.length)return;
+    acts.sort(function(a,b){return b.s-a.s;});var a=acts[0];
+    mind.memory.unshift(a.n);if(mind.memory.length>4)mind.memory.length=4;
+    if(a.arg&&a.arg.el){mind.seen.unshift(a.arg.el);if(mind.seen.length>5)mind.seen.length=5;}
+    run("auto",1,async function(){if(!force&&Math.random()<.2)await hesitate(a.arg);await ACT[a.n](a.arg);});
   }
-  var SCENES=[["coding",scCoding,3],["diagnose",scDiagnose,2],["repair",scRepair,2],["explore",scExplore,2],
-              ["stretch",scStretch,1],["peek",scBottomPeek,2],["card",scCardPeek,3],["greet",scGreeter,1]];
-  function pickScene(){
-    var h=homeSpot();var pool=SCENES.filter(function(s){if(s[0]===lastScene)return false;
-      if(touch||VW<720)return s[0]==="peek"||s[0]==="stretch"||s[0]==="coding";
-      if(h.tucked)return s[0]==="peek"||s[0]==="card";return true;});
-    var tot=0;pool.forEach(function(s){tot+=s[2];});var x=Math.random()*tot,pick=pool[0];
-    for(var i=0;i<pool.length;i++){x-=pool[i][2];if(x<=0){pick=pool[i];break;}}
-    if(!pick){autoAt=clock+10000;return;}
-    lastScene=pick[0];run("auto",1,pick[1]);
+  async function calm(){
+    typing=false;tool(false);holo("");sleeping=false;svg.classList.remove("charging","jets");face("");lookEl=null;
+    if(loc.kind==="hang")await poseTo(hangRest(),380);
+    else if(loc.kind==="behind")await poseTo(upright()?P_("stand"):hangRest(),320);
+    else if(loc.kind==="sit")await poseTo(P_("sit",{laptopO:0,holoO:0}),380);
+    else if(loc.kind==="air")await goFloor();
+    else if(loc.kind!=="off")await stand(380);
   }
-  function toIdle(){if(off)return;state="idle";prio=0;run("return",0,async function(){lookEl=null;holo("");tool(false);await ensureHome(true);face("");await stand(380);});}
+  function toIdle(){if(off)return;state="idle";prio=0;run("calm",0,calm);}
+  function offstage(){        /* the surface Zen was on scrolled away or vanished: it is now "behind the page" */
+    var wasAuto=state==="auto";if(wasAuto)cancel();
+    var f=worldFeet();anchor=null;setOcc(null);W={x:clamp(f.x,46*K,VW-46*K),y:hiddenY(),s:1};P=P_("stand");loc={kind:"off",el:null};
+    svg.classList.remove("jets","charging");holo("");tool(false);typing=false;sleeping=false;face("");
+    if(wasAuto||state==="calm"){state="idle";prio=0;onIdle();}
+  }
 
   /* ---------- contextual help ---------- */
   function helpText(el){return el.getAttribute("data-bot-help")||"";}
@@ -2668,7 +2896,7 @@ button{font-family:inherit}
     var t=helpText(el);if(!t||off)return;
     var ok=run("help",3,async function(){
       helpEl=el;lookEl=el;svg.classList.remove("holo-ok");holo("");tool(false);typing=false;
-      if(anchor||W.y>VH+2||W.s!==1)await ensureHome(true);
+      await uprightNear();
       if(!tourOn)say({text:t,sticky:true});
       face(el.hasAttribute("data-bot-react")?"happy":"");
       await poseTo(pointPose(el),360,"out");
@@ -2698,32 +2926,30 @@ button{font-family:inherit}
 
   /* ---------- user activity: never compete with reading, typing or clicking ---------- */
   function activity(e){lastAct=now();
-    if(sleeping&&state==="auto"){sleeping=false;toIdle();return;}
-    if(state==="auto"){toIdle();}
+    if(state==="auto"){if(airborne){pendingCalm=true;return;}toIdle();}
   }
   var scrollT=0;
   window.addEventListener("scroll",function(){activity();clearTimeout(scrollT);scrollT=setTimeout(settle,220);},{passive:true});
   ["keydown","pointerdown","wheel","touchstart","input"].forEach(function(t){document.addEventListener(t,function(e){if(isZen(e.target))return;activity(e);},{passive:true,capture:true});});
   document.addEventListener("focusin",function(e){if(isZen(e.target))return;if(e.target.matches&&e.target.matches("input,textarea,select"))setTimeout(settle,30);});
-  document.addEventListener("mousemove",function(e){ptr={x:e.clientX,y:e.clientY};lastPtrT=now();},{passive:true});
-  function settle(){if(off||state!=="idle")return;var h=homeSpot();
-    if(Math.abs(h.y-W.y)>3||Math.abs(h.x-W.x)>3)run("return",0,async function(){
-      if(h.tucked){await Promise.all([moveTo(h.x,h.y,1,420,"io"),poseTo(P_("duck"),300)]);await poseTo(P_("stand"),300);}
-      else await ensureHome();});}
+  document.addEventListener("mousemove",function(e){var m=!ptr||Math.abs(ptr.x-e.clientX)+Math.abs(ptr.y-e.clientY)>3;ptr={x:e.clientX,y:e.clientY};lastPtrT=now();if(m)activity();},{passive:true});
+  function settle(){if(off||state!=="idle")return;
+    if(loc.kind==="off"){run("return",0,function(){return travel(plFloor(homeSpot().x));});return;}
+    if(loc.kind==="floor"&&blocked(worldFeet().x,VH-8))run("return",0,ensureHome);}
 
   /* ---------- reactions to clicks and real form outcomes ---------- */
   document.addEventListener("click",function(e){
     if(off||isZen(e.target)||!e.target.closest)return;
     var el=e.target.closest("[data-bot-react]");
-    if(el&&!tourOn)run("react",3,async function(){if(anchor||W.y>VH+2)await ensureHome(true);face("happy");lookEl=el;await hop(12);await wait(250);face("");lookEl=null;});
+    if(el&&!tourOn)run("react",3,async function(){await uprightNear();face("happy");lookEl=el;await hop(12);await wait(250);face("");lookEl=null;});
     if(touch){var hl=e.target.closest("[data-bot-help]");if(hl&&!tourOn)say({text:helpText(hl),ms:4200});}
   });
   function hookForm(id){var f=document.getElementById(id);if(!f)return;
     f.addEventListener("submit",function(){setTimeout(function(){if(off)return;
       var bad=f.querySelector(".field.invalid"),msg=bad&&bad.querySelector(".err-msg");
-      if(bad&&msg){run("react",3,async function(){await ensureHome(true);face("worry");lookEl=bad;
+      if(bad&&msg){run("react",3,async function(){await uprightNear();face("worry");lookEl=bad;
           say({title:"Heads up",text:msg.textContent.trim(),ms:5200});await poseTo(pointPose(bad),360,"out");await wait(2400);face("");lookEl=null;});}
-      else{run("react",3,async function(){await ensureHome(true);face("happy");say({title:"Nice!",text:"That went through — everything checked out.",ms:4200});
+      else{run("react",3,async function(){await uprightNear();face("happy");say({title:"Nice!",text:"That went through — everything checked out.",ms:4200});
           await poseTo(P_("stand",{sparksX:80,sparksY:40}),10);await hop(18);await poseTo(P_("stretch",{sparksO:1,sparksX:80,sparksY:30}),260,"out");
           await wait(500);await poseTo(P_("stand"),360);face("");});}
     },90);});}
@@ -2732,7 +2958,7 @@ button{font-family:inherit}
   /* ---------- direct interaction: clicking Zen ---------- */
   function openMenu(viaKey){
     run("direct",4,async function(){
-      if(anchor||W.y>VH+2)await ensureHome(true);
+      await uprightNear();
       lookEl=null;face("happy");
       say({title:"Zen · site engineer",text:"Need a hand? I can walk you through this page, or get out of your way.",sticky:true,focus:viaKey,
            actions:[{label:tourTargets().length>1?"Take the tour":"Show me around",primary:true,fn:function(){hush();startTour();}},
@@ -2766,7 +2992,7 @@ button{font-family:inherit}
     var my=tourIdx;
     run("tour",2,async function(){
       lookEl=el;holo("");tool(false);face("");
-      if(anchor||W.y>VH+2||W.s!==1)await ensureHome(true);
+      await goFloor();
       await wait(reduce?0:380);
       var r=el.getBoundingClientRect(),f=worldFeet(),u=K;
       var tx=clamp(r.left+r.width/2+(r.left+r.width/2>VW/2?90:-90)*u/.6,60*u,VW-60*u),h=homeSpot();
@@ -2781,17 +3007,17 @@ button{font-family:inherit}
   /* ---------- disable / restore ---------- */
   function setOff(v){
     if(v){store.set("zk-zen-off","1");tourOn=false;ring.hidden=true;hush();
-      run("bye",5,async function(){face("wink");await wave(1);await Promise.all([moveTo(W.x,hiddenY(),1,480,"inq"),poseTo(P_("duck"),400)]);});
+      run("bye",5,async function(){await uprightNear();face("wink");await wave(1);detach();setOcc(null);await Promise.all([moveTo(W.x,hiddenY(),1,480,"inq"),poseTo(P_("duck"),400)]);loc={kind:"off",el:null};});
       setTimeout(function(){off=true;layer.hidden=true;dock.hidden=false;cancel();state="off";},reduce?20:1100);
     }else{store.set("zk-zen-off","0");off=false;dock.hidden=true;layer.hidden=false;state="idle";prio=0;
-      W={x:homeSpot().x,y:hiddenY(),s:1};run("hello",4,async function(){await ensureHome();face("happy");await wave(2);face("");await stand(300);});}
+      W={x:homeSpot().x,y:hiddenY(),s:1};loc={kind:"off",el:null};run("hello",4,async function(){await ensureHome();face("happy");await wave(2);face("");await stand(300);});}
   }
   dock.addEventListener("click",function(){setOff(false);});
 
   /* ---------- page lifecycle ---------- */
   document.addEventListener("visibilitychange",function(){if(!document.hidden){last=0;kick();}});
   window.addEventListener("resize",function(){var oldVW=VW,oldVH=VH;measure();
-    if(state==="idle"||state==="return"){var h=homeSpot();W.x=h.x;W.y=h.y;}else if(!anchor){W.x*=VW/oldVW;W.y+=VH-oldVH;}kick();});
+    if(!anchor){if(loc.kind==="floor"){W.x=clamp(W.x*VW/oldVW,46*K,VW-46*K);W.y=VH-8;}else if(loc.kind==="off"){W.y=hiddenY();}else{W.x*=VW/oldVW;W.y+=VH-oldVH;}}kick();});
   window.addEventListener("hashchange",function(){if(off)return;if(tourOn)endTour("skipped");hush();
     if(state==="auto"||state==="help")toIdle();setTimeout(settle,400);});
   function onRM(){reduce=!!(mRM&&mRM.matches);if(reduce&&state==="auto")toIdle();}
@@ -2800,12 +3026,12 @@ button{font-family:inherit}
   /* ---------- boot ---------- */
   function boot(){
     if(off){layer.hidden=true;dock.hidden=false;state="off";return;}
-    if(reduce){var h=homeSpot();W={x:h.x,y:h.y,s:1};P=P_("stand");F=copy(P);layer.hidden=false;state="idle";prio=0;render();greet();onIdle();return;}
+    if(reduce){var h=homeSpot();W={x:h.x,y:h.y,s:1};loc={kind:"floor",el:null};P=P_("stand");F=copy(P);layer.hidden=false;state="idle";prio=0;render();greet();onIdle();return;}
     state="idle";prio=0;
     run("intro",4,entrance);
   }
   window.ZenBot={tour:startTour,hide:function(){setOff(true);},show:function(){setOff(false);},state:function(){return state;},
-                 scene:function(n){var s=SCENES.filter(function(x){return x[0]===n;})[0];if(s)run("auto",1,s[1]);}};
+                 scene:function(n){decide(n);},mind:function(){return {energy:Math.round(mind.energy),loc:loc.kind,memory:mind.memory.slice()};}};
   if(document.readyState==="complete")setTimeout(boot,700);else window.addEventListener("load",function(){setTimeout(boot,700);});
 })();
 
