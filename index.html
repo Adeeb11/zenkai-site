@@ -794,6 +794,35 @@ button{font-family:inherit}
   .zs-fc{animation:none}.zs-star,.zs-hint span{animation:none}
 }
 
+/* phones in landscape: copy on the left, module on the right, nothing below the fold */
+@media (max-width:950px) and (max-height:520px) and (orientation:landscape){
+  .zs{height:460vh}
+  .zs-stage{--S:min(24vw,46vh,220px);--cx:74%;--cy:60%}
+  .zs-copy{left:max(20px,env(safe-area-inset-left,0px));right:auto;width:50vw;align-items:center}
+  .zs-ch{padding-top:56px;align-self:center}
+  .zs-ch[data-ch="3"]{padding-top:64px;align-self:start}
+  .zs-ch h1{font-size:clamp(1.6rem,4.6vw,2.2rem);margin:.4rem 0 .3rem}
+  .zs-ch h2{font-size:clamp(1.3rem,3.8vw,1.8rem);margin:.4rem 0 .3rem;max-width:18ch}
+  .zs-lede{font-size:1rem;margin-bottom:.4rem}
+  .zs-ch .zs-sub{display:none}
+  .zs-actions{margin-top:.8rem}
+  .zs-gw{font-size:min(20vw,9rem);margin-left:30vw;margin-bottom:0;align-self:center}
+  .zs-rail{right:14px;bottom:12px;top:auto;transform:none;flex-direction:row}
+  .zs-rail span{display:none}
+  .zs-lab span{display:none}.zs-lab b{font-size:.78rem}.zs-lab{max-width:8.5rem}
+  .zs-node{min-width:0;padding:.4rem .6rem}.zs-node b{font-size:.72rem}
+  .zs-grow{height:40%}.zs-chart{left:48%;height:52%}
+  .zs-hint{display:none}
+}
+/* small phones: keep the two hero buttons on one row and the module clear of them */
+@media (max-width:480px){
+  .zs-stage{--cy:70%;--S:min(44vw,30vh,220px)}
+  .zs-actions{gap:.5rem;margin-top:1.1rem}.zs-actions .btn{padding:.66rem .95rem;font-size:.88rem}
+  .zs-fc small{font-size:.68rem}.zs-dbar{font-size:.66rem}
+}
+.zs-final{overflow-x:clip}
+.zs-orbit{width:min(100%,640px)}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -817,6 +846,44 @@ button{font-family:inherit}
 @media (min-width:721px) and (max-width:980px){
   .cards.c3{grid-template-columns:repeat(2,1fr)}
 }
+
+/* ============================================================
+   MOBILE & TABLET REFINEMENTS
+   ============================================================ */
+@media (pointer:coarse){
+  .footer .flinks{gap:.1rem 1rem}
+  .footer .flinks a{display:inline-flex;align-items:center;min-height:42px}
+  .tab{min-height:42px}
+  .theme-btn{width:42px;height:42px}
+  .brand{min-height:42px}
+  .limeband a.lblink{min-height:44px}
+  .panel-head a{display:inline-flex;align-items:center;min-height:42px;padding-inline:.4rem}
+  .btn{min-height:44px}
+  .input,.select,.textarea{font-size:16px}          /* no zoom-on-focus on phones */
+}
+@media (max-width:900px){
+  .palette{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:720px){
+  .chip{font-size:.7rem}
+  .popular{font-size:.72rem}
+  .appbar .atitle{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52vw}
+  .appbar .atitle small{font-size:.64rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* the workspace rail becomes a bottom tab bar */
+  .rail{display:flex;position:fixed;left:0;right:0;bottom:0;top:auto;height:auto;z-index:45;flex-direction:row;justify-content:space-around;
+    padding:.4rem max(10px,env(safe-area-inset-right,0px)) calc(.4rem + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));
+    border-right:0;border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface) 97%,transparent)}
+  .applayout .appmain{padding-bottom:calc(5.5rem + env(safe-area-inset-bottom,0px))}
+  .band{padding-block:clamp(2.4rem,9vw,3.5rem)}
+  .sec-head,.section-lead,.plate{padding:1.1rem 1.2rem}
+}
+@media (max-width:480px){
+  .appbar .atitle{max-width:40vw}
+  .aright .chip{display:none}
+  .aright{gap:.4rem}
+  .appbar .atitle small{font-size:.68rem}
+}
+body:has(.page.active .rail) #zen-dock{bottom:calc(74px + env(safe-area-inset-bottom,0px))}
 </style>
 </head>
 <body>
@@ -2030,11 +2097,13 @@ button{font-family:inherit}
       if(!reduce&&state.motion){state.raf=requestAnimationFrame(frame);}else{state.running=false;}
     }
     state.tick=frame;
-    state.motion=!appPages[activeRoute]; // animate on marketing pages, freeze on app pages
+    state.motion=!appPages[activeRoute]&&!phoneGL(); // animate on marketing pages, freeze on app pages and phones
     frame(); // always draws one frame; keeps animating only where motion is on
   }
+  function phoneGL(){return window.matchMedia&&matchMedia("(max-width:720px), (pointer:coarse) and (max-width:1024px) and (max-height:520px)").matches;}
   function setGLMotion(on){
     if(!siteGL)return;
+    on=on&&!phoneGL();
     siteGL.motion=!!on;
     if(on&&!reduce&&!siteGL.running){siteGL.running=true;siteGL.raf=requestAnimationFrame(siteGL.tick);}
   }
@@ -2625,10 +2694,16 @@ button{font-family:inherit}
   function tool(on){svg.classList.toggle("tool",!!on);}
 
   /* ---------- geometry ---------- */
-  function homeSpot(){var x=VW-100*K, y=VH-8;
+  function homeSpot(){var x=VW-100*K, y=FY();
     if(blocked(x,y))return {x:x,y:VH+118*K,tucked:true};
     return {x:x,y:y,tucked:false};}
   function hiddenY(){return VH+192*K;}
+  /* the "floor" is the bottom edge of the screen, or the top of a mobile bottom tab bar when one is showing */
+  var fyEl=null,fyT=0,fyV=0;
+  function FY(){var t=now();if(t-fyT<500&&fyT)return fyV;fyT=t;fyV=VH-8;
+    var bars=document.querySelectorAll(".page.active .rail");for(var i=0;i<bars.length;i++){var cs=getComputedStyle(bars[i]);
+      if(cs.position==="fixed"&&cs.display!=="none"){var r=bars[i].getBoundingClientRect();if(r.top>VH*.6)fyV=r.top-4;}}
+    return fyV;}
   function isZen(el){return el&&(layer.contains(el)||bubble.contains(el)||el===ring||dock.contains(el)||(el.classList&&(el.classList.contains("zen-shine")||el.id==="zen-think")));}
   function topAt(x,y){
     if(!document.elementsFromPoint)return null;
@@ -2855,7 +2930,7 @@ button{font-family:inherit}
     /* 8 · walk to the resting spot in the bottom-right corner */
     mark("8 · walk");
     var h=homeSpot();
-    await walkTo(h.x,VH-8,240);loc={kind:"floor",el:null};if(h.tucked)await ensureHome();
+    await walkTo(h.x,FY(),240);loc={kind:"floor",el:null};if(h.tucked)await ensureHome();
   }
 
   /* ================= THE BRAIN — places, travel, needs, choices ================= */
@@ -2913,7 +2988,7 @@ button{font-family:inherit}
     return l[Math.floor(Math.random()*l.length)];}
   /* ---------- places ---------- */
   var PERCH=19;                                   /* svg units between hip and the feet anchor when sitting */
-  function plFloor(x){return {kind:"floor",el:null,rot:0,x:clamp(x,46*K,VW-46*K),world:function(){return {x:this.x,y:VH-8};}};}
+  function plFloor(x){return {kind:"floor",el:null,rot:0,x:clamp(x,46*K,VW-46*K),world:function(){return {x:this.x,y:FY()};}};}
   function plTop(el,fx,sit){return {kind:sit?"sit":"top",el:el,rot:0,fx:fx,world:function(){var r=el.getBoundingClientRect();return {x:r.left+r.width*fx,y:r.top+1};}};}
   function plHang(el,fx){return {kind:"hang",el:el,rot:180,fx:fx,world:function(){var r=el.getBoundingClientRect();return {x:r.left+r.width*fx,y:r.bottom-1};}};}
   function detach(){if(anchor){var f=worldFeet();anchor=null;W={x:f.x,y:f.y,s:f.s};}}
@@ -2958,7 +3033,7 @@ button{font-family:inherit}
     if(loc.kind==="off"){                        /* climbs up from below the bottom edge near the target */
       var tx=target?clamp(target.world().x,46*K,VW-46*K):homeSpot().x;
       anchor=null;setOcc(null);P=P_("stand");W={x:tx,y:hiddenY(),s:1};
-      await Promise.all([moveTo(tx,VH-8,1,900,"out"),poseTo(P_("stand"),800)]);loc={kind:"floor",el:null};return;}
+      await Promise.all([moveTo(tx,FY(),1,900,"out"),poseTo(P_("stand"),800)]);loc={kind:"floor",el:null};return;}
     if(loc.kind==="behind"){
       if(!upright()){await letGo();return;}
       await poseTo(P_("reach",{uaL:160,uaR:-160}),320);
@@ -2969,9 +3044,9 @@ button{font-family:inherit}
     if(loc.kind==="air"){await letGo();}
   }
   function floorBelow(x,fromY){              /* first surface under x (a card top or the floor) */
-    var c=scan().top,best=null,by=VH-8;
+    var c=scan().top,best=null,by=FY();
     c.forEach(function(t){var r=t.el.getBoundingClientRect();if(x>r.left+16*K&&x<r.right-16*K&&r.top>fromY+20&&r.top<by){by=r.top;best=t.el;}});
-    return {el:best,y:best?best.getBoundingClientRect().top+1:VH-8};
+    return {el:best,y:best?best.getBoundingClientRect().top+1:FY()};
   }
   async function letGo(){detach();setOcc(null);var f=worldFeet(),b=floorBelow(f.x,f.y);await fall(f.x,b.y);
     if(b.el){attachTo(b.el);loc={kind:"top",el:b.el};}else loc={kind:"floor",el:null};}
@@ -3227,7 +3302,8 @@ button{font-family:inherit}
   document.addEventListener("mousemove",function(e){var m=!ptr||Math.abs(ptr.x-e.clientX)+Math.abs(ptr.y-e.clientY)>3;ptr={x:e.clientX,y:e.clientY};lastPtrT=now();if(m)activity();},{passive:true});
   function settle(){if(off||state!=="idle")return;
     if(loc.kind==="off"){run("return",0,function(){return travel(plFloor(homeSpot().x));});return;}
-    if(loc.kind==="floor"&&blocked(worldFeet().x,VH-8))run("return",0,ensureHome);}
+    if(loc.kind==="floor"&&Math.abs(W.y-FY())>3&&!anchor){run("return",0,async function(){await moveTo(W.x,FY(),1,320,"io");});return;}
+    if(loc.kind==="floor"&&blocked(worldFeet().x,FY()))run("return",0,ensureHome);}
 
   /* ---------- reactions to clicks and real form outcomes ---------- */
   document.addEventListener("click",function(e){
@@ -3288,7 +3364,7 @@ button{font-family:inherit}
       await wait(reduce?0:380);
       var r=el.getBoundingClientRect(),f=worldFeet(),u=K;
       var tx=clamp(r.left+r.width/2+(r.left+r.width/2>VW/2?90:-90)*u/.6,60*u,VW-60*u),h=homeSpot();
-      if(!h.tucked&&Math.abs(tx-f.x)>20)await walkTo(tx,VH-8,170);
+      if(!h.tucked&&Math.abs(tx-f.x)>20)await walkTo(tx,FY(),170);
       await poseTo(pointPose(el),360,"out");
       while(tourOn&&tourIdx===my){await wait(400);var pp=pointPose(el);await poseTo(pp,300);}
     });
@@ -3309,7 +3385,7 @@ button{font-family:inherit}
   /* ---------- page lifecycle ---------- */
   document.addEventListener("visibilitychange",function(){if(!document.hidden){last=0;kick();}});
   window.addEventListener("resize",function(){var oldVW=VW,oldVH=VH;measure();
-    if(!anchor){if(loc.kind==="floor"){W.x=clamp(W.x*VW/oldVW,46*K,VW-46*K);W.y=VH-8;}else if(loc.kind==="off"){W.y=hiddenY();}else{W.x*=VW/oldVW;W.y+=VH-oldVH;}}kick();});
+    if(!anchor){if(loc.kind==="floor"){W.x=clamp(W.x*VW/oldVW,46*K,VW-46*K);W.y=FY();}else if(loc.kind==="off"){W.y=hiddenY();}else{W.x*=VW/oldVW;W.y+=VH-oldVH;}}kick();});
   window.addEventListener("hashchange",function(){if(off)return;if(tourOn)endTour("skipped");hush();
     if(state==="auto"||state==="help")toIdle();setTimeout(settle,400);});
   function onRM(){reduce=!!(mRM&&mRM.matches);if(reduce&&state==="auto")toIdle();}
@@ -3352,11 +3428,11 @@ button{font-family:inherit}
   function sm(a,b,v){var t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);}
   function lerp(a,b,t){return a+(b-a)*t;}
   function measure(){
-    var r=stage.getBoundingClientRect();W=r.width;H=r.height;small=W<900;
+    var r=stage.getBoundingClientRect();W=r.width;H=r.height;small=W<900&&H>=520;     /* stacked phone/tablet-portrait layout */
     dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
     S=parseFloat(getComputedStyle(stage).getPropertyValue("--S"))||0;
     var probe=root.querySelector(".zs-plate");S=probe?probe.offsetWidth:300;
-    cx=W*(small?.5:.66);cy=H*(small?.68:.56);lastP=-1;
+    var st=getComputedStyle(stage);cx=W*(parseFloat(st.getPropertyValue("--cx"))||66)/100;cy=H*(parseFloat(st.getPropertyValue("--cy"))||56)/100;lastP=-1;
     /* everything the frame loop needs is read here once, never inside the loop */
     rootTop=root.getBoundingClientRect().top+window.scrollY;total=Math.max(1,root.offsetHeight-H);
     labs.forEach(function(l,i){labW[i]=l.offsetWidth;labH[i]=l.offsetHeight;});
@@ -3421,7 +3497,7 @@ button{font-family:inherit}
   function nodePos(i){
     var tx=small?W*.8:cx+S*.95,ty0=small?H*.36:H*.2;
     var pts=small?[[W*.76,H*.34],[W*.24,H*.44],[W*.72,H*.5]]:[[cx+S*1.1,H*.2],[cx-S*.95,H*.3],[cx+S*.8,geo.topY-S*.35]];
-    return {x:Math.round(pts[i][0]),y:Math.round(pts[i][1])};
+    return {x:Math.round(pts[i][0]),y:Math.round(Math.max(pts[i][1],70+(nodH[i]||40)/2))};   /* never under the top bar */
   }
   function streamFront(p){return sm(.5,.66,p)*3.2;}            /* 0..3.2 along trigger→action→notify→module */
 
